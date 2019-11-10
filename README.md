@@ -1,3 +1,7 @@
+# Google_Search_Daily
+To align with Google’s mission to organize the world's information and make it universally accessible and useful, we believe there should be a product to provide live news and daily feeds. Currently Google does not have a product to provide live news. The purpose of Google Search Daily aims to fit in this gap and provide a more fluent user experience of accessing information and a next generation news system.
+
+
 # spring-react-boilerplate
 
 [![CircleCI](https://circleci.com/gh/pram/spring-react-boilerplate.svg?style=svg)](https://circleci.com/gh/pram/spring-react-boilerplate) [![Coverage Status](https://coveralls.io/repos/github/pram/spring-react-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/pram/spring-react-boilerplate?branch=master)
@@ -43,4 +47,3 @@ You can now access the app on [port 8080](http://localhost:8080)
 
     admin/admin
     user/password
-

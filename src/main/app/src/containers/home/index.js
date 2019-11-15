@@ -96,49 +96,53 @@ class Home extends React.Component<Props, State> {
         if (!authState.signedIn) {
             return (
                 <div>
-                    <h1>Home</h1>
-                    Please sign in
+                    <Container>
+                        <h1>Home</h1>
+                        Please sign in
+                    </Container>
                 </div>
             )
         }
 
         return (
             <div>
-                <h1>Home</h1>
                 <Container>
-                    <Form>
-                        <FormGroup row>
-                            <Label for="bookName" sm={2}>Book Name</Label>
-                            <Col sm={10}>
-                                <Input type="bookName"
-                                       name="bookName"
-                                       id="bookName"
-                                       placeholder="Name of Book"
-                                       value={bookName}
-                                       onChange={this.handleChange}
-                                />
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="bookPrice" sm={2}>Book Price</Label>
-                            <Col sm={10}>
-                                <Input type="bookPrice"
-                                       name="bookPrice"
-                                       id="bookPrice"
-                                       placeholder="Price of Book"
-                                       value={bookPrice}
-                                       onChange={this.handleChange}
-                                />
-                            </Col>
-                        </FormGroup>
-                        <FormGroup check row>
-                            <Col sm={{ size: 10 }}>
-                                <Button onClick={e => this.handleAddBook(e)}>Submit</Button>
-                            </Col>
-                        </FormGroup>
-                    </Form>
+                    <h1>Home</h1>
+                    <Container>
+                        <Form>
+                            <FormGroup row>
+                                <Label for="bookName" sm={2}>Book Name</Label>
+                                <Col sm={10}>
+                                    <Input type="bookName"
+                                           name="bookName"
+                                           id="bookName"
+                                           placeholder="Name of Book"
+                                           value={bookName}
+                                           onChange={this.handleChange}
+                                    />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="bookPrice" sm={2}>Book Price</Label>
+                                <Col sm={10}>
+                                    <Input type="bookPrice"
+                                           name="bookPrice"
+                                           id="bookPrice"
+                                           placeholder="Price of Book"
+                                           value={bookPrice}
+                                           onChange={this.handleChange}
+                                    />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup check row>
+                                <Col sm={{ size: 10 }}>
+                                    <Button onClick={e => this.handleAddBook(e)}>Submit</Button>
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </Container>
+                    {this.displayBooks()}
                 </Container>
-                {this.displayBooks()}
             </div>
         )
     }

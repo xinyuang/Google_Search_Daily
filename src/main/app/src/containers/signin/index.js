@@ -112,7 +112,7 @@ class SignIn extends React.Component<Props, State> {
 
         return (
             <div>
-
+                <Container>
                 <Form>
                     <h1>Sign In</h1>
                     <Container>
@@ -146,7 +146,7 @@ class SignIn extends React.Component<Props, State> {
                 </Form>
                 <br/>
                 <div>Roles: {roleList}</div>
-
+                </Container>
             </div>
         );
     }

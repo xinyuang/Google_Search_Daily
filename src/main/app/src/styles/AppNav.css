@@ -7,11 +7,46 @@
 }
 
 .trigger:hover {
-    color: #1890ff;
+    color: rgba(41, 26, 255, 0.5);
 }
 
 .logo {
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
     height: 32px;
-    background: rgba(255, 255, 255, 0.2);
     margin: 16px;
+}
+
+.avatar {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 255, 0.22);
+    margin-right: 30px;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.searchBar{
+    margin-left: 300px;
+    flex-grow: 1;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.topNavBar {
+    background: rgba(0,0,255,0.5);
+    padding: 0;
+    box-shadow: -1px 0 5px 0 #1D428A;
+    display: flex;
+    align-items: center;
+}
+
+.signIn {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 20px;
 }

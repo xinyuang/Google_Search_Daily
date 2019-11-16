@@ -53,9 +53,9 @@ class AppNav extends React.Component<Props, State> {
     userLink(signedIn, username) {
         if (signedIn) {
             return (
-                <NavItem>
+                <NavcdItem>
                     <NavLink><div className="text-info">{username}</div></NavLink>
-                </NavItem>
+                </NavcdItem>
             )
         }
 

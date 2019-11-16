@@ -7,7 +7,9 @@ import { Button, Col, Container, Form, FormGroup, Label, Input, Table } from 're
 import type { Book, BookAddRequest } from "../../data/modules/books";
 import { refreshBooks, requestBookAdd } from "../../data/modules/books";
 import type { AuthState } from '../../data/modules/auth';
+import { Layout, Menu, Icon } from 'antd';
 
+const { Header, Sider, Content } = Layout;
 type Props = {
     authState: AuthState,
     refreshBooks: () => void,
@@ -98,7 +100,7 @@ class Home extends React.Component<Props, State> {
                 <div>
                     <Container>
                         <h1>Home</h1>
-                        Please sign in
+                          Please sign in
                     </Container>
                 </div>
             )

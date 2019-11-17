@@ -1,5 +1,7 @@
 package com.naughtyzombie.boilerplate.springreactboilerplate.websocket;
 
+import static com.naughtyzombie.boilerplate.springreactboilerplate.SpringReactBoilerplateApplication.logger;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,13 +26,13 @@ public class WebSocketController {
 	@Scheduled(fixedRate = 5000)
     public void sendUpdate() {
 		String formattedDate = DateFormat.getTimeInstance().format(new Date());
-		log.debug("Sending Update {}", formattedDate);
+		logger.debug("Sending Update {}", formattedDate);
 		this.template.convertAndSend("/topic/update", formattedDate);
 	}
 
 	@MessageMapping("/hello")
 	public String greeting(String message) throws Exception {
-		log.info("Message received {}", message);
+		logger.info("Message received {}", message);
 		return String.format("Hello %s ", message);
 	}
 }

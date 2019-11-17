@@ -1,5 +1,7 @@
 package com.naughtyzombie.boilerplate.springreactboilerplate.security;
 
+import static com.naughtyzombie.boilerplate.springreactboilerplate.SpringReactBoilerplateApplication.logger;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ public class ValidationResource {
 
 	@RequestMapping(path = "/validate/{username}", method = GET)
 	public String validate(@PathVariable(name = "username") String user) {
-		log.info("Authentication Validation Request for Request {}", user);
+		logger.info("Authentication Validation Request for Request {}", user);
 		return "VALIDATED";
 	}
 }

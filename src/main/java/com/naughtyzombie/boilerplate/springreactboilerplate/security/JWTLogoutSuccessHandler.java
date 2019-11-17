@@ -10,12 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.naughtyzombie.boilerplate.springreactboilerplate.SpringReactBoilerplateApplication.logger;
+
+
 @Component
 @Slf4j
 public class JWTLogoutSuccessHandler implements LogoutSuccessHandler {
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		log.info("Logout Request");
+		logger.info("Logout Request");
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().flush();
 	}

@@ -1,12 +1,14 @@
 package com.naughtyzombie.boilerplate.springreactboilerplate.resource;
 
-import com.naughtyzombie.boilerplate.springreactboilerplate.model.Book;
-import com.naughtyzombie.boilerplate.springreactboilerplate.service.BookService;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.naughtyzombie.boilerplate.springreactboilerplate.model.News;
+import com.naughtyzombie.boilerplate.springreactboilerplate.service.NewsService;
 
 import java.util.List;
 
@@ -16,26 +18,25 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import static com.naughtyzombie.boilerplate.springreactboilerplate.SpringReactBoilerplateApplication.logger;
 
-
 @RestController
 @RequestMapping(value = "/api", produces = APPLICATION_JSON_VALUE)
 @Slf4j
-public class BookResource {
+public class NewsResource {
 
     @Autowired
-    BookService bookService;
+    NewsService newsService;
 
-    @RequestMapping(path = "/allbooks", method = GET)
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    @RequestMapping(path = "/markednews", method = GET)
+    public List<News> getAllNews() {
+        return newsService.getAllNews();
     }
 
-    @RequestMapping(path = "/addbook", method = POST)
-    public List<Book> addBook(@RequestBody Book book) {
-        logger.info("Book Add request {}", book);
-        bookService.addBook(book);
+    @RequestMapping(path = "/favnews", method = POST)
+    public List<News> addNews(@RequestBody News news) {
+    	logger.info("Book Add request {}", news);
+        newsService.addNews(news);
 
-        return bookService.getAllBooks();
+        return newsService.getAllNews();
     }
 
 }

@@ -14,17 +14,21 @@ public class News {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name = "category")
-    private String category;
   
     @Column(name = "img_url")
     private String img_url;
     
+    @Column(name = "news_url")
+    private String news_url;
+    
+    @Column(name = "category")
+    private String category;
+    
     @Column(name = "title")
     private String title;
 
-	@Column(name = "content")
+    
+	@Column(name = "content", length = 512)
     private String content;
 	
     public Long getId() {

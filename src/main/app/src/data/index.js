@@ -5,12 +5,14 @@ import { routerReducer } from "react-router-redux";
 
 import auth from './modules/auth';
 import books from './modules/books';
+import news from './modules/news';
 import websockets from './modules/websockets';
 
 const rootReducer = combineReducers({
     router: routerReducer,
     auth,
     books,
+    news,
     websockets
 });
 

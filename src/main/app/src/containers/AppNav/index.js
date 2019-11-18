@@ -24,6 +24,7 @@ import Home from "../home";
 import SignIn from "../signin";
 import About from "../about";
 import SerachBar from "../Shared/SearchBar";
+import FavNews from "../FavNews";
 
 const { Header, Sider, Content } = Layout;
 
@@ -145,7 +146,7 @@ class AppNav extends React.Component<Props, State> {
                         <Menu.Item key="3">
                             <Icon type="upload" />
                             <span>Favorite</span>
-                            <Link to="/about-us">About</Link>
+                            <Link to="/favnews">FavNews</Link>
                         </Menu.Item>
                     </Menu>
                 </Sider>
@@ -162,6 +163,7 @@ class AppNav extends React.Component<Props, State> {
                         <Content >
                             <Route exact path="/" component={Home} />
                             <Route exact path="/signin" component={SignIn} />
+                            <Route exact path="/favnews" component={FavNews} />
                             <Route exact path="/about-us" component={About} />
                         </Content>
                     </div>

@@ -33,7 +33,7 @@ public class NewsResource {
 
     @RequestMapping(path = "/favnews", method = POST)
     public List<News> addNews(@RequestBody News news) {
-    	logger.info("Book Add request {}", news);
+    	logger.info("News Add request {}", news);
         newsService.addNews(news);
 
         return newsService.getAllNews();

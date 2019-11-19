@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { Button, Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
-import type { News, NewsAddRequest } from "../../data/modules/news";
-import { refreshNews, requestNewsAdd } from "../../data/modules/news";
+import type { News, NewsAddRequest, DelNewsRequest } from "../../data/modules/news";
+import { refreshNews, requestNewsAdd, requestNewsDel } from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon } from 'antd';
@@ -15,6 +15,7 @@ type Props = {
     authState: AuthState,
     refreshNews: () => void,
     requestNewsAdd:(newsAddRequest: NewsAddRequest) => void,
+    requestNewsDel:(newsDelRequest: number) => void,
     news: Array<News>
 };
 
@@ -37,7 +38,8 @@ class FavNews extends React.Component<Props, State> {
             img_url: '',
             news_url: '',
             title: '',
-            content: ''
+            content: '',
+            newsId: -1
         };
     }
 
@@ -60,6 +62,15 @@ class FavNews extends React.Component<Props, State> {
         this.props.requestNewsAdd(newsAddRequest);
     }
 
+    handleDelNews(e) {
+        e.preventDefault();
+        console.log(e.target.value);
+        // this.setState({ delnewsid: e.target.value });
+        const delNewsRequest: DelNewsRequest = { newsId: e.target.value};
+        console.log(delNewsRequest)
+        this.props.requestNewsDel(delNewsRequest);
+    }
+
     displayNews() {
 
         const { news } = this.props;
@@ -76,6 +87,7 @@ class FavNews extends React.Component<Props, State> {
                         <td>{item.category}</td>
                         <td>{item.title}</td>
                         <td>{item.content}</td>
+                        <td><Button color="danger" value={item.id} onClick={e => this.handleDelNews(e)}>Delete</Button></td>
                     </tr>
                 )
             });
@@ -94,7 +106,7 @@ class FavNews extends React.Component<Props, State> {
                         </tr>
                         </thead>
                         <tbody>
-                            {loadedNews}
+                        {loadedNews}
                         </tbody>
                     </Table>
                 </Container>
@@ -115,7 +127,7 @@ class FavNews extends React.Component<Props, State> {
                 <div>
                     <Container>
                         <h1>Your Favorite News</h1>
-                          Please sign in
+                        Please sign in
                     </Container>
                 </div>
             )
@@ -208,4 +220,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { refreshNews, requestNewsAdd })(FavNews);
+export default connect(mapStateToProps, { refreshNews, requestNewsAdd,requestNewsDel })(FavNews);

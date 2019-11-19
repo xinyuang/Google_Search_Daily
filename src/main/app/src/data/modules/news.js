@@ -5,6 +5,7 @@ import * as Names from "../../constants/names";
 
 export type News = { id: number, img_url: string, news_url: string, category:string, title: string, content: string };
 export type NewsAddRequest = { img_url: string, news_url: string, category:string, title: string, content: string};
+export type DelNewsRequest = {newsId : number}
 
 type State = {
     status: 'stale' | 'loaded',
@@ -60,15 +61,35 @@ export function refreshNews() : Thunk<NewsRefreshedAction> {
     };
 }
 
-export function requestNewsAdd(bookAddRequest: NewsAddRequest) : Thunk<NewsRefreshedAction> {
+export function requestNewsAdd(newsAddRequest: NewsAddRequest) : Thunk<NewsRefreshedAction> {
 
     // $FlowFixMe Flow complaining about the localstorage being null
     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
-
+    console.log("add auth ", headerToken);
     return dispatch => {
-        axios.post('/api/favnews', bookAddRequest,{
+        axios.post('/api/favnews', newsAddRequest,{
             headers: {authorization: headerToken}
         })
+            .then(
+                success => dispatch(newsRefreshed(success.data)),
+                failure => console.log(failure)
+            );
+    };
+}
+
+
+export function requestNewsDel(newsDelRequest: DelNewsRequest) : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    console.log("del auth ", headerToken);
+    let newsId = newsDelRequest['newsId'];
+    let url = '/api/delnews/' + newsId;
+    console.log(newsDelRequest);
+    return dispatch => {
+        axios.post(url,null ,  {
+            headers: {authorization: headerToken}
+        } )
             .then(
                 success => dispatch(newsRefreshed(success.data)),
                 failure => console.log(failure)

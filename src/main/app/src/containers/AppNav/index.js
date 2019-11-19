@@ -62,7 +62,7 @@ class AppNav extends React.Component<Props, State> {
     authLink(signedIn) {
         if (!signedIn) {
             return (
-                 <span><Link className="signIn" to="/signin">Sign In</Link></span>
+                <span><Link className="signIn" to="/signin">Sign In</Link></span>
             )
         }
 
@@ -77,7 +77,7 @@ class AppNav extends React.Component<Props, State> {
                 <NavItem>
                     <NavLink><div className="text-info">{username}</div></NavLink>
                 </NavItem>
-        )
+            )
         }
 
         return null;
@@ -148,6 +148,12 @@ class AppNav extends React.Component<Props, State> {
                             <span>Favorite</span>
                             <Link to="/favnews">FavNews</Link>
                         </Menu.Item>
+                        <Menu.Item key="4">
+                            <Icon type="upload" />
+                            <span>testExample</span>
+                            <Link to="/favnews"></Link>
+                        </Menu.Item>
+
                     </Menu>
                 </Sider>
                 <Layout>

@@ -27,12 +27,27 @@ public class News {
     @Column(name = "title")
     private String title;
 
-    
-	@Column(name = "content", length = 512)
+    @Column( columnDefinition = "TEXT" )
     private String content;
 	
     public Long getId() {
 		return id;
+	}
+
+	public String getImg_url() {
+		return img_url;
+	}
+
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
+	}
+
+	public String getNews_url() {
+		return news_url;
+	}
+
+	public void setNews_url(String news_url) {
+		this.news_url = news_url;
 	}
 
 	public void setId(Long id) {

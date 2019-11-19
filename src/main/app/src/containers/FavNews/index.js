@@ -9,6 +9,7 @@ import { refreshNews, requestNewsAdd, requestNewsDel } from "../../data/modules/
 
 import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon } from 'antd';
+import { Card } from 'antd';
 
 const { Header, Sider, Content } = Layout;
 type Props = {
@@ -80,35 +81,26 @@ class FavNews extends React.Component<Props, State> {
 
             const loadedNews = news.map((item) => {
                 return (
-                    <tr key={item.id}>
-                        <th scope="row">{item.id}</th>
-                        <td>{item.img_url}</td>
-                        <td>{item.news_url}</td>
-                        <td>{item.category}</td>
-                        <td>{item.title}</td>
-                        <td>{item.content}</td>
-                        <td><Button color="danger" value={item.id} onClick={e => this.handleDelNews(e)}>Delete</Button></td>
-                    </tr>
+                    <div>
+                        <Card title={item.title} extra={<a href={item.news_url} target="_blank">More</a>}
+                            style={{ width: "70%" }}
+                        >
+                            <div className="newsBox">
+                            <img
+                                alt="example"
+                                src={item.img_url}
+                                style={{ marginRight: 10}}
+                            />
+                            <p>{item.content}</p>
+                            </div>
+                        </Card>
+                    </div>
                 )
             });
 
             return (
                 <Container className="mt-2 col-md-12">
-                    <Table striped bordered>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Img_url</th>
-                            <th>News_url</th>
-                            <th>category</th>
-                            <th>Title</th>
-                            <th>Content</th>
-                        </tr>
-                        </thead>
-                        <tbody>
                         {loadedNews}
-                        </tbody>
-                    </Table>
                 </Container>
             )
         }
@@ -126,7 +118,7 @@ class FavNews extends React.Component<Props, State> {
             return (
                 <div>
                     <Container>
-                        <h1>Your Favorite News</h1>
+                        <h1 style={{marginTop : 30}}>Your Favorite News</h1>
                         Please sign in
                     </Container>
                 </div>
@@ -136,76 +128,7 @@ class FavNews extends React.Component<Props, State> {
         return (
             <div>
                 <Container>
-                    <h1>Your Favorite News</h1>
-                    <Container>
-                        <Form>
-                            <FormGroup row>
-                                <Label for="newsImage" sm={2}>News img</Label>
-                                <Col sm={10}>
-                                    <Input type="newsImage"
-                                           name="Img_url"
-                                           id="newsImage"
-                                           placeholder="News img"
-                                           value={Img_url}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="News_url" sm={2}>News url</Label>
-                                <Col sm={10}>
-                                    <Input type="News_url"
-                                           name="News_url"
-                                           id="News_url"
-                                           placeholder="News url"
-                                           value={News_url}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="News_Category" sm={2}>News category</Label>
-                                <Col sm={10}>
-                                    <Input type="News_Category"
-                                           name="News_Category"
-                                           id="News_Category"
-                                           placeholder="News category"
-                                           value={News_Category}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="newsName" sm={2}>News Title</Label>
-                                <Col sm={10}>
-                                    <Input type="newsName"
-                                           name="Title"
-                                           id="newsName"
-                                           placeholder="News Title"
-                                           value={Title}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="Content" sm={2}>News Content</Label>
-                                <Col sm={10}>
-                                    <Input type="Content"
-                                           name="Content"
-                                           id="Content"
-                                           placeholder="News Content"
-                                           value={Content}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup check row>
-                                <Col sm={{ size: 10 }}>
-                                    <Button onClick={e => this.handleAddNews(e)}>Submit</Button>
-                                </Col>
-                            </FormGroup>
-                        </Form>
-                    </Container>
+                    <h1 style={{marginTop : 30}}>Your Favorite News</h1>
                     {this.displayNews()}
                 </Container>
             </div>

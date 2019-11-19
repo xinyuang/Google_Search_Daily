@@ -65,7 +65,6 @@ export function requestNewsAdd(newsAddRequest: NewsAddRequest) : Thunk<NewsRefre
 
     // $FlowFixMe Flow complaining about the localstorage being null
     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
-    console.log("add auth ", headerToken);
     return dispatch => {
         axios.post('/api/favnews', newsAddRequest,{
             headers: {authorization: headerToken}
@@ -82,10 +81,8 @@ export function requestNewsDel(newsDelRequest: DelNewsRequest) : Thunk<NewsRefre
 
     // $FlowFixMe Flow complaining about the localstorage being null
     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
-    console.log("del auth ", headerToken);
     let newsId = newsDelRequest['newsId'];
     let url = '/api/delnews/' + newsId;
-    console.log(newsDelRequest);
     return dispatch => {
         axios.post(url,null ,  {
             headers: {authorization: headerToken}

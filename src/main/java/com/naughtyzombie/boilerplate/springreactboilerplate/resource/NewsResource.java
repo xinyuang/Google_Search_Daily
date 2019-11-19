@@ -42,6 +42,7 @@ public class NewsResource {
     @RequestMapping(path = "/favnews", method = POST)
     public List<News> addNews(@RequestBody News news) {
     	logger.info("News Add request {}", news);
+    	System.out.print(news);
         newsService.addNews(news);
 
         return newsService.getAllNews();

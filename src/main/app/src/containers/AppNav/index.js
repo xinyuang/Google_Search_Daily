@@ -16,14 +16,15 @@ import * as Names from '../../constants/names';
 
 
 import ReactDOM from 'react-dom';
-import 'antd/dist/antd.css';
 import '../../styles/AppNav.css';
+import '../../styles/News.css';
 
 import {connect} from "react-redux";
-import Home from "../home";
 import SignIn from "../signin";
 import About from "../about";
 import SerachBar from "../Shared/SearchBar";
+import HotNews from "../HotNews";
+import RecomNews from "../RecomNews";
 import FavNews from "../FavNews";
 import test from "../test";
 
@@ -63,7 +64,10 @@ class AppNav extends React.Component<Props, State> {
     authLink(signedIn) {
         if (!signedIn) {
             return (
-                <span><Link className="signIn" to="/signin">Sign In</Link></span>
+                <div>
+                <span><Link className="signIn" to="/signin">Log In</Link></span>
+                <span><Link className="signIn" to="/signin">Sign Up</Link></span>
+                </div>
             )
         }
 
@@ -135,19 +139,19 @@ class AppNav extends React.Component<Props, State> {
                     <Menu mode="inline" defaultSelectedKeys={['1']}>
                         {/*theme="dark"*/}
                         <Menu.Item key="1">
-                            <Icon type="user" />
-                            <span>Search</span>
-                            <Link to="/">Home</Link>
+                            <Icon type="chrome" />
+                            <span>Top stories</span>
+                            <Link to="/"></Link>
                         </Menu.Item>
                         <Menu.Item key="2">
-                            <Icon type="video-camera" />
-                            <span>News</span>
-                            <Link to="/about-us">About</Link>
+                            <Icon type="user" />
+                            <span>Selected for you</span>
+                            <Link to="/recnews"></Link>
                         </Menu.Item>
                         <Menu.Item key="3">
-                            <Icon type="upload" />
-                            <span>Favorite</span>
-                            <Link to="/favnews">FavNews</Link>
+                            <Icon type="star" />
+                            <span>Saved News</span>
+                            <Link to="/favnews"></Link>
                         </Menu.Item>
                         <Menu.Item key="4">
                             <Icon type="upload" />
@@ -168,9 +172,10 @@ class AppNav extends React.Component<Props, State> {
                     </Header>
                     <div className="fullscreen">
                         <Content >
-                            <Route exact path="/" component={Home} />
+                            <Route exact path="/" component={HotNews} />
                             <Route exact path="/signin" component={SignIn} />
                             <Route exact path="/favnews" component={FavNews} />
+                            <Route exact path="/recnews" component={RecomNews} />
                             <Route exact path="/about-us" component={About} />
                             <Route exact path="/test" component={test} />
                         </Content>

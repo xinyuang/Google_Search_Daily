@@ -1,6 +1,4 @@
-/*@import 'styles/App.css';*/
-/*@import 'styles/AppNav.css';*/
-/*@import '~antd/dist/antd.css';*/
+@import '~antd/dist/antd.css';
 
 html, body {
   height: 100%;

@@ -11,6 +11,7 @@ import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon } from 'antd';
 import { Card } from 'antd';
 import {Link} from "react-router-dom";
+import Tag from "antd/es/tag";
 
 const { Header, Sider, Content } = Layout;
 type Props = {
@@ -29,7 +30,7 @@ type State = {
     Content: string
 };
 
-class FavNews extends React.Component<Props, State> {
+class HotNews extends React.Component<Props, State> {
     props: Props;
     state: State;
 
@@ -84,7 +85,7 @@ class FavNews extends React.Component<Props, State> {
                 return (
                     <div>
                         <Card title={<a href={item.news_url} target="_blank">{item.title} </a>} extra={<Icon type="star" />}
-                            style={{ width: "70%" }}
+                            style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
                         >
                             <div className="newsBox">
                             <img
@@ -100,8 +101,33 @@ class FavNews extends React.Component<Props, State> {
             });
 
             return (
-                <Container className="mt-2 col-md-12">
-                        {loadedNews}
+                <Container className="mt-2 col-md-12 flex-column">
+                    <div className="newsBox">
+                        <div className="grow-1">
+                            {loadedNews}
+                        </div>
+                        <div className="grow-3">
+                            <Card newsCard="Hot Topics" title="Hot Topics"
+                                  style={{ width: "100%", borderRadius: "8px", margin: "8px"}}
+                            >
+                                <div className="newsBox">
+                                    <div>
+                                        <Tag className="tag" color="magenta">magenta</Tag>
+                                        <Tag className="tag" color="red">red</Tag>
+                                        <Tag className="tag" color="volcano">volcano</Tag>
+                                        <Tag className="tag" color="orange">orange</Tag>
+                                        <Tag className="tag" color="gold">gold</Tag>
+                                        <Tag className="tag" color="lime">lime</Tag>
+                                        <Tag className="tag" color="green">green</Tag>
+                                        <Tag className="tag" color="cyan">cyan</Tag>
+                                        <Tag className="tag" color="blue">blue</Tag>
+                                        <Tag className="tag" color="geekblue">geekblue</Tag>
+                                        <Tag className="tag" color="purple">purple</Tag>
+                                    </div>
+                                </div>
+                            </Card>
+                        </div>
+                    </div>
                 </Container>
             )
         }
@@ -114,22 +140,10 @@ class FavNews extends React.Component<Props, State> {
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
 
-
-        if (!authState.signedIn) {
-            return (
-                <div>
-                    <Container>
-                        <h1 style={{marginTop : 30}}>Your Saved News</h1>
-                        <Link to="/signin">Please sign in</Link>
-                    </Container>
-                </div>
-            )
-        }
-
         return (
             <div>
                 <Container>
-                    <h1 style={{marginTop : 30}}>Your Saved News</h1>
+                    <h1 style={{marginTop : 30, marginLeft: 20}}>Headlines</h1>
                     {this.displayNews()}
                 </Container>
             </div>
@@ -144,4 +158,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { refreshNews, requestNewsAdd,requestNewsDel })(FavNews);
+export default connect(mapStateToProps, { refreshNews, requestNewsAdd,requestNewsDel })(HotNews);

@@ -1,0 +1,31 @@
+.newsBox {
+    display: flex;
+}
+
+.grow-3 {
+    flex-grow: 3;
+}
+
+.grow-1 {
+    flex-grow: 1;
+}
+
+.tag {
+    font-size: 120%;
+    margin: 8px;
+    padding: 5px 10px;
+}
+
+.Row {
+    padding: 10px;
+}
+
+.newsImg {
+    width: 300px;
+    height: 180px;
+}
+
+.addTag {
+    font-size: 400%;
+    margin-top: 30px;
+}

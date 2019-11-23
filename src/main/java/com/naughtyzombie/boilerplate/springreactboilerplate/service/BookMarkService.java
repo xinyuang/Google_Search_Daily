@@ -32,4 +32,8 @@ public class BookMarkService {
     public Optional<BookMark> oneBookMark(BookmarkId bookMarkId) {
     	return bookMarkRepository.findById(bookMarkId);
     }
+    
+    public List<Object[]> findUserBookMark(Long userId) {
+    	return bookMarkRepository.findByUserId(userId);
+    }
 }

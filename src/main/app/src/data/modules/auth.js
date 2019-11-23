@@ -88,6 +88,7 @@ export function login(username: string, password: string): Thunk<AuthenticatedAc
                     localStorage.setItem(Names.JWT_TOKEN, authorization);
 
                     let token = jwt_decode(authorization);
+
                     dispatch(authenticated({
                         signedIn: true,
                         username: token.username,
@@ -98,6 +99,7 @@ export function login(username: string, password: string): Thunk<AuthenticatedAc
                     //Trigger a call to a private route and the authorization token should get cached
                     // $FlowFixMe Flow complaining about the localstorage being null
                     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+                    console.log("token", headerToken);
                     dispatch(socketsConnect());
                     axios.get(`/api/validate/${token.sub}`, {
                         headers: {authorization: headerToken}

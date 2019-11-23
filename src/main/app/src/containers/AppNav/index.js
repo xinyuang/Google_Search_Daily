@@ -122,8 +122,8 @@ class AppNav extends React.Component<Props, State> {
 
 
     render() {
-        console.log(this.state);
-        console.log(this.props);
+        console.log("state" ,this.state);
+        console.log("props", this.props);
         const { roles, signedIn, username } = this.props.auth;
 
         return (

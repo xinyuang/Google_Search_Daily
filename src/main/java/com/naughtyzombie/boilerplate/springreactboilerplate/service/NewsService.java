@@ -23,11 +23,11 @@ public class NewsService {
         return save != null;
     }
     
-    public void deleteNews(Long newsId) {
+    public void deleteNews(String newsId) {
     	newsRespository.deleteById(newsId);
     }
     
-    public Optional<News> oneNews(Long newsId) {
+    public Optional<News> oneNews(String newsId) {
     	return newsRespository.findById(newsId);
     }
 }

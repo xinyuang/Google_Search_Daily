@@ -4,7 +4,7 @@ import type { Thunk } from '../';
 import * as Names from "../../constants/names";
 
 export type News = { id: number, img_url: string, news_url: string, category:string, title: string, content: string };
-export type NewsAddRequest = { img_url: string, news_url: string, category:string, title: string, content: string};
+export type NewsAddRequest = { id: string, img_url: string, news_url: string, category:string, title: string, content: string};
 export type DelNewsRequest = {newsId : number}
 
 type State = {

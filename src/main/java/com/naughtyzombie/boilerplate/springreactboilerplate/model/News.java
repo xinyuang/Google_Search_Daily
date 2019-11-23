@@ -12,8 +12,8 @@ import javax.persistence.*;
 public class News {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private String id;
   
     @Column(name = "img_url")
     private String img_url;
@@ -30,7 +30,7 @@ public class News {
     @Column( columnDefinition = "TEXT" )
     private String content;
 	
-    public Long getId() {
+    public String getId() {
 		return id;
 	}
 
@@ -50,7 +50,7 @@ public class News {
 		this.news_url = news_url;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

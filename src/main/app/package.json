@@ -1,0 +1,45 @@
+{
+  "name": "spring-react-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "flow-bin": "^0.80.0",
+    "react-scripts": "^1.0.17"
+  },
+  "dependencies": {
+    "@stomp/stompjs": "^4.0.2",
+    "axios": "^0.18.0",
+    "bootstrap": "^4.0.0",
+    "jwt-decode": "^2.2.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "next",
+    "reactstrap": "^6.4.0",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0",
+    "sanitize.css": "^7.0.3",
+    "sockjs-client": "^1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "precommit": "lint-staged"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8080"
+    },
+    "/auth": {
+      "target": "http://localhost:8080"
+    },
+    "/socket": {
+      "target": "http://localhost:8080",
+      "ws": true
+    }
+  }
+}

@@ -1,8 +1,8 @@
-delete from book;
-
-delete from user_role;
-delete from role;
-delete from user;
+--delete from book;
+--
+--delete from user_role;
+--delete from role;
+--delete from user;
 
 
 

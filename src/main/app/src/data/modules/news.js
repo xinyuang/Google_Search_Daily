@@ -49,7 +49,7 @@ export function refreshNews() : Thunk<NewsRefreshedAction> {
 
     // $FlowFixMe Flow complaining about the localstorage being null
     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
-
+    console.log(headerToken);
     return dispatch => {
         axios.get(`/api/markednews`,{
             headers: {authorization: headerToken}

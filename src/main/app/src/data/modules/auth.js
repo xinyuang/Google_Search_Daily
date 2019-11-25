@@ -8,6 +8,14 @@ import * as Names from '../../constants/names';
 
 import {socketsConnect, socketsDisconnect} from '../../middleware/socketActions';
 
+export type UserRegisterRequest = {email: string,
+    enabled: string,
+    firstname: string,
+    lastPasswordResetDate: string,
+    lastname: string,
+    password: string,
+    username: string};
+
 export type Role =
     'ROLE_ADMIN'
     | 'ROLE_USER'
@@ -81,6 +89,7 @@ export function authenticationFailure(): AuthenticatedAction {
 export function login(username: string, password: string): Thunk<AuthenticatedAction> {
     return dispatch => {
         const credentials = {username, password};
+        console.log(credentials);
         axios.post(`/auth`, credentials)
             .then(
                 success => {
@@ -130,6 +139,19 @@ export function logout(): Thunk<LogoutAction> {
                     dispatch(socketsDisconnect());
                 },
                 failure => console.error(`Failed to log out successfully: ${failure}`)
+            )
+    };
+}
+
+export function signup(userRegisterRequest: UserRegisterRequest): Thunk<LogoutAction> {
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    return dispatch => {
+        axios.post('/api/register',userRegisterRequest)
+            .then(
+                () => {
+                    dispatch(login());
+                },
+                failure => console.error(`Failed to register: ${failure}`)
             )
     };
 }

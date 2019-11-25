@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.FLAG_camp.google_search_daily.model.security.User;
 import com.FLAG_camp.google_search_daily.security.JwtUserFactory;
 import com.FLAG_camp.google_search_daily.security.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -16,6 +17,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
+	
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -25,5 +29,11 @@ public class JwtUserDetailsService implements UserDetailsService {
         } else {
             return JwtUserFactory.create(user);
         }
+    }
+    
+    public boolean addUser(User user) {
+    	user.setPassword(bcryptEncoder.encode(user.getPassword()));
+    	User save = userRepository.save(user);
+        return save != null;
     }
 }

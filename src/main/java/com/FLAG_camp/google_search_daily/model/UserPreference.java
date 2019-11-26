@@ -32,5 +32,14 @@ public class UserPreference {
 	    public void setId(PreferId id) {
 	        this.id = id;
 	    }
+	    
+	    public UserPreference() {
+	    }
+	    
+	    public UserPreference(PreferId id, String markDate)throws Exception{
+	        this.id = id;
+	        Date date= new SimpleDateFormat("yyyy-MM-dd").parse(markDate);  
+	        this.setDate = date;
+	    }
 
 }

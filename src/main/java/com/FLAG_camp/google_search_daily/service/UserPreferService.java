@@ -32,7 +32,7 @@ public class UserPreferService {
     }
     
     
-    public List<Object[]> findUserBookMark(Long userId) {
+    public List<Object[]> findUserPreference(Long userId) {
     	return userPreferenceRepository.findByUserId(userId);
     }
 }

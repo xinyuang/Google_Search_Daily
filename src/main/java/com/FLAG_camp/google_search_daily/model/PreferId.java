@@ -20,6 +20,9 @@ public class PreferId implements Serializable {
     @Column(name = "newscategory_id")
     private Long newscategoryId;
  
+    public PreferId() {
+    }
+    
     public PreferId(Long userId, Long newscategoryId) {
         this.userId = userId;
         this.newscategoryId = newscategoryId;

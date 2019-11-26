@@ -9,3 +9,13 @@ INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (1, 2);
 INSERT INTO user_role (user_id, role_id) VALUES (2, 1);
 INSERT INTO user_role (user_id, role_id) VALUES (3, 1);
+
+
+INSERT INTO newscategory_list (id, category) VALUES (1, 'Business');
+INSERT INTO newscategory_list (id, category) VALUES (2, 'Entertainment');
+INSERT INTO newscategory_list (id, category) VALUES (3, 'Health');
+INSERT INTO newscategory_list (id, category) VALUES (4, 'Politics');
+INSERT INTO newscategory_list (id, category) VALUES (5, 'ScienceAndTechnology');
+INSERT INTO newscategory_list (id, category) VALUES (6, 'Sports');
+INSERT INTO newscategory_list (id, category) VALUES (7, 'World');
+INSERT INTO newscategory_list (id, category) VALUES (8, 'US');

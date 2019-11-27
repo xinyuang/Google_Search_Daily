@@ -21,11 +21,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FLAG_camp.google_search_daily.model.security.User;
 import com.FLAG_camp.google_search_daily.security.JwtAuthenticationRequest;
 import com.FLAG_camp.google_search_daily.security.JwtTokenUtil;
 import com.FLAG_camp.google_search_daily.security.JwtUser;
 import com.FLAG_camp.google_search_daily.security.service.JwtAuthenticationResponse;
+import com.FLAG_camp.google_search_daily.security.service.JwtUserDetailsService;
 
+import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class AuthenticationRestController {
@@ -39,13 +44,15 @@ public class AuthenticationRestController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    @Qualifier("jwtUserDetailsService")
-    private UserDetailsService userDetailsService;
+//    @Autowired
+//    @Qualifier("jwtUserDetailsService")
+//    private UserDetailsService userDetailsService;
+	@Autowired
+	private JwtUserDetailsService userDetailsService;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
-
+    	logger.info("password: {}", authenticationRequest.getPassword());
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
         // Reload password post-security so we can generate the token
@@ -70,6 +77,11 @@ public class AuthenticationRestController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+    
+	@RequestMapping(value = "/api/register", method = RequestMethod.POST)
+	public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
+		return ResponseEntity.ok(userDetailsService.addUser(user));
+	}
 
     @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
@@ -91,4 +103,6 @@ public class AuthenticationRestController {
             throw new AuthenticationException("Incorrect Credentials", e);
         }
     }
+    
+    
 }

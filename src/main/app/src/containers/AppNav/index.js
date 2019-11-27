@@ -21,6 +21,7 @@ import '../../styles/News.css';
 
 import {connect} from "react-redux";
 import SignIn from "../signin";
+import signupForm from "../SignUp";
 import About from "../about";
 import SerachBar from "../Shared/SearchBar";
 import HotNews from "../HotNews";
@@ -66,7 +67,7 @@ class AppNav extends React.Component<Props, State> {
             return (
                 <div>
                 <span><Link className="signIn" to="/signin">Log In</Link></span>
-                <span><Link className="signIn" to="/signin">Sign Up</Link></span>
+                <span><Link className="signIn" to="/signup">Sign Up</Link></span>
                 </div>
             )
         }
@@ -174,6 +175,7 @@ class AppNav extends React.Component<Props, State> {
                         <Content >
                             <Route exact path="/" component={HotNews} />
                             <Route exact path="/signin" component={SignIn} />
+                            <Route exact path="/signup" component={signupForm} />
                             <Route exact path="/favnews" component={FavNews} />
                             <Route exact path="/recnews" component={RecomNews} />
                             <Route exact path="/about-us" component={About} />

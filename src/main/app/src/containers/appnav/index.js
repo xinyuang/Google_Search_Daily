@@ -1,16 +1,37 @@
-/* @flow */
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import {Link, Route, withRouter} from 'react-router-dom';
+import {Navbar, NavbarBrand, Nav, NavItem, NavLink, Container} from 'reactstrap';
+import Flexbox from 'flexbox-react';
 
-import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Avatar } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 
+
+import Logo from '../../assets/logo.png';
 import type { AuthState } from '../../data/modules/auth';
 import { logout } from '../../data/modules/auth';
 import { socketsSubscribe } from '../../middleware/socketActions';
 import type { SocketState } from "../../data/modules/websockets";
-
 import * as Names from '../../constants/names';
+
+
+import ReactDOM from 'react-dom';
+import '../../styles/AppNav.css';
+import '../../styles/News.css';
+import '../../styles/auth.css';
+
+import {connect} from "react-redux";
+import SignIn from "../signin";
+import SignUp from "../signup"
+import About from "../about";
+import SerachBar from "../Shared/SearchBar";
+import HotNews from "../HotNews";
+import RecomNews from "../RecomNews";
+import FavNews from "../FavNews";
+import Perference from "../perference";
+import test from "../test";
+
+const { Header, Sider, Content } = Layout;
 
 type Props = {
     auth: AuthState,
@@ -20,42 +41,50 @@ type Props = {
 };
 
 type State = {
+    collapsed: false,
     subscriptionActive: boolean
 }
 
 class AppNav extends React.Component<Props, State> {
+
     props: Props;
     state: State;
 
     constructor(props) {
         super(props);
         this.state = {
-            subscriptionActive: false
+            subscriptionActive: false,
+            collapsed: false
         };
     }
+
+    toggle = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    };
 
     authLink(signedIn) {
         if (!signedIn) {
             return (
-                <NavItem>
-                    <NavLink><Link to="/signin">Sign In</Link></NavLink>
-                </NavItem>
+                <div>
+                    <span><Link className="signIn" to="/signin">Log In</Link></span>
+                    <span><Link className="signUp" to="/signup">Sign Up</Link></span>
+                </div>
             )
         }
 
         return (
-                <NavItem>
-                    <NavLink><a href='#' onClick={() => this.props.logout()}>Sign Out</a></NavLink>
-                </NavItem>
+            <span><a className="signIn" href='#' onClick={() => this.props.logout()}>Sign Out</a></span>
         );
     }
 
     userLink(signedIn, username) {
         if (signedIn) {
             return (
-                <NavcdItem>
+                <NavItem>
                     <NavLink><div className="text-info">{username}</div></NavLink>
-                </NavcdItem>
+                </NavItem>
             )
         }
 
@@ -94,27 +123,71 @@ class AppNav extends React.Component<Props, State> {
         return null;
     }
 
-    render() {
 
+    render() {
+        // console.log(this.state);
+        // console.log(this.props);
         const { roles, signedIn, username } = this.props.auth;
 
         return (
-            <Navbar color="dark" expand={true} fixed="top">
-                <NavbarBrand href="/">spring-react-boilerplate</NavbarBrand>
-                <Nav className="d-flex ml-auto" horizontal="end" navbar>
-                    {this.socketLink()}
-                    {this.userLink(signedIn, username)}
-                    {this.roleLink(signedIn, roles)}
-                    <NavItem>
-                        <NavLink><Link to="/">Home</Link></NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink><Link to="/about-us">About</Link></NavLink>
-                    </NavItem>
-                    {this.authLink(signedIn)}
-                </Nav>
-            </Navbar>
-        )
+
+            <Layout>
+                <Sider theme="light" trigger={null} collapsible collapsed={this.state.collapsed}>
+                    {/*<div className="logo" />*/}
+                    <Icon
+                        className="trigger"
+                        type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                        onClick={this.toggle}
+                    />
+                    <Menu mode="inline" defaultSelectedKeys={['1']}>
+                        {/*theme="dark"*/}
+                        <Menu.Item key="1">
+                            <Icon type="chrome" />
+                            <span>Top stories</span>
+                            <Link to="/"></Link>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                            <Icon type="user" />
+                            <span>Selected for you</span>
+                            <Link to="/recnews"></Link>
+                        </Menu.Item>
+                        <Menu.Item key="3">
+                            <Icon type="star" />
+                            <span>Saved News</span>
+                            <Link to="/favnews"></Link>
+                        </Menu.Item>
+                        <Menu.Item key="4">
+                            <Icon type="upload" />
+                            <span>testExample</span>
+                            <Link to="/test"></Link>
+                        </Menu.Item>
+
+                    </Menu>
+                </Sider>
+                <Layout>
+                    <Header className="topNavBar">
+                        <img className="logo" src={Logo}/>
+                        <SerachBar/>
+                        <div className="grow" />
+                        <Link to="/about-us"><Avatar className="avatar" icon="user"/></Link>
+                        <div className="signIn">{this.authLink(signedIn)}</div>
+
+                    </Header>
+                    <div className="fullscreen">
+                        <Content >
+                            <Route exact path="/" component={HotNews} />
+                            <Route exact path="/signin" component={SignIn} />
+                            <Route exact path="/signup" component={SignUp} />
+                            <Route exact path="/perference" component={Perference} />
+                            <Route exact path="/favnews" component={FavNews} />
+                            <Route exact path="/recnews" component={RecomNews} />
+                            <Route exact path="/about-us" component={About} />
+                            <Route exact path="/test" component={test} />
+                        </Content>
+                    </div>
+                </Layout>
+            </Layout>
+        );
     }
 }
 

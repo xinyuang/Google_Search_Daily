@@ -17,25 +17,35 @@ export type AuthState = {
     signedIn: boolean,
     username: string,
     roles: Role[],
-    authFailure: boolean
+    authFailure: boolean,
+    // registered: boolean,
+    // regFailure: boolean,
+    // regErrType: string
 };
+
+
 
 type AuthenticatedAction = {
     type: 'AUTHENTICATED' | 'AUTHENTICATION_FAILURE',
     payload: { username: string, roles: Role[] }
 };
+// type RegisterAction = {
+//     type: 'REGISTERED' | 'REGISTER_FAILURE',
+//     data: { registered: boolean, regFailure: boolean, regErrType: string}
+// };
 
 type LogoutAction = {
     type: 'LOGGED_OUT'
 };
 
-type Action = AuthenticatedAction | LogoutAction;
+type Action = AuthenticatedAction | LogoutAction ;
 
 const defaultState = {
     signedIn: false,
     username: '',
     roles: ['ROLE_ANONYMOUS'],
-    authFailure: false
+    authFailure: false,
+  
 };
 
 export default function reducer(state: AuthState = defaultState, action: Action): AuthState {
@@ -59,6 +69,7 @@ export default function reducer(state: AuthState = defaultState, action: Action)
         case 'LOGGED_OUT':
             return defaultState;
 
+
         default:
             return state;
     }
@@ -77,6 +88,7 @@ export function authenticationFailure(): AuthenticatedAction {
         payload: {signedIn: false, username: '', roles: [], authFailure: true}
     };
 }
+
 
 export function login(username: string, password: string): Thunk<AuthenticatedAction> {
     return dispatch => {

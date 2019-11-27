@@ -11,11 +11,8 @@ import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon } from 'antd';
 import { Card } from 'antd';
 import {Link} from "react-router-dom";
-import { Tabs } from 'antd';
 
-const { TabPane } = Tabs;
 const { Header, Sider, Content } = Layout;
-
 type Props = {
     authState: AuthState,
     refreshNews: () => void,
@@ -76,10 +73,6 @@ class FavNews extends React.Component<Props, State> {
         this.props.requestNewsDel(delNewsRequest);
     }
 
-    tab_callback(key) {
-        console.log(key);
-    }
-
     displayNews() {
 
         const { news } = this.props;
@@ -91,7 +84,7 @@ class FavNews extends React.Component<Props, State> {
                 return (
                     <div>
                         <Card title={<a href={item.news_url} target="_blank">{item.title} </a>} extra={<Icon type="star" />}
-                              style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
+                            style={{ width: "70%" }}
                         >
                             <div className="newsBox">
                             <img
@@ -137,17 +130,6 @@ class FavNews extends React.Component<Props, State> {
             <div>
                 <Container>
                     <h1 style={{marginTop : 30}}>Your Saved News</h1>
-                    <Tabs onChange={this.tab_callback} type="card">
-                        <TabPane tab="International" key="1">
-                            Content of Tab Pane 1
-                        </TabPane>
-                        <TabPane tab="Business" key="2">
-                            Content of Tab Pane 2
-                        </TabPane>
-                        <TabPane tab="Technology" key="3">
-                            Content of Tab Pane 3
-                        </TabPane>
-                    </Tabs>
                     {this.displayNews()}
                 </Container>
             </div>

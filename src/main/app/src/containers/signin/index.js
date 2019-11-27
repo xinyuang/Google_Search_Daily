@@ -2,9 +2,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
-import { Button, Container, Form, FormGroup, Label, ListGroup, ListGroupItem, Input, Alert } from 'reactstrap';
-
+// import { Alert } from 'antd';
+import {  Container, FormGroup, Label, ListGroup, ListGroupItem, Alert } from 'reactstrap';
+import { Button, Form, Input } from 'reactstrap';
+// import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { authenticated, login, logout } from '../../data/modules/auth';
 import type { AuthState, Role } from '../../data/modules/auth';
 import { socketsConnect } from '../../middleware/socketActions';
@@ -51,7 +52,7 @@ class SignIn extends React.Component<Props, State> {
         }
 
         this.props.login(u, p);
-        // this.props.socketsConnect();
+        this.props.socketsConnect();
     }
 
     handleSignOut(event) {
@@ -110,10 +111,12 @@ class SignIn extends React.Component<Props, State> {
 
         const roleList = authState.roles.join();
 
+
         return (
             <div>
                 <Container>
                 <Form>
+                    <br />
                     <h1>Sign In</h1>
                     <Container>
                         {this.authSucceededMessage()}

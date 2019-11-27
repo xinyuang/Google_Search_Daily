@@ -8,14 +8,6 @@ import * as Names from '../../constants/names';
 
 import {socketsConnect, socketsDisconnect} from '../../middleware/socketActions';
 
-export type UserRegisterRequest = {email: string,
-    enabled: string,
-    firstname: string,
-    lastPasswordResetDate: string,
-    lastname: string,
-    password: string,
-    username: string};
-
 export type Role =
     'ROLE_ADMIN'
     | 'ROLE_USER'
@@ -25,25 +17,35 @@ export type AuthState = {
     signedIn: boolean,
     username: string,
     roles: Role[],
-    authFailure: boolean
+    authFailure: boolean,
+    // registered: boolean,
+    // regFailure: boolean,
+    // regErrType: string
 };
+
+
 
 type AuthenticatedAction = {
     type: 'AUTHENTICATED' | 'AUTHENTICATION_FAILURE',
     payload: { username: string, roles: Role[] }
 };
+// type RegisterAction = {
+//     type: 'REGISTERED' | 'REGISTER_FAILURE',
+//     data: { registered: boolean, regFailure: boolean, regErrType: string}
+// };
 
 type LogoutAction = {
     type: 'LOGGED_OUT'
 };
 
-type Action = AuthenticatedAction | LogoutAction;
+type Action = AuthenticatedAction | LogoutAction ;
 
 const defaultState = {
     signedIn: false,
     username: '',
     roles: ['ROLE_ANONYMOUS'],
-    authFailure: false
+    authFailure: false,
+
 };
 
 export default function reducer(state: AuthState = defaultState, action: Action): AuthState {
@@ -67,6 +69,7 @@ export default function reducer(state: AuthState = defaultState, action: Action)
         case 'LOGGED_OUT':
             return defaultState;
 
+
         default:
             return state;
     }
@@ -86,10 +89,10 @@ export function authenticationFailure(): AuthenticatedAction {
     };
 }
 
+
 export function login(username: string, password: string): Thunk<AuthenticatedAction> {
     return dispatch => {
         const credentials = {username, password};
-        console.log(credentials);
         axios.post(`/auth`, credentials)
             .then(
                 success => {
@@ -97,7 +100,6 @@ export function login(username: string, password: string): Thunk<AuthenticatedAc
                     localStorage.setItem(Names.JWT_TOKEN, authorization);
 
                     let token = jwt_decode(authorization);
-
                     dispatch(authenticated({
                         signedIn: true,
                         username: token.username,
@@ -108,7 +110,6 @@ export function login(username: string, password: string): Thunk<AuthenticatedAc
                     //Trigger a call to a private route and the authorization token should get cached
                     // $FlowFixMe Flow complaining about the localstorage being null
                     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
-                    console.log("token", headerToken);
                     dispatch(socketsConnect());
                     axios.get(`/api/validate/${token.sub}`, {
                         headers: {authorization: headerToken}
@@ -139,19 +140,6 @@ export function logout(): Thunk<LogoutAction> {
                     dispatch(socketsDisconnect());
                 },
                 failure => console.error(`Failed to log out successfully: ${failure}`)
-            )
-    };
-}
-
-export function signup(userRegisterRequest: UserRegisterRequest): Thunk<LogoutAction> {
-    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
-    return dispatch => {
-        axios.post('/api/register',userRegisterRequest)
-            .then(
-                () => {
-                    dispatch(login());
-                },
-                failure => console.error(`Failed to register: ${failure}`)
             )
     };
 }

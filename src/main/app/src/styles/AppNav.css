@@ -46,6 +46,11 @@
     text-decoration: none;
     margin-right: 20px;
 }
+.signUp {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 20px;
+}
 
 .grow {
     flex-grow: 1;

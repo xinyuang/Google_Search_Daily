@@ -1,125 +1,188 @@
 /* @flow */
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Button, Container, Form, FormGroup, Label, ListGroup, ListGroupItem, Input, Alert } from 'reactstrap';
+import { RegState, register, userRegistered } from '../../data/modules/register';
+import type { AuthState } from '../../data/modules/auth';
+import { socketsConnect } from '../../middleware/socketActions';
+import { Select } from 'antd';
 
-import { Button, Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
-import {signup} from '../../data/modules/auth';
-import type { AuthState, UserRegisterRequest } from '../../data/modules/auth';
+const { Option } = Select;
+const countryData = [];
 
-import { Layout, Menu, Icon } from 'antd';
-import type {NewsAddRequest} from "../../data/modules/news";
-import {getCurrentDate} from "../Shared/date";
-
-const { Header, Sider, Content } = Layout;
 type Props = {
-    authState: AuthState,
-    signup:(userRegisterRequest: UserRegisterRequest) => void,
+    regState: RegState,
+    socketsConnect:  () => void,
+    register: (username: string, password: string, email: string, country: string, city: string) => void,
+    // register: (username: string, password: string, email: string, country: string, city: string, checkList: []) => void,
+    // userRegistered: () => void,
+    history: {
+        push: (path: string) => void
+    },
 };
 
 type State = {
-    Email: string,
-    Password: string,
-    Username: string
+    // registered: boolean,
+    // regFailed: boolean,
+    username: string,
+    password: string,
+    email: string,
+    country: string,
+    city: string,
+    // indeterminate: boolean,
+    // checkAll: boolean,
 };
 
-class signupForm extends React.Component<Props, State> {
-    props: Props;
-    state: State;
+class SignUp extends React.Component<Props, State> {
+    state = {
+        // regFailed: false,
+        // registered: false,
+        username: '',
+        password: '',
+        email: '',
+        country: '',
+        city: '',
+        // indeterminate: true,
+        // checkAll: false,
+        // checkedList: [],
+    };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            username: ''
-        };
+    handleSignUp(event) {
+        event.preventDefault();
+
+        const { username, password, email, country, city } = this.state;
+
+        const u = username ? username.trim() : '';
+        const p = password ? password.trim() : '';
+        const e = email ? email.trim() : '';
+        const con = country ? country.trim() : '';
+        const ct = city ? city.trim() : '';
+        //need check valid input
+        this.props.register(u,p,e,con,ct);
+        this.props.history.push("/preference");
+        // this.props.register(u, p, e, con, ct, checkedList);
+        // this.props.socketsConnect();
     }
+
+
 
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
     };
 
-    handleregister(event) {
-        event.preventDefault();
+    // regFailedMessage() {
+    //     if (this.props.authState.regFailure) {
+    //
+    //         return (
+    //             <div>
+    //                 <Alert color="warning">
+    //                     <h1>Register failed!</h1>
+    //                     <div>{this.props.authState.regErrType}</div>
+    //                 </Alert>
+    //             </div>
+    //         );
+    //     }
+    //     return null;
+    // }
+    //
+    // regSucceededMessage() {
+    //     if (this.props.authState.registered) {
+    //         return (
+    //             <div>
+    //                 <Alert color="success">
+    //                     <h1>Register Succeeded!</h1>
+    //                 </Alert>
+    //             </div>
+    //         )
+    //     }
+    //     return null;
+    //
+    // }
 
-        const { Email, Password, Username } = this.state;
-
-        let cur_date = getCurrentDate();
-        const userRegisterRequest: UserRegisterRequest = {email: Email,
-            enabled: 'True',
-            firstname: 'userxxx',
-            lastPasswordResetDate: cur_date,
-            lastname: 'userxxx',
-            password: Password,
-            username: Username};
-        console.log('add user! ',userRegisterRequest)
-        this.props.signup(userRegisterRequest);
-    }
 
     render() {
 
-        const { Email, Password, Username } = this.state;
+        const { username, password, email, country, city } = this.state;
+        // const { getFieldDecorator } = this.props.form;
 
         return (
             <div>
                 <Container>
-                    <h1>Sign up page</h1>
-                    <Container>
-                        <Form>
-                            <FormGroup row>
-                                <Label for="Email" sm={2}>Email</Label>
-                                <Col sm={10}>
-                                    <Input type="Email"
-                                           name="Email"
-                                           id="Email"
-                                           placeholder="Email"
-                                           value={Email}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="Username" sm={2}>Username</Label>
-                                <Col sm={10}>
-                                    <Input type="Username"
-                                           name="Username"
-                                           id="Username"
-                                           placeholder="Username"
-                                           value={Username}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="Password" sm={2}>Password</Label>
-                                <Col sm={10}>
-                                    <Input type="Password"
-                                           name="Password"
-                                           id="Password"
-                                           placeholder="Password"
-                                           value={Password}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup check row>
-                                <Col sm={{ size: 10 }}>
-                                    <Button onClick={e => this.handleregister(e)}>Submit</Button>
-                                </Col>
-                            </FormGroup>
-                        </Form>
-                    </Container>
+                    <Form>
+                        <br />
+                        <h1>Register</h1>
+                        <br/>
+                        <FormGroup>
+                            <Label for="username">Username *</Label>
+                            <Input type="username"
+                                   name="username"
+                                   id="username"
+                                   placeholder="Username"
+                                   value={username}
+                                   onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="username">Password *</Label>
+                            <Input type="password"
+                                   name="password"
+                                   id="password"
+                                   placeholder="Password"
+                                   value={password}
+                                   onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="username">Email *</Label>
+                            <Input type="email"
+                                   name="email"
+                                   id="email"
+                                   placeholder="Email"
+                                   value={email}
+                                   onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="username">Country</Label>
+                            <Input type="country"
+                                   name="country"
+                                   id="country"
+                                   placeholder="Optional"
+                                   value={country}
+                                   onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="username">City</Label>
+                            <Input type="city"
+                                   name="city"
+                                   id="city"
+                                   placeholder="Optional"
+                                   value={city}
+                                   onChange={this.handleChange}
+                            />
+                        </FormGroup>
+
+                        <br />
+                        <Button onClick={e => this.handleSignUp(e)}> NEXT</Button>
+                    </Form>
+
                 </Container>
             </div>
-        )
+        );
     }
 }
 
 function mapStateToProps(state) {
+    console.log(state);
     return {
-        authState: state.auth,
+        regState: state.register
     };
 }
 
-export default connect(mapStateToProps, { signup })(signupForm);
+/* Inject auth state and dispatch() into props */
+export default withRouter(
+    connect(mapStateToProps, { register, socketsConnect })(SignUp)
+);

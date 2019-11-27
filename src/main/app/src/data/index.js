@@ -7,13 +7,15 @@ import auth from './modules/auth';
 import books from './modules/books';
 import news from './modules/news';
 import websockets from './modules/websockets';
+import register from './modules/register';
 
 const rootReducer = combineReducers({
     router: routerReducer,
     auth,
     books,
     news,
-    websockets
+    websockets,
+    register,
 });
 
 export default rootReducer;

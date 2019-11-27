@@ -20,7 +20,6 @@ type Props = {
 };
 
 type State = {
-    News_id: string,
     News_Category: string,
     Img_url: string,
     News_url: string,
@@ -35,7 +34,6 @@ class test extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-            news_id: '',
             category: '',
             img_url: '',
             news_url: '',
@@ -56,10 +54,10 @@ class test extends React.Component<Props, State> {
     handleAddNews(event) {
         event.preventDefault();
 
-        const { News_id, News_Category, Img_url, News_url, Title, Content} = this.state;
+        const { News_Category, Img_url, News_url, Title, Content} = this.state;
 
 
-        const newsAddRequest: NewsAddRequest = { id:News_id, category: News_Category, img_url: Img_url, news_url: News_url, title: Title, content: Content};
+        const newsAddRequest: NewsAddRequest = { category: News_Category, img_url: Img_url, news_url: News_url, title: Title, content: Content};
         console.log('add news! ',newsAddRequest)
         this.props.requestNewsAdd(newsAddRequest);
     }
@@ -120,7 +118,7 @@ class test extends React.Component<Props, State> {
 
     render() {
 
-        const { News_id, Img_url, News_url,News_Category, Title, Content } = this.state;
+        const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
 
 
@@ -141,18 +139,6 @@ class test extends React.Component<Props, State> {
                     <h1>Your Favorite News</h1>
                     <Container>
                         <Form>
-                            <FormGroup row>
-                                <Label for="newsId" sm={2}>News id</Label>
-                                <Col sm={10}>
-                                    <Input type="newsId"
-                                           name="News_id"
-                                           id="News_id"
-                                           placeholder="News id"
-                                           value={News_id}
-                                           onChange={this.handleChange}
-                                    />
-                                </Col>
-                            </FormGroup>
                             <FormGroup row>
                                 <Label for="newsImage" sm={2}>News img</Label>
                                 <Col sm={10}>

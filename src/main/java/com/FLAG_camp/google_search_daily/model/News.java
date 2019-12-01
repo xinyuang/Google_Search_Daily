@@ -3,6 +3,8 @@ package com.FLAG_camp.google_search_daily.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,14 +14,14 @@ import javax.persistence.*;
 public class News {
 
     @Id
-    @Column(name = "id")
-    private String id;
-  
-    @Column(name = "img_url")
-    private String img_url;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     
     @Column(name = "news_url")
-    private String news_url;
+	private String newsUrl;
+    
+    @Column(name = "news_provider_name")
+	private String newsProviderName;
     
     @Column(name = "category")
     private String category;
@@ -27,33 +29,44 @@ public class News {
     @Column(name = "title")
     private String title;
 
-    @Column( columnDefinition = "TEXT" )
-    private String content;
+    @Column(columnDefinition = "TEXT")
+	private String content;
 	
-    public String getId() {
-		return id;
+    @Column(name = "date_published")
+	private LocalDateTime datePublished;
+    
+    @Column(name = "img_url")
+	private String imgUrl;
+    
+    @Column(name = "img_width")
+	private int imgWidth;
+	
+	@Column(name = "img_height")
+	private int imgHeight;
+	
+	@Column(name = "img_provider_name")
+	private String imgProviderName;
+	
+	@Column(name = "is_breaking_news")
+	private boolean isBreakingNews;
+
+
+	public String getNewsUrl() {
+		return newsUrl;
 	}
 
-	public String getImg_url() {
-		return img_url;
+	public void setNewsUrl(String newsUrl) {
+		this.newsUrl = newsUrl;
 	}
 
-	public void setImg_url(String img_url) {
-		this.img_url = img_url;
+	public String getNewsProviderName() {
+		return newsProviderName;
 	}
-
-	public String getNews_url() {
-		return news_url;
+	
+	public void setNewsProviderName(String newsProviderName) {
+		this.newsProviderName = newsProviderName;
 	}
-
-	public void setNews_url(String news_url) {
-		this.news_url = news_url;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
 	public String getCategory() {
 		return category;
 	}
@@ -77,6 +90,36 @@ public class News {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	public LocalDateTime getDatePublished() {
+		return datePublished;
+	}
+	
+	public void setDatePublished(LocalDateTime datePublished) {
+		this.datePublished = datePublished;
+	}
+	
+	public String getImgUrl() {
+		return imgUrl;
+	}
 
-    
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public String getImgProviderName() {
+		return newsProviderName;
+	}
+	
+	public void setImgProviderName(String imgProviderName) {
+		this.imgProviderName = imgProviderName;
+	}
+	
+	public boolean getIsBreakingNews() {
+		return isBreakingNews;
+	}
+	
+	public void setIsBreakingNews(boolean isBreakingNews) {
+		this.isBreakingNews = isBreakingNews;
+	}
 }

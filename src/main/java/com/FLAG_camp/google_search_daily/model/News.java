@@ -33,7 +33,7 @@ public class News {
 	private String content;
 	
     @Column(name = "date_published")
-	private LocalDateTime datePublished;
+	private String datePublished;
     
     @Column(name = "img_url")
 	private String imgUrl;
@@ -91,11 +91,11 @@ public class News {
 		this.content = content;
 	}
 	
-	public LocalDateTime getDatePublished() {
+	public String getDatePublished() {
 		return datePublished;
 	}
 	
-	public void setDatePublished(LocalDateTime datePublished) {
+	public void setDatePublished(String datePublished) {
 		this.datePublished = datePublished;
 	}
 	
@@ -115,6 +115,21 @@ public class News {
 		this.imgProviderName = imgProviderName;
 	}
 	
+	public int getImgWidth() {
+		return imgWidth;
+	}
+	
+	public void setImgWidth(int imgWidth) {
+		this.imgWidth = imgWidth;
+	}
+	
+	public int getImgHeight() {
+		return imgHeight;
+	}
+	
+	public void setImgHeight(int imgHeight) {
+		this.imgHeight = imgHeight;
+	}
 	public boolean getIsBreakingNews() {
 		return isBreakingNews;
 	}

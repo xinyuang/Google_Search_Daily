@@ -18,16 +18,18 @@ import com.FLAG_camp.google_search_daily.model.News;
 @Service("newsApiService")
 public class NewsApiService {
 	
-	private String SUBSCRIPTION_KEY = "08578fb106fd45299541397fd22e25aa";
-	private String HOST = "https://api.cognitive.microsoft.com";
-	private String PATH = "/bing/v7.0/news";
-	private String DEFAULT_KEYWORD = "";
+	private final String SUBSCRIPTION_KEY = "08578fb106fd45299541397fd22e25aa";
+	private final String HOST = "https://api.cognitive.microsoft.com";
+	private final String PATH = "/bing/v7.0/news";
+	private final String SUB_PATH = "";
+	private final String DEFAULT_KEYWORD = "";
 	
 	@VisibleForTesting
 	public List<News> getGeneralNews() throws Exception {
 		// create connection
+		String subPath = SUB_PATH;
 		String queryKeyword = "sailing+dinghies";
-		HttpsURLConnection connection = createConnection(queryKeyword);
+		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
@@ -39,42 +41,63 @@ public class NewsApiService {
 	    return convertJsonArrayToNewsList(news);
 	}
 	
-//	// Get top news
-//	public JSONArray getTopNews() throws Exception {
-//		// create connection
-//		HttpsURLConnection connection = createConnection(null);
-//		// log
-//		int responseCode = connection.getResponseCode();
-//	    logger.info("Sending request to url: " + HOST + PATH + "?q=" + DEFAULT_KEYWORD);
-//	    logger.info("Response code: " + responseCode);
-//	    // if not succeed
-//	    if (responseCode != 200) {
-//	    	return new JSONArray();
-//	    }
-//	    // if succeed
-//	    JSONArray news = parseResponseToJsonArray(connection);
-//	    return news;
-//	}
-//	
-//	// Query news with keywords
-//	public JSONArray getQueryNews(String queryKeyword) throws Exception {
-//		HttpsURLConnection connection = createConnection(queryKeyword);
-//		
-//		int responseCode = connection.getResponseCode();
-//	    logger.info("Sending request to url: " + HOST + PATH + "?q=" + queryKeyword);
-//	    logger.info("Response code: " + responseCode);
-//	    if (responseCode != 200) {
-//	    	return new JSONArray();
-//	    }
-//	    JSONArray news = parseResponseToJsonArray(connection);
-//		return news;
-//	}
-//	
-	private HttpsURLConnection createConnection(String queryKeyword) throws Exception {
-		if (queryKeyword == null) {
-			queryKeyword = DEFAULT_KEYWORD;
-		}
-		URL url = new URL(HOST + PATH + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+	@VisibleForTesting
+	public List<News> getTodayTopNews() throws Exception {
+		// url: https://api.cognitive.microsoft.com/bing/v7.0/news/trendingtopics;
+		String subPath = "/search";
+		String queryKeyword = "&mkt=en-us";
+		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
+		connection.connect();
+		
+		int responseCode = connection.getResponseCode();
+	    if (responseCode != 200) {
+	    	return null;
+	    }
+	    
+	    JSONArray news = parseResponseToJsonArray(connection);
+	    return convertJsonArrayToNewsList(news);
+	}
+	
+	@VisibleForTesting
+	public List<News> getQueryNews(String queryKeyword) throws Exception {
+		String subPath = "/search";
+		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
+		connection.connect();
+		
+		int responseCode = connection.getResponseCode();
+	    if (responseCode != 200) {
+	    	return null;
+	    }
+	    JSONArray news = parseResponseToJsonArray(connection);
+		return convertJsonArrayToNewsList(news);
+	}
+	
+	@VisibleForTesting
+	public List<News> getCategoryNews(String category) throws Exception {
+		String subPath = SUB_PATH;
+		HttpsURLConnection connection = createCategoryQueryConnection(subPath, category);
+		connection.connect();
+		
+		int responseCode = connection.getResponseCode();
+	    if (responseCode != 200) {
+	    	return null;
+	    }
+	    JSONArray news = parseResponseToJsonArray(connection);
+		return convertJsonArrayToNewsList(news);
+	}
+	
+	private HttpsURLConnection createConnection(String subPath, String queryKeyword) throws Exception {
+		URL url = new URL(HOST + PATH + SUB_PATH + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
+	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
+	    connection.setRequestProperty("X-Search-Location", "lat:47.60357;long:-122.3295;re:100");
+	    connection.setRequestMethod("GET");
+	    return connection;
+	}
+	
+	private HttpsURLConnection createCategoryQueryConnection(String subPath, String queryKeyword) throws Exception {
+		URL url = new URL(HOST + PATH + SUB_PATH + "?category=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
@@ -113,22 +136,40 @@ public class NewsApiService {
 			if (!newsObj.isNull("url")) {
 				newNews.setNewsUrl(newsObj.getString("url"));
 			}
+			if (!newsObj.isNull("image")) {
+				JSONObject imgObj = newsObj.getJSONObject("image");
+				if (!imgObj.isNull("thumbnail")) {
+					JSONObject imgThumbnailObj = imgObj.getJSONObject("thumbnail");
+					if (!imgThumbnailObj.isNull("contentUrl")) {
+						newNews.setImgUrl(imgThumbnailObj.getString("contentUrl"));
+					}
+					if (!imgThumbnailObj.isNull("width")) {
+						newNews.setImgWidth(imgThumbnailObj.getInt("width"));
+					}
+					if (!imgThumbnailObj.isNull("height")) {
+						newNews.setImgHeight(imgThumbnailObj.getInt("height"));
+					}
+				}
+			}
 			if (!newsObj.isNull("description")) {
 				newNews.setContent(newsObj.getString("description"));
 			}
 			if (!newsObj.isNull("provider")) {
 				JSONArray providerArray = newsObj.getJSONArray("provider");
-				JSONObject providerObj = (JSONObject)providerArray.get(0);
-				if (providerObj!= null && !providerObj.toString().isEmpty()) {
-					newNews.setNewsProviderName(providerObj.getString("name"));
-				} else {
-					newNews.setNewsProviderName("");
-				}
+				JSONObject providerObj = providerArray.getJSONObject(0);
+				if (providerObj!= null && providerObj.length()!= 0) {
+					if (!providerObj.isNull("name")) {
+						newNews.setNewsProviderName(providerObj.getString("name"));
+					} 
+				} 
+			}
+			if (!newsObj.isNull("datePublished")) {
+				newNews.setDatePublished(newsObj.getString("datePublished"));
 			}
 			if (!newsObj.isNull("category")) {
 				newNews.setCategory(newsObj.getString("category"));
 			}
-			newNews.setDatePublished(LocalDateTime.now());
+			
 			newsList.add(newNews);
 		}
 		return newsList;

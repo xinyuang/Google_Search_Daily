@@ -42,6 +42,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+		        <exclusion>
+		            <groupId>org.springframework.boot</groupId>
+		            <artifactId>spring-boot-starter-logging</artifactId>
+		        </exclusion>
+		    </exclusions>
         </dependency>
 
         <dependency>
@@ -61,7 +67,12 @@
             <version>${jjwt.version}</version>
         </dependency>
 
-
+		<!-- Api -->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-jpa</artifactId>
+		</dependency>
+		
         <!-- Data -->
         <dependency>
             <groupId>com.h2database</groupId>
@@ -69,11 +80,22 @@
             <scope>runtime</scope>
         </dependency>
         
+   		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
+        <!-- Json -->
+        <dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		</dependency>
         
         <dependency>
 		    <groupId>org.json</groupId>
@@ -85,7 +107,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+           <!--  <scope>test</scope> -->
         </dependency>
 
         <dependency>
@@ -97,7 +119,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+            <!-- <scope>test</scope> -->
         </dependency>
 
         <!-- Misc -->

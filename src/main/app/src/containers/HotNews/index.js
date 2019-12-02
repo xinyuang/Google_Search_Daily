@@ -2,18 +2,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Button, Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
+import { Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
 import type { News, NewsAddRequest, DelNewsRequest } from "../../data/modules/news";
 import { refreshNews, requestNewsAdd, requestNewsDel } from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Button, Checkbox } from 'antd';
 import { Card } from 'antd';
 import {Link} from "react-router-dom";
 import Tag from "antd/es/tag";
 
 const { Header, Sider, Content } = Layout;
+
+class Star extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            bookmark: false
+        }
+    }
+
+    toggle = (e) => {
+        this.setState({
+            bookmark: !this.state.bookmark,
+        });
+    };
+
+    render() {
+        console.log(this.props);
+        console.log(this.state);
+        return (
+            <div>
+                <Icon
+                    // key={ item.news_url }
+                      className="trigger"
+                      type="star"
+                      theme={this.state.bookmark ?  'filled':''}
+                      style={this.state.bookmark ?  {color: 'yellow'}:{color: ''}}
+                      onClick={e => this.toggle(e)}
+                >
+                </Icon>
+            </div>
+        )
+    }
+}
+
+
+
 type Props = {
     authState: AuthState,
     refreshNews: () => void,
@@ -27,7 +63,8 @@ type State = {
     Img_url: string,
     News_url: string,
     Title: string,
-    Content: string
+    Content: string,
+    Save: boolean
 };
 
 class HotNews extends React.Component<Props, State> {
@@ -42,7 +79,8 @@ class HotNews extends React.Component<Props, State> {
             news_url: '',
             title: '',
             content: '',
-            newsId: -1
+            newsId: -1,
+            save: false
         };
     }
 
@@ -74,6 +112,13 @@ class HotNews extends React.Component<Props, State> {
         this.props.requestNewsDel(delNewsRequest);
     }
 
+    handleBookmark(e) {
+        e.preventDefault();
+        console.log(e.target.value);
+        return <Icon type="star" theme="filled" />
+    }
+
+
     displayNews() {
 
         const { news } = this.props;
@@ -84,10 +129,15 @@ class HotNews extends React.Component<Props, State> {
             const loadedNews = news.map((item) => {
                 return (
                     <div>
-                        <Card title={<a href={item.news_url} target="_blank">{item.title} </a>} extra={<Icon type="star" />}
+                        <Card title={<a href={item.news_url} target="_blank">{item.title} </a>}
+                              extra={
+                                <Star key={item.news_url}
+                                      data={item} />
+                              }
                             style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
                         >
                             <div className="newsBox">
+
                             <img
                                 alt="example"
                                 src={item.img_url}
@@ -107,7 +157,7 @@ class HotNews extends React.Component<Props, State> {
                             {loadedNews}
                         </div>
                         <div className="grow-3">
-                            <Card newsCard="Hot Topics" title="Hot Topics"
+                            <Card title="Hot Topics"
                                   style={{ width: "100%", borderRadius: "8px", margin: "8px"}}
                             >
                                 <div className="newsBox">

@@ -10,6 +10,7 @@ import type { AuthState, UserRegisterRequest } from '../../data/modules/auth';
 import { Layout, Menu, Icon } from 'antd';
 import type {NewsAddRequest} from "../../data/modules/news";
 import {getCurrentDate} from "../Shared/date";
+import {Redirect} from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 type Props = {
@@ -55,6 +56,7 @@ class signupForm extends React.Component<Props, State> {
             username: Username};
         console.log('add user! ',userRegisterRequest)
         this.props.signup(userRegisterRequest);
+        return <Redirect to="/signin/" />;
     }
 
     render() {

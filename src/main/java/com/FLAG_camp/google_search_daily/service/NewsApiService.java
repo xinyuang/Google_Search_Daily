@@ -164,7 +164,7 @@ public class NewsApiService {
 				} 
 			}
 			if (!newsObj.isNull("datePublished")) {
-				newNews.setDatePublished(newsObj.getString("datePublished"));
+				newNews.setDatePublished(dateTimeFormatter(newsObj.getString("datePublished")));
 			}
 			if (!newsObj.isNull("category")) {
 				newNews.setCategory(newsObj.getString("category"));
@@ -176,8 +176,10 @@ public class NewsApiService {
 	}
 	
 	private LocalDateTime dateTimeFormatter(String dateTimeStr) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm");
-		LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
+		String input = dateTimeStr.replace ( "T" , " " );
+		String inputModified = input.replace ( "Z" , "" );
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+		LocalDateTime dateTime = LocalDateTime.parse(inputModified, formatter);
 		return dateTime;
 	}
     

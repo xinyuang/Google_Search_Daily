@@ -33,7 +33,7 @@ public class News {
 	private String content;
 	
     @Column(name = "date_published")
-	private String datePublished;
+	private LocalDateTime datePublished;
     
     @Column(name = "img_url")
 	private String imgUrl;
@@ -91,11 +91,11 @@ public class News {
 		this.content = content;
 	}
 	
-	public String getDatePublished() {
+	public LocalDateTime getDatePublished() {
 		return datePublished;
 	}
 	
-	public void setDatePublished(String datePublished) {
+	public void setDatePublished(LocalDateTime datePublished) {
 		this.datePublished = datePublished;
 	}
 	

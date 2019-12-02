@@ -24,8 +24,18 @@ public class NewsService {
 		newsRepository.saveAll(allFetchedNews);
 	}
 	
-//	@VisibleForTesting
-//	public List<News> findNewsById(Iterable<Integer> ids) {
-//		return newsRepository.findAllById(ids);
-//	}
+	@VisibleForTesting
+	public List<News> getTopNewsFromApi() throws Exception {
+		return newsApiService.getTodayTopNews();
+	}
+	
+	@VisibleForTesting
+	public List<News> getQueryNewsFromApi(String queryKeyword) throws Exception {
+		return newsApiService.getQueryNews(queryKeyword);
+	}
+	
+	@VisibleForTesting
+	public List<News> getCategoryNewsFromApi(String category) throws Exception {
+		return newsApiService.getCategoryNews(category);
+	}
 }

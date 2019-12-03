@@ -39,42 +39,5 @@ public class NewsResource {
     public List<News> getCategoryNews(@RequestParam(value="category") String category) throws Exception {
     	return newsService.getCategoryNewsFromApi(category);
     }
-    
-//    @RequestMapping(path = "/markednews", method = GET)
-//    public List<News> getAllNews() {
-//        return newsService.getAllNews();
-//    }
-//
-//    @RequestMapping(path = "/favnews", method = POST)
-//    public List<News> addNews(@RequestBody News news) {
-//    	logger.info("News Add request {}", news);
-//    	System.out.print(news);
-//        newsService.addNews(news);
-//
-//        return newsService.getAllNews();
-//    }
-//
-//    @RequestMapping(path="/delnews/{id}")
-//    public List<News> deleteById(@PathVariable String id) {
-//     try {
-//    	 newsService.deleteNews(id);
-//      return newsService.getAllNews();
-//     } catch (Exception e) {
-//      return null;
-//     }
-//    }
-//    
-//    @RequestMapping("/getWithRequestParam")
-//    public String getWithRequestParam(@RequestParam(value = "personDTO") String personDTO)
-//        throws IOException {
-//    		logger.info("News Add request {}", personDTO);
-//			JSONObject obj = new JSONObject(personDTO.toString());
-//			if(!obj.isNull("_embedded")) {
-//				JSONObject newsId = obj.getJSONObject("newID");
-//				
-//				return "good";
-//			}
-//    		return "empty";
-//    }
 
 }

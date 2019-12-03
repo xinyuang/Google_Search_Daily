@@ -87,11 +87,12 @@ public class NewsApiService {
 	}
 	
 	private HttpsURLConnection createConnection(String subPath, String queryKeyword) throws Exception {
-		URL url = new URL(HOST + PATH + SUB_PATH + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		URL url = new URL(HOST + PATH + subPath + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		System.out.println(url.toString());
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
-	    connection.setRequestProperty("X-Search-Location", "lat:47.60357;long:-122.3295;re:100");
+//	    connection.setRequestProperty("X-Search-Location", "lat:47.60357;long:-122.3295;re:100");
 	    connection.setRequestMethod("GET");
 	    return connection;
 	}
@@ -101,7 +102,7 @@ public class NewsApiService {
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
-	    connection.setRequestProperty("X-Search-Location", "lat:47.60357;long:-122.3295;re:100");
+//	    connection.setRequestProperty("X-Search-Location", "lat:47.60357;long:-122.3295;re:100");
 	    connection.setRequestMethod("GET");
 	    return connection;
 	}

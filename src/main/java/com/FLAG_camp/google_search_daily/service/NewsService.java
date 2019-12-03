@@ -31,6 +31,7 @@ public class NewsService {
 	
 	@VisibleForTesting
 	public List<News> getQueryNewsFromApi(String queryKeyword) throws Exception {
+		System.out.println(queryKeyword);
 		return newsApiService.getQueryNews(queryKeyword);
 	}
 	

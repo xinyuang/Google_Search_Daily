@@ -42,6 +42,8 @@ public class BookMarkResource {
 		JSONObject obj = new JSONObject(bookmark);
 		Long userId = obj.getLong("userId");
 		String newsId = obj.getString("newsId");
+//		News news = obj.getJSONObject("news");
+//		News.save()
 		String markDate = obj.getString("markDate");
 		BookmarkId id = new BookmarkId(userId,newsId);
 		BookMark bookmark_obj = new BookMark(id,markDate);

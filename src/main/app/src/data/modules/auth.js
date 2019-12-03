@@ -7,6 +7,9 @@ import jwt_decode from 'jwt-decode';
 import * as Names from '../../constants/names';
 
 import {socketsConnect, socketsDisconnect} from '../../middleware/socketActions';
+import React from "react";
+import {Redirect, Route} from 'react-router-dom'
+import signupForm from "../../containers/SignUp";
 
 export type UserRegisterRequest = {email: string,
     enabled: string,
@@ -144,12 +147,11 @@ export function logout(): Thunk<LogoutAction> {
 }
 
 export function signup(userRegisterRequest: UserRegisterRequest): Thunk<LogoutAction> {
-    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
     return dispatch => {
         axios.post('/api/register',userRegisterRequest)
             .then(
                 () => {
-                    dispatch(login());
+                    console.log("succeed");
                 },
                 failure => console.error(`Failed to register: ${failure}`)
             )

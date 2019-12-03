@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, Route, withRouter} from 'react-router-dom';
+import {Link, Route, withRouter,Switch, Redirect} from 'react-router-dom';
 import {Navbar, NavbarBrand, Nav, NavItem, NavLink, Container} from 'reactstrap';
 import Flexbox from 'flexbox-react';
 
@@ -173,13 +173,16 @@ class AppNav extends React.Component<Props, State> {
                     </Header>
                     <div className="fullscreen">
                         <Content >
-                            <Route exact path="/" component={HotNews} />
-                            <Route exact path="/signin" component={SignIn} />
-                            <Route exact path="/signup" component={signupForm} />
-                            <Route exact path="/favnews" component={FavNews} />
-                            <Route exact path="/recnews" component={RecomNews} />
-                            <Route exact path="/about-us" component={About} />
-                            <Route exact path="/test" component={test} />
+                            <Switch>
+                                <Route exact path="/" component={HotNews} />
+                                <Route exact path="/signin" component={SignIn} />
+                                <Route exact path="/signup" component={signupForm} />
+                                <Redirect from='/signup/' to="/signin/" />
+                                <Route exact path="/favnews" component={FavNews} />
+                                <Route exact path="/recnews" component={RecomNews} />
+                                <Route exact path="/about-us" component={About} />
+                                <Route exact path="/test" component={test} />
+                            </Switch>
                         </Content>
                     </div>
                 </Layout>

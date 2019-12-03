@@ -13,10 +13,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class News {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private int id;
+	
+	@Id
     @Column(name = "news_url")
 	private String newsUrl;
     

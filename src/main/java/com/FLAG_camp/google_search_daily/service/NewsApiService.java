@@ -44,7 +44,7 @@ public class NewsApiService {
 	@VisibleForTesting
 	public List<News> getTodayTopNews() throws Exception {
 		String subPath = "/search";
-		String queryKeyword = "&mkt=en-us";
+		String queryKeyword = "";
 		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
 		connection.connect();
 		
@@ -101,7 +101,6 @@ public class NewsApiService {
 	
 	private HttpsURLConnection createConnection(String subPath, String queryKeyword) throws Exception {
 		URL url = new URL(HOST + PATH + subPath + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
-		System.out.println(url.toString());
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");

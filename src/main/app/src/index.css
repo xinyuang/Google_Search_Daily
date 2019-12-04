@@ -1,0 +1,24 @@
+@import '~antd/dist/antd.css';
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  font-size: 100%;
+}
+
+.fullscreen {
+  /*padding-top: 45px;*/
+  height: 800px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+  border-bottom-width: 1px;
+}
+
+button:disabled {
+  opacity: 0.5;
+}

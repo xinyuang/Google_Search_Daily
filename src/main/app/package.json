@@ -1,0 +1,52 @@
+{
+  "name": "spring-react-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "flow-bin": "^0.80.0",
+    "react-scripts": "^1.0.17"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.6.1",
+    "@material-ui/icons": "^4.5.1",
+    "@material-ui/pickers": "^3.2.8",
+    "@stomp/stompjs": "^4.0.2",
+    "antd": "^3.25.1",
+    "axios": "^0.18.0",
+    "bootstrap": "^4.0.0",
+    "flexbox-react": "^4.4.0",
+    "jquery": "^3.4.1",
+    "jwt-decode": "^2.2.0",
+    "popper.js": "^1.16.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
+    "reactstrap": "^6.4.0",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0",
+    "sanitize.css": "^7.0.3",
+    "sockjs-client": "^1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "precommit": "lint-staged"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8080"
+    },
+    "/auth": {
+      "target": "http://localhost:8080"
+    },
+    "/socket": {
+      "target": "http://localhost:8080",
+      "ws": true
+    }
+  }
+}

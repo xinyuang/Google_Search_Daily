@@ -18,10 +18,10 @@ public class NewsServiceTest {
 	@Autowired
 	private NewsService newsService;
 	
-	@Test
-	public void saveAllFetchedData() throws Exception {
-		newsService.saveNewsFetchedFromApi();
-	}
+//	@Test
+//	public void saveAllFetchedData() throws Exception {
+//		newsService.saveNewsFetchedFromApi();
+//	}
 	
 	@Test
 	public void getTopNewsFromApiWillReturnCorrectly() throws Exception {

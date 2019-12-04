@@ -36,6 +36,15 @@ public class NewsService {
 	}
 	
 	@VisibleForTesting
+	public List<News> getQueryNewsByGeoFromApi(String queryKeyword, double lat, double lon, int radius) throws Exception {
+		System.out.println(queryKeyword);
+		System.out.println("lat: " + lat);
+		System.out.println("lon: " + lon);
+		System.out.println("radius: " + radius);
+		return newsApiService.getQueryNewsByGeoLocation(queryKeyword, lat, lon, radius);
+	}
+	
+	@VisibleForTesting
 	public List<News> getCategoryNewsFromApi(String category) throws Exception {
 		return newsApiService.getCategoryNews(category);
 	}

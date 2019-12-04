@@ -43,7 +43,6 @@ public class NewsApiService {
 	
 	@VisibleForTesting
 	public List<News> getTodayTopNews() throws Exception {
-		// url: https://api.cognitive.microsoft.com/bing/v7.0/news/trendingtopics;
 		String subPath = "/search";
 		String queryKeyword = "&mkt=en-us";
 		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
@@ -62,6 +61,20 @@ public class NewsApiService {
 	public List<News> getQueryNews(String queryKeyword) throws Exception {
 		String subPath = "/search";
 		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
+		connection.connect();
+		
+		int responseCode = connection.getResponseCode();
+	    if (responseCode != 200) {
+	    	return null;
+	    }
+	    JSONArray news = parseResponseToJsonArray(connection);
+		return convertJsonArrayToNewsList(news);
+	}
+	
+	@VisibleForTesting
+	public List<News> getQueryNewsByGeoLocation(String queryKeyword, double lat, double lon, int radius) throws Exception {
+		String subPath = "/search";
+		HttpsURLConnection connection = createGeoBasedConnection(subPath, queryKeyword, lat, lon, radius);
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
@@ -92,7 +105,21 @@ public class NewsApiService {
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
-//	    connection.setRequestProperty("X-Search-Location", "lat:47.60357;long:-122.3295;re:100");
+	    connection.setRequestMethod("GET");
+	    return connection;
+	}
+	
+	private HttpsURLConnection createGeoBasedConnection(String subPath, String queryKeyword, double lat, double lon, int radius) throws Exception {
+		URL url = new URL(HOST + PATH + subPath + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		String LAT = "lat:" + lat + ";";
+		String LONG = "long:" + lon + ";";
+		String RAD = "re:" + radius;
+		String GEO_LOCATION = LAT + LONG + RAD;
+		System.out.println(GEO_LOCATION);
+		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
+	    connection.setRequestProperty("X-Search-Location", GEO_LOCATION);
+	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
 	    connection.setRequestMethod("GET");
 	    return connection;
 	}
@@ -102,7 +129,6 @@ public class NewsApiService {
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
-//	    connection.setRequestProperty("X-Search-Location", "lat:47.60357;long:-122.3295;re:100");
 	    connection.setRequestMethod("GET");
 	    return connection;
 	}

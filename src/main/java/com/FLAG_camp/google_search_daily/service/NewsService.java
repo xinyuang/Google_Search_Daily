@@ -36,7 +36,33 @@ public class NewsService {
 	}
 	
 	@VisibleForTesting
+	public List<News> getQueryNewsByGeoFromApi(String queryKeyword, double lat, double lon, int radius) throws Exception {
+		System.out.println(queryKeyword);
+		System.out.println("lat: " + lat);
+		System.out.println("lon: " + lon);
+		System.out.println("radius: " + radius);
+		return newsApiService.getQueryNewsByGeoLocation(queryKeyword, lat, lon, radius);
+	}
+	
+	@VisibleForTesting
 	public List<News> getCategoryNewsFromApi(String category) throws Exception {
 		return newsApiService.getCategoryNews(category);
 	}
+	
+    public List<News> getAllNews() {
+        return newsRepository.findAll();
+    }
+
+    public boolean addNews(News news) {
+        News save = newsRepository.save(news);
+        return save != null;
+    }
+    
+    public void deleteNews(String newsId) {
+    	newsRepository.deleteById(newsId);
+    }
+    
+    public Optional<News> oneNews(String newsId) {
+    	return newsRepository.findById(newsId);
+    }
 }

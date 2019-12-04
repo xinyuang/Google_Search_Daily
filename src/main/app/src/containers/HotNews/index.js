@@ -75,11 +75,10 @@ class HotNews extends React.Component<Props, State> {
         super(props);
         this.state = {
             category: '',
-            img_url: '',
-            news_url: '',
+            imgUrl: '',
+            newsUrl: '',
             title: '',
             content: '',
-            newsId: -1,
             save: false
         };
     }
@@ -98,7 +97,7 @@ class HotNews extends React.Component<Props, State> {
         const { News_Category, Img_url, News_url, Title, Content} = this.state;
 
 
-        const newsAddRequest: NewsAddRequest = { category: News_Category, img_url: Img_url, news_url: News_url, title: Title, content: Content};
+        const newsAddRequest: NewsAddRequest = { category: News_Category, imgUrl: Img_url, newsUrl: News_url, title: Title, content: Content};
         console.log(newsAddRequest)
         this.props.requestNewsAdd(newsAddRequest);
     }
@@ -107,7 +106,7 @@ class HotNews extends React.Component<Props, State> {
         e.preventDefault();
         console.log(e.target.value);
         // this.setState({ delnewsid: e.target.value });
-        const delNewsRequest: DelNewsRequest = { newsId: e.target.value};
+        const delNewsRequest: DelNewsRequest = { newsUrl: e.target.value};
         console.log(delNewsRequest)
         this.props.requestNewsDel(delNewsRequest);
     }
@@ -129,9 +128,9 @@ class HotNews extends React.Component<Props, State> {
             const loadedNews = news.map((item) => {
                 return (
                     <div>
-                        <Card title={<a href={item.news_url} target="_blank">{item.title} </a>}
+                        <Card title={<a href={item.newsUrl} target="_blank">{item.title} </a>}
                               extra={
-                                <Star key={item.news_url}
+                                <Star key={item.newsUrl}
                                       data={item} />
                               }
                             style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
@@ -140,7 +139,7 @@ class HotNews extends React.Component<Props, State> {
 
                             <img
                                 alt="example"
-                                src={item.img_url}
+                                src={item.imgUrl}
                                 style={{ marginRight: 10}}
                             />
                             <p>{item.content}</p>

@@ -3,9 +3,9 @@ import axios from 'axios';
 import type { Thunk } from '../';
 import * as Names from "../../constants/names";
 
-export type News = { id: number, img_url: string, news_url: string, category:string, title: string, content: string };
-export type NewsAddRequest = { id: string, img_url: string, news_url: string, category:string, title: string, content: string};
-export type DelNewsRequest = {newsId : number}
+export type News = {imgUrl: string, newsUrl: string, category:string, title: string, content: string };
+export type NewsAddRequest = {imgUrl: string, newsUrl: string, category:string, title: string, content: string};
+export type DelNewsRequest = {newsUrl : number}
 
 type State = {
     status: 'stale' | 'loaded',
@@ -81,8 +81,8 @@ export function requestNewsDel(newsDelRequest: DelNewsRequest) : Thunk<NewsRefre
 
     // $FlowFixMe Flow complaining about the localstorage being null
     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
-    let newsId = newsDelRequest['newsId'];
-    let url = '/api/delnews/' + newsId;
+    let newsUrl = newsDelRequest['newsUrl'];
+    let url = '/api/delnews/' + newsUrl;
     return dispatch => {
         axios.post(url,null ,  {
             headers: {authorization: headerToken}

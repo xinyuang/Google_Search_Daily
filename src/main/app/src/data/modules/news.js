@@ -96,7 +96,7 @@ export function requestNewsDel(newsDelRequest: DelNewsRequest) : Thunk<NewsRefre
 }
 
 
-export function refreshHotNews() : Thunk<NewsRefreshedAction> {
+export function refreshQueryNews() : Thunk<NewsRefreshedAction> {
 
     // $FlowFixMe Flow complaining about the localstorage being null
     let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
@@ -109,6 +109,38 @@ export function refreshHotNews() : Thunk<NewsRefreshedAction> {
                 success => dispatch(newsRefreshed(success.data)),
                 failure => console.log(failure)
             );
+    };
+}
+
+export function refreshHotNews() : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    console.log(headerToken);
+    return dispatch => {
+        axios.get(`/api/topnews`,{
+            headers: {authorization: headerToken}
+        })
+            .then(
+                success => dispatch(newsRefreshed(success.data)),
+                failure => console.log(failure)
+            );
+    };
+}
+
+export function refreshSavedNews() : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+
+    return dispatch => {
+        axios.get(`/api/allbookmarks/`,{
+            headers: {authorization: headerToken}
+        })
+            .then(
+            success => dispatch(newsRefreshed(success.data[0])),
+            failure => console.log(failure)
+        );
     };
 }
 

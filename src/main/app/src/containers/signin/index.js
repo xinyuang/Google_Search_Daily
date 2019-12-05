@@ -83,7 +83,7 @@ class SignIn extends React.Component<Props, State> {
         if (this.props.authState.signedIn) {
 
             const assignedRoles = this.props.authState.roles.map(item => {
-                return <ListGroupItem>{item}</ListGroupItem>
+                return <ListGroupItem key={item}>{item}</ListGroupItem>
             });
 
             return (

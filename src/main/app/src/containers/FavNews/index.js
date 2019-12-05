@@ -4,23 +4,24 @@ import { connect } from 'react-redux';
 
 import { Button, Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
-import type { News, NewsAddRequest, DelNewsRequest } from "../../data/modules/news";
-import { refreshNews, requestNewsAdd, requestNewsDel } from "../../data/modules/news";
+import type {News, BookMarkAddRequest} from "../../data/modules/news";
+import { requestBookMarkDel, requestBookMarkAdd,  refreshSavedNews } from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon } from 'antd';
 import { Card } from 'antd';
 import {Link} from "react-router-dom";
 import { Tabs } from 'antd';
+import Star from "../Shared/star";
 
 const { TabPane } = Tabs;
 const { Header, Sider, Content } = Layout;
 
 type Props = {
     authState: AuthState,
-    refreshNews: () => void,
-    requestNewsAdd:(newsAddRequest: NewsAddRequest) => void,
-    requestNewsDel:(newsDelRequest: number) => void,
+    refreshSavedNews: () => void,
+    requestBookMarkAdd:(bookMarkAddRequest: BookMarkAddRequest) => void,
+    requestBookMarkDel:(news: News) => void,
     news: Array<News>
 };
 
@@ -43,37 +44,15 @@ class FavNews extends React.Component<Props, State> {
             imgUrl: '',
             newsUrl: '',
             title: '',
-            content: '',
+            datePublished:'',
+            content: ''
         };
     }
 
     componentDidMount() {
-        this.props.refreshNews();
+        this.props.refreshSavedNews();
     }
 
-    handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleAddNews(event) {
-        event.preventDefault();
-
-        const { News_Category, Img_url, News_url, Title, Content} = this.state;
-
-
-        const newsAddRequest: NewsAddRequest = { category: News_Category, imgUrl: Img_url, newsUrl: News_url, title: Title, content: Content};
-        console.log(newsAddRequest)
-        this.props.requestNewsAdd(newsAddRequest);
-    }
-
-    handleDelNews(e) {
-        e.preventDefault();
-        console.log(e.target.value);
-        // this.setState({ delnewsid: e.target.value });
-        const delNewsRequest: DelNewsRequest = { newsUrl: e.target.value};
-        console.log(delNewsRequest)
-        this.props.requestNewsDel(delNewsRequest);
-    }
 
     tab_callback(key) {
         console.log(key);
@@ -82,23 +61,30 @@ class FavNews extends React.Component<Props, State> {
     displayNews() {
 
         const { news } = this.props;
-        console.log(this.props);
-
         if (news) {
 
             const loadedNews = news.map((item) => {
                 return (
                     <div>
-                        <Card title={<a href={item.newsUrl} target="_blank">{item.title} </a>} extra={<Icon type="star" />}
+                        <Card key={item.newsUrl} title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
+                              extra={
+                                  <Star key={item.newsUrl}
+                                        data={item}
+                                        marked={true}
+                                        requestBookMarkAdd={this.props.requestBookMarkAdd}
+                                        requestBookMarkDel={this.props.requestBookMarkDel}
+                                  />
+                              }
                               style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
                         >
                             <div className="newsBox">
-                            <img
-                                alt="example"
-                                src={item.imgUrl}
-                                style={{ marginRight: 10}}
-                            />
-                            <p>{item.content}</p>
+
+                                <img
+                                    alt="example"
+                                    src={item.imgUrl}
+                                    style={{ marginRight: 10}}
+                                />
+                                <p>{item.content}</p>
                             </div>
                         </Card>
                     </div>
@@ -119,7 +105,7 @@ class FavNews extends React.Component<Props, State> {
 
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
-
+        console.log(this.props)
 
         if (!authState.signedIn) {
             return (
@@ -161,4 +147,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { refreshNews, requestNewsAdd,requestNewsDel })(FavNews);
+export default connect(mapStateToProps, {  requestBookMarkAdd,requestBookMarkDel,refreshSavedNews })(FavNews);

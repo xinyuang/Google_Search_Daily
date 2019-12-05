@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
-import type {News, NewsAddRequest, DelNewsRequest, BookMarkAddRequest} from "../../data/modules/news";
+import type {News, BookMarkAddRequest} from "../../data/modules/news";
 import {refreshHotNews, requestBookMarkAdd, requestBookMarkDel} from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
@@ -13,6 +13,7 @@ import { Card } from 'antd';
 import {Link} from "react-router-dom";
 import Tag from "antd/es/tag";
 import {getCurrentDate} from "../Shared/date";
+import Star from "../Shared/star";
 
 const { Header, Sider, Content } = Layout;
 
@@ -29,54 +30,8 @@ type State = {
     Img_url: string,
     News_url: string,
     Title: string,
-    Content: string,
-    Save: boolean
+    Content: string
 };
-
-
-class Star extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            bookmark: false
-        }
-    }
-
-    toggle = (e) => {
-        this.setState({
-            bookmark: !this.state.bookmark,
-        });
-        let mark = !this.state.bookmark;
-        const cur_news: News = this.props.data;
-        if (mark) {
-            let cur_Date = getCurrentDate();
-            const bookMarkAddRequest: BookMarkAddRequest = {markDate:cur_Date,news:cur_news};
-            this.props.requestBookMarkAdd(bookMarkAddRequest);
-        }
-        else {
-            this.props.requestBookMarkDel(cur_news);
-        }
-    };
-
-    render() {
-        return (
-            <div>
-                <Icon
-                    // key={ item.news_url }
-                      className="trigger"
-                      type="star"
-                      theme={this.state.bookmark ?  'filled':''}
-                      style={this.state.bookmark ?  {color: 'yellow'}:{color: ''}}
-                      onClick={e => this.toggle(e)}
-                >
-                </Icon>
-            </div>
-        )
-    }
-}
-
-
-
 
 
 class HotNews extends React.Component<Props, State> {
@@ -91,8 +46,7 @@ class HotNews extends React.Component<Props, State> {
             newsUrl: '',
             title: '',
             datePublished:'',
-            content: '',
-            save: false
+            content: ''
         };
     }
 
@@ -103,7 +57,6 @@ class HotNews extends React.Component<Props, State> {
     displayNews() {
 
         const { news } = this.props;
-        console.log(this.props);
 
         if (news) {
 
@@ -114,6 +67,7 @@ class HotNews extends React.Component<Props, State> {
                               extra={
                                 <Star key={item.newsUrl}
                                       data={item}
+                                      marked={false}
                                       requestBookMarkAdd={this.props.requestBookMarkAdd}
                                       requestBookMarkDel={this.props.requestBookMarkDel}
                                 />

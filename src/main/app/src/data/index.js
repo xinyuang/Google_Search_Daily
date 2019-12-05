@@ -6,6 +6,7 @@ import { routerReducer } from "react-router-redux";
 import auth from './modules/auth';
 import books from './modules/books';
 import news from './modules/news';
+import preference from "./modules/preference";
 import websockets from './modules/websockets';
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     auth,
     books,
     news,
+    preference,
     websockets
 });
 

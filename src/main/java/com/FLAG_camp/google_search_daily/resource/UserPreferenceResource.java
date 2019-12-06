@@ -5,6 +5,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FLAG_camp.google_search_daily.model.PreferId;
@@ -74,7 +78,45 @@ public class UserPreferenceResource {
 				e.printStackTrace();
 			}  		
     	}
+    }
 
+    @RequestMapping(path = "/addonepreference", method = POST)
+    public void addOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
+    	String authToken = authorizationHeader.substring(7);
+    	String username = jwtTokenUtil.getUsernameFromToken(authToken);
+    	User user = userService.findUserId(username);
+    	Long user_id = user.getId();
+    	
+    	//logger.info("userId = {}", user_id);
+    	Long newscategory_id = Long.parseLong(newsCategory);
+    	//logger.info("category id = {}", newscategory_id);
+		PreferId id = new PreferId(user_id, newscategory_id);
+		//logger.info("preferId = {}", id);
+		UserPreference userprefer_obj;
+		//logger.info("Date = {}", LocalDate.now().toString());
+		try {
+			userprefer_obj = new UserPreference(id, LocalDate.now().toString());
+			userPreferService.addUserPrefer(userprefer_obj);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  		
+    }
+    
+    @RequestMapping(path = "/deleteonepreference", method = POST)
+    public void deleteOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
+    	String authToken = authorizationHeader.substring(7);
+    	String username = jwtTokenUtil.getUsernameFromToken(authToken);
+    	User user = userService.findUserId(username);
+    	Long user_id = user.getId();
+    	
+    	//logger.info("userId = {}", user_id);
+    	Long newscategory_id = Long.parseLong(newsCategory);
+    	//logger.info("category id = {}", newscategory_id);
+		PreferId id = new PreferId(user_id, newscategory_id);
+		//logger.info("preferId = {}", id);
+		
+		userPreferService.deleteUserPrefer(id);
     }
 
 }

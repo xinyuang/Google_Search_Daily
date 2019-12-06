@@ -8,6 +8,7 @@ import books from './modules/books';
 import news from './modules/news';
 import preference from "./modules/preference";
 import websockets from './modules/websockets';
+import visibilityFilter from "./modules/visibilityFIlter";
 
 const rootReducer = combineReducers({
     router: routerReducer,
@@ -15,9 +16,11 @@ const rootReducer = combineReducers({
     books,
     news,
     preference,
-    websockets
+    websockets,
+    visibilityFilter
 });
 
 export default rootReducer;
 
 export type Thunk<A> = (dispatch: Dispatch<A>, getState: () => Object) => any;
+

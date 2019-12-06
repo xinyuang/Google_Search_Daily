@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Button, Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
+import { Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
 import type {News, BookMarkAddRequest} from "../../data/modules/news";
 import { requestBookMarkDel, requestBookMarkAdd,  refreshSavedNews } from "../../data/modules/news";
@@ -11,18 +11,25 @@ import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon } from 'antd';
 import { Card } from 'antd';
 import {Link} from "react-router-dom";
-import { Tabs } from 'antd';
+// import { Tabs } from 'antd';
 import Star from "../Shared/star";
+import { Button } from 'antd';
+import store from '../../store'
+const ButtonGroup = Button.Group;
 
-const { TabPane } = Tabs;
-const { Header, Sider, Content } = Layout;
+// const { TabPane } = Tabs;
+// const { Header, Sider, Content } = Layout;
+
+
 
 type Props = {
     authState: AuthState,
     refreshSavedNews: () => void,
     requestBookMarkAdd:(bookMarkAddRequest: BookMarkAddRequest) => void,
     requestBookMarkDel:(news: News) => void,
-    news: Array<News>
+    // switchCategory:() => void,
+    news: Array<News>,
+    // switchCategory : (filter) => void
 };
 
 type State = {
@@ -45,7 +52,7 @@ class FavNews extends React.Component<Props, State> {
             newsUrl: '',
             title: '',
             datePublished:'',
-            content: ''
+            content: '',
         };
     }
 
@@ -58,7 +65,14 @@ class FavNews extends React.Component<Props, State> {
         console.log(key);
     }
 
-    displayNews() {
+    // switchCategory=()=>{
+    //     store.dispatch({
+    //
+    //         }
+    //     )
+    // }
+
+    displayNews(isLogin) {
 
         const { news } = this.props;
         if (news) {
@@ -71,6 +85,7 @@ class FavNews extends React.Component<Props, State> {
                                   <Star key={item.newsUrl}
                                         data={item}
                                         marked={true}
+                                        visible={isLogin}
                                         requestBookMarkAdd={this.props.requestBookMarkAdd}
                                         requestBookMarkDel={this.props.requestBookMarkDel}
                                   />
@@ -93,20 +108,19 @@ class FavNews extends React.Component<Props, State> {
 
             return (
                 <Container className="mt-2 col-md-12">
-                        {loadedNews}
+                    {loadedNews}
                 </Container>
             )
         }
 
         return null;
     }
-
     render() {
 
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
         console.log(this.props)
-
+        // const {switchCategory} = this.props;
         if (!authState.signedIn) {
             return (
                 <div>
@@ -121,30 +135,89 @@ class FavNews extends React.Component<Props, State> {
         return (
             <div>
                 <Container>
-                    <h1 style={{marginTop : 30}}>Your Saved News</h1>
-                    <Tabs onChange={this.tab_callback} type="card">
-                        <TabPane tab="International" key="1">
-                            Content of Tab Pane 1
-                        </TabPane>
-                        <TabPane tab="Business" key="2">
-                            Content of Tab Pane 2
-                        </TabPane>
-                        <TabPane tab="Technology" key="3">
-                            Content of Tab Pane 3
-                        </TabPane>
-                    </Tabs>
+                    <h1 style={{marginTop : 30}}>You may like ...</h1>
+                    <div>
+                        <ButtonGroup>
+                            <Button autoFocus={true} onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_ALL'})}}>
+                                All
+                            </Button>
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_BUSINESS'})}}>
+                                Business
+                            </Button>
+
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_ENTERTAINMENT'})}}>
+                                Entertainment
+                            </Button>
+
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_HEALTH'})}}>
+                                Health
+                            </Button>
+
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_POLITICS'})}}>
+                                Politics
+                            </Button>
+
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_SCIENCEANDTECHNOLOGY'})}}>
+                                ScienceAndTechnology
+                            </Button>
+
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_SPORTS'})}}>
+                                Sports
+                            </Button>
+
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_WORLD'})}}>
+                                World
+                            </Button>
+
+                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_US'})}}>
+                                US
+                            </Button>
+                        </ButtonGroup>
+                    </div>
                     {this.displayNews()}
                 </Container>
             </div>
         )
     }
 }
+// public enum NewsCategory {
+//     Business, Entertainment,Health,Politics,ScienceAndTechnology,Sports,World,US
+// }
+const getVisibleNews = (news, filter) => {
+    switch (filter) {
+        case 'SHOW_ALL':
+            return news.data
+        case 'SHOW_BUSINESS':
+            return news.data.filter(function(x){return x.category === "Business"});
+        case 'SHOW_ENTERTAINMENT':
+            return news.data.filter(function(x){return x.category === "Entertainment"});
+        case 'SHOW_HEALTH':
+            return news.data.filter(function(x){return x.category === "Health"});
+        case 'SHOW_POLITICS':
+            return news.data.filter(function(x){return x.category === "Politics"});
+        case 'SHOW_SCIENCEANDTECHNOLOGY':
+            return news.data.filter(function(x){return x.category === "ScienceAndTechnology"});
+        case 'SHOW_SPORTS':
+            return news.data.filter(function(x){return x.category === "Sports"});
+        case 'SHOW_WORLD':
+            return news.data.filter(function(x){return x.category === "World"});
+        case 'SHOW_US':
+            return news.data.filter(function(x){return x.category === "US"});
+    }
+};
 
-function mapStateToProps(state) {
-    return {
+
+const mapStateToProps = state =>( {
         authState: state.auth,
-        news: state.news.data
-    };
-}
+        news: getVisibleNews(state.news, state.visibilityFilter)
+});
 
-export default connect(mapStateToProps, {  requestBookMarkAdd,requestBookMarkDel,refreshSavedNews })(FavNews);
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         switchCategory: (ct) => dispatch(setVisibilityFilter(ct)),
+//         requestBookMarkAdd: (request) => dispatch(requestBookMarkAdd(request)),
+//         requestBookMarkDel: (news) => dispatch(requestBookMarkDel(news)),
+//         refreshSavedNews: ()=>{refreshSavedNews()}
+//     }
+// }
+export default connect(mapStateToProps, {requestBookMarkAdd,requestBookMarkDel,refreshSavedNews})(FavNews);

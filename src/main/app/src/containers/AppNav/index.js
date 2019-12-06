@@ -28,6 +28,7 @@ import HotNews from "../HotNews";
 import RecomNews from "../RecomNews";
 import FavNews from "../FavNews";
 import test from "../test";
+import store from "../../store";
 
 const { Header, Sider, Content } = Layout;
 
@@ -149,7 +150,7 @@ class AppNav extends React.Component<Props, State> {
                             <span>Selected for you</span>
                             <Link to="/recnews"></Link>
                         </Menu.Item>
-                        <Menu.Item key="3">
+                        <Menu.Item key="3" onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_ALL'})}}>
                             <Icon type="star" />
                             <span>Saved News</span>
                             <Link to="/favnews"></Link>

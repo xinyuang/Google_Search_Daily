@@ -21,7 +21,7 @@ public class RawDBDemoGeoIPLocationService {
 
     public Map<String,String> getLocation(String ip)
             throws IOException, GeoIp2Exception {
-        File database = new File("/home/wilson/xj/Google_Search_Daily/GeoLite2-City.mmdb");
+        File database = new File("/home/xinyu/FLAG_camp/Google_Search_Daily/GeoLite2-City.mmdb");
         DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
         InetAddress ipAddress = InetAddress.getByName(ip);
         CityResponse response = dbReader.city(ipAddress);

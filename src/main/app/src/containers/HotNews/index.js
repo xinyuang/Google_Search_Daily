@@ -4,57 +4,24 @@ import { connect } from 'react-redux';
 
 import { Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
-import type { News, NewsAddRequest, DelNewsRequest } from "../../data/modules/news";
-import { refreshNews, requestNewsAdd, requestNewsDel } from "../../data/modules/news";
+import type {News, BookMarkAddRequest} from "../../data/modules/news";
+import {refreshHotNews, requestBookMarkAdd, requestBookMarkDel} from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon, Button, Checkbox } from 'antd';
 import { Card } from 'antd';
 import {Link} from "react-router-dom";
 import Tag from "antd/es/tag";
+import {getCurrentDate} from "../Shared/date";
+import Star from "../Shared/star";
 
 const { Header, Sider, Content } = Layout;
 
-class Star extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            bookmark: false
-        }
-    }
-
-    toggle = (e) => {
-        this.setState({
-            bookmark: !this.state.bookmark,
-        });
-    };
-
-    render() {
-        console.log(this.props);
-        console.log(this.state);
-        return (
-            <div>
-                <Icon
-                    // key={ item.news_url }
-                      className="trigger"
-                      type="star"
-                      theme={this.state.bookmark ?  'filled':''}
-                      style={this.state.bookmark ?  {color: 'yellow'}:{color: ''}}
-                      onClick={e => this.toggle(e)}
-                >
-                </Icon>
-            </div>
-        )
-    }
-}
-
-
-
 type Props = {
     authState: AuthState,
-    refreshNews: () => void,
-    requestNewsAdd:(newsAddRequest: NewsAddRequest) => void,
-    requestNewsDel:(newsDelRequest: number) => void,
+    refreshHotNews: () => void,
+    requestBookMarkAdd:(bookMarkAddRequest: BookMarkAddRequest) => void,
+    requestBookMarkDel:(news: News) => void,
     news: Array<News>
 };
 
@@ -63,9 +30,9 @@ type State = {
     Img_url: string,
     News_url: string,
     Title: string,
-    Content: string,
-    Save: boolean
+    Content: string
 };
+
 
 class HotNews extends React.Component<Props, State> {
     props: Props;
@@ -78,60 +45,32 @@ class HotNews extends React.Component<Props, State> {
             imgUrl: '',
             newsUrl: '',
             title: '',
-            content: '',
-            save: false
+            datePublished:'',
+            content: ''
         };
     }
 
     componentDidMount() {
-        this.props.refreshNews();
+        this.props.refreshHotNews();
     }
-
-    handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleAddNews(event) {
-        event.preventDefault();
-
-        const { News_Category, Img_url, News_url, Title, Content} = this.state;
-
-
-        const newsAddRequest: NewsAddRequest = { category: News_Category, imgUrl: Img_url, newsUrl: News_url, title: Title, content: Content};
-        console.log(newsAddRequest)
-        this.props.requestNewsAdd(newsAddRequest);
-    }
-
-    handleDelNews(e) {
-        e.preventDefault();
-        console.log(e.target.value);
-        // this.setState({ delnewsid: e.target.value });
-        const delNewsRequest: DelNewsRequest = { newsUrl: e.target.value};
-        console.log(delNewsRequest)
-        this.props.requestNewsDel(delNewsRequest);
-    }
-
-    handleBookmark(e) {
-        e.preventDefault();
-        console.log(e.target.value);
-        return <Icon type="star" theme="filled" />
-    }
-
 
     displayNews() {
 
         const { news } = this.props;
-        console.log(this.props);
 
         if (news) {
 
             const loadedNews = news.map((item) => {
                 return (
                     <div>
-                        <Card title={<a href={item.newsUrl} target="_blank">{item.title} </a>}
+                        <Card title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
                               extra={
                                 <Star key={item.newsUrl}
-                                      data={item} />
+                                      data={item}
+                                      marked={false}
+                                      requestBookMarkAdd={this.props.requestBookMarkAdd}
+                                      requestBookMarkDel={this.props.requestBookMarkDel}
+                                />
                               }
                             style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
                         >
@@ -207,4 +146,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { refreshNews, requestNewsAdd,requestNewsDel })(HotNews);
+export default connect(mapStateToProps, { refreshHotNews, requestBookMarkAdd,requestBookMarkDel })(HotNews);

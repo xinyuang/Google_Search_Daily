@@ -5,7 +5,8 @@ import * as Names from "../../constants/names";
 
 export type News = {imgUrl: string, newsUrl: string, category:string, title: string, content: string };
 export type NewsAddRequest = {imgUrl: string, newsUrl: string, category:string, title: string, content: string};
-export type DelNewsRequest = {newsUrl : number}
+export type DelNewsRequest = {newsUrl : number};
+export type BookMarkAddRequest = {markDate: string, news: News}
 
 type State = {
     status: 'stale' | 'loaded',
@@ -91,5 +92,76 @@ export function requestNewsDel(newsDelRequest: DelNewsRequest) : Thunk<NewsRefre
                 success => dispatch(newsRefreshed(success.data)),
                 failure => console.log(failure)
             );
+    };
+}
+
+
+export function refreshQueryNews() : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    console.log(headerToken);
+    return dispatch => {
+        axios.get(`/api/querynews?q=`,{
+            headers: {authorization: headerToken}
+        })
+            .then(
+                success => dispatch(newsRefreshed(success.data)),
+                failure => console.log(failure)
+            );
+    };
+}
+
+export function refreshHotNews() : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    console.log(headerToken);
+    return dispatch => {
+        axios.get(`/api/topnews`,{
+            headers: {authorization: headerToken}
+        })
+            .then(
+                success => dispatch(newsRefreshed(success.data)),
+                failure => console.log(failure)
+            );
+    };
+}
+
+export function refreshSavedNews() : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+
+    return dispatch => {
+        axios.get(`/api/allbookmarks/`,{
+            headers: {authorization: headerToken}
+        })
+            .then(
+            success => dispatch(newsRefreshed(success.data[0])),
+            failure => console.log(failure)
+        );
+    };
+}
+
+export function requestBookMarkAdd(bookMarkAddRequest: BookMarkAddRequest) : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    return dispatch => {
+        axios.post('/api/addbookmark/', bookMarkAddRequest,{
+            headers: {authorization: headerToken}
+        });
+    };
+}
+
+export function requestBookMarkDel(news: News) : Thunk<NewsRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    return dispatch => {
+        axios.post('/api/deletebookmark/', news,{
+            headers: {authorization: headerToken}
+        });
     };
 }

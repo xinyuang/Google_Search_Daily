@@ -33,6 +33,12 @@
     flex-grow: 1;
 }
 
+.news-option-image {
+    height: 32px;
+    width: 32px;
+    margin-right: 20px;
+}
+
 .topNavBar {
     background: rgba(0,0,255,0.5);
     padding: 0;

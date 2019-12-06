@@ -52,7 +52,7 @@ export function refreshPreference() : Thunk<PreferenceRefreshedAction> {
             headers: {authorization: headerToken}
         })
             .then(
-                success => dispatch(PreferenceRefreshed(success.data),console.log(success.data[0])),
+                success => dispatch(PreferenceRefreshed(success.data)),
                 failure => console.log(failure)
             );
     };

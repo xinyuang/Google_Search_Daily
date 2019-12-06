@@ -58,7 +58,7 @@ class FavNews extends React.Component<Props, State> {
         console.log(key);
     }
 
-    displayNews() {
+    displayNews(isLogin) {
 
         const { news } = this.props;
         if (news) {
@@ -71,6 +71,7 @@ class FavNews extends React.Component<Props, State> {
                                   <Star key={item.newsUrl}
                                         data={item}
                                         marked={true}
+                                        visible={isLogin}
                                         requestBookMarkAdd={this.props.requestBookMarkAdd}
                                         requestBookMarkDel={this.props.requestBookMarkDel}
                                   />
@@ -105,7 +106,7 @@ class FavNews extends React.Component<Props, State> {
 
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
-        console.log(this.props)
+        const isLogin = authState.signedIn;
 
         if (!authState.signedIn) {
             return (
@@ -133,7 +134,7 @@ class FavNews extends React.Component<Props, State> {
                             Content of Tab Pane 3
                         </TabPane>
                     </Tabs>
-                    {this.displayNews()}
+                    {this.displayNews({isLogin})}
                 </Container>
             </div>
         )

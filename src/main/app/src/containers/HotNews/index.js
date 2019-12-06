@@ -14,6 +14,7 @@ import {Link} from "react-router-dom";
 import Tag from "antd/es/tag";
 import {getCurrentDate} from "../Shared/date";
 import Star from "../Shared/star";
+import auth from "../../data/modules/auth";
 
 const { Header, Sider, Content } = Layout;
 
@@ -54,12 +55,10 @@ class HotNews extends React.Component<Props, State> {
         this.props.refreshHotNews();
     }
 
-    displayNews() {
+    displayNews(isLogin) {
 
         const { news } = this.props;
-
         if (news) {
-
             const loadedNews = news.map((item) => {
                 return (
                     <div>
@@ -68,6 +67,7 @@ class HotNews extends React.Component<Props, State> {
                                 <Star key={item.newsUrl}
                                       data={item}
                                       marked={false}
+                                      visible={isLogin}
                                       requestBookMarkAdd={this.props.requestBookMarkAdd}
                                       requestBookMarkDel={this.props.requestBookMarkDel}
                                 />
@@ -127,12 +127,12 @@ class HotNews extends React.Component<Props, State> {
 
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
-
+        const isLogin = authState.signedIn;
         return (
             <div>
                 <Container>
                     <h1 style={{marginTop : 30, marginLeft: 20}}>Headlines</h1>
-                    {this.displayNews()}
+                    {this.displayNews({isLogin})}
                 </Container>
             </div>
         )

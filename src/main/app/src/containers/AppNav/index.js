@@ -62,6 +62,46 @@ class AppNav extends React.Component<Props, State> {
         });
     };
 
+    forLoginUser(signedIn) {
+        if (signedIn) {
+            return (
+                <div>
+                    <Menu mode="inline" defaultSelectedKeys={['1']}>
+                        {/*theme="dark"*/}
+                        <Menu.Item key="1">
+                            <Icon type="chrome" />
+                            <span>Top stories</span>
+                            <Link to="/"></Link>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                            <Icon type="user" />
+                            <span>Selected for you</span>
+                            <Link to="/recnews"></Link>
+                        </Menu.Item>
+                        <Menu.Item key="3">
+                            <Icon type="star" />
+                            <span>Saved News</span>
+                            <Link to="/favnews"></Link>
+                        </Menu.Item>
+                    </Menu>
+                </div>
+            )
+        }
+
+        return (
+            <div>
+                <Menu mode="inline" defaultSelectedKeys={['1']}>
+                    <Menu.Item key="1">
+                        <Icon type="chrome" />
+                        <span>Top stories</span>
+                        <Link to="/"></Link>
+                    </Menu.Item>
+                </Menu>
+            </div>
+        );
+    }
+
+
     authLink(signedIn) {
         if (!signedIn) {
             return (
@@ -88,6 +128,7 @@ class AppNav extends React.Component<Props, State> {
 
         return null;
     }
+
 
     roleLink(signedIn, roles) {
         if (signedIn && roles.some(item => Names.ROLE_ADMIN === item)) {
@@ -126,7 +167,6 @@ class AppNav extends React.Component<Props, State> {
         console.log("state" ,this.state);
         console.log("props", this.props);
         const { roles, signedIn, username } = this.props.auth;
-
         return (
 
             <Layout>
@@ -137,30 +177,9 @@ class AppNav extends React.Component<Props, State> {
                         type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                         onClick={this.toggle}
                     />
-                    <Menu mode="inline" defaultSelectedKeys={['1']}>
-                        {/*theme="dark"*/}
-                        <Menu.Item key="1">
-                            <Icon type="chrome" />
-                            <span>Top stories</span>
-                            <Link to="/"></Link>
-                        </Menu.Item>
-                        <Menu.Item key="2">
-                            <Icon type="user" />
-                            <span>Selected for you</span>
-                            <Link to="/recnews"></Link>
-                        </Menu.Item>
-                        <Menu.Item key="3">
-                            <Icon type="star" />
-                            <span>Saved News</span>
-                            <Link to="/favnews"></Link>
-                        </Menu.Item>
-                        <Menu.Item key="4">
-                            <Icon type="upload" />
-                            <span>testExample</span>
-                            <Link to="/test"></Link>
-                        </Menu.Item>
+                    {this.forLoginUser(signedIn)}
 
-                    </Menu>
+
                 </Sider>
                 <Layout>
                     <Header className="topNavBar">
@@ -169,6 +188,7 @@ class AppNav extends React.Component<Props, State> {
                         <div className="grow" />
                         <Link to="/about-us"><Avatar className="avatar" icon="user"/></Link>
                         <div className="signIn">{this.authLink(signedIn)}</div>
+
 
                     </Header>
                     <div className="fullscreen">

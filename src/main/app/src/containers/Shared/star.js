@@ -29,19 +29,23 @@ class Star extends React.Component {
     };
 
     render() {
-        return (
-            <div>
-                <Icon
-                    // key={ item.news_url }
-                    className="trigger"
-                    type="star"
-                    theme={this.state.bookmark ?  'filled':''}
-                    style={this.state.bookmark ?  {color: 'yellow'}:{color: ''}}
-                    onClick={e => this.toggle(e)}
-                >
-                </Icon>
-            </div>
-        )
+        if(this.props.visible.isLogin) {
+            return (
+                <div>
+                    <Icon
+                        // key={ item.news_url }
+                        className="trigger"
+                        type="star"
+                        theme={this.state.bookmark ?  'filled':''}
+                        style={this.state.bookmark ?  {color: 'yellow'}:{color: ''}}
+                        onClick={e => this.toggle(e)}
+                    >
+                    </Icon>
+                </div>
+            )
+        }
+        return null;
+
     }
 }
 

@@ -150,7 +150,7 @@ class AppNav extends React.Component<Props, State> {
                             <span>Selected for you</span>
                             <Link to="/recnews"></Link>
                         </Menu.Item>
-                        <Menu.Item key="3" onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_ALL'})}}>
+                        <Menu.Item key="3" onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'All'})}}>
                             <Icon type="star" />
                             <span>Saved News</span>
                             <Link to="/favnews"></Link>

@@ -8,16 +8,18 @@ import type {News, BookMarkAddRequest} from "../../data/modules/news";
 import { requestBookMarkDel, requestBookMarkAdd,  refreshSavedNews } from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
-import { Layout, Menu, Icon } from 'antd';
+import {Layout, Menu, Icon, Select} from 'antd';
 import { Card } from 'antd';
 import {Link} from "react-router-dom";
-// import { Tabs } from 'antd';
+import { Tabs } from 'antd';
 import Star from "../Shared/star";
-import { Button } from 'antd';
+import { Button} from 'antd';
 import store from '../../store'
-const ButtonGroup = Button.Group;
+import '../../index.css';
 
-// const { TabPane } = Tabs;
+const ButtonGroup = Button.Group;
+const { Option } = Select;
+const { TabPane } = Tabs;
 // const { Header, Sider, Content } = Layout;
 
 
@@ -37,7 +39,8 @@ type State = {
     Img_url: string,
     News_url: string,
     Title: string,
-    Content: string
+    Content: string,
+    tabPosition: 'top'
 };
 
 class FavNews extends React.Component<Props, State> {
@@ -53,9 +56,16 @@ class FavNews extends React.Component<Props, State> {
             title: '',
             datePublished:'',
             content: '',
+            text:'All',
+            collapsed: false,
         };
     }
 
+    toggleCollapsed = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    };
     componentDidMount() {
         this.props.refreshSavedNews();
     }
@@ -79,7 +89,7 @@ class FavNews extends React.Component<Props, State> {
 
             const loadedNews = news.map((item) => {
                 return (
-                    <div>
+                    <div >
                         <Card key={item.newsUrl} title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
                               extra={
                                   <Star key={item.newsUrl}
@@ -90,7 +100,7 @@ class FavNews extends React.Component<Props, State> {
                                         requestBookMarkDel={this.props.requestBookMarkDel}
                                   />
                               }
-                              style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
+                              style={{ height: "250px", borderRadius: "8px", margin: "8px" }}
                         >
                             <div className="newsBox">
 
@@ -107,7 +117,7 @@ class FavNews extends React.Component<Props, State> {
             });
 
             return (
-                <Container className="mt-2 col-md-12">
+                <Container className="mt-2 col-md-12" >
                     {loadedNews}
                 </Container>
             )
@@ -115,6 +125,13 @@ class FavNews extends React.Component<Props, State> {
 
         return null;
     }
+    handleChange = e => {
+        console.log("Switch category to ",e.key)
+        store.dispatch({type:'SET_VISIBILITY_FILTER',filter:e.key})
+        this.setState({text:e.key});
+        return this.render();
+    }
+    be
     render() {
 
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
@@ -132,76 +149,87 @@ class FavNews extends React.Component<Props, State> {
             )
         }
 
+
         return (
             <div>
                 <Container>
-                    <h1 style={{marginTop : 30}}>You may like ...</h1>
+                    <h1 style={{marginTop : 30}} id="textH1">Topics</h1>
+                    <h1 id="textH2">{this.state.text}</h1>
                     <div>
-                        <ButtonGroup>
-                            <Button autoFocus={true} onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_ALL'})}}>
-                                All
-                            </Button>
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_BUSINESS'})}}>
-                                Business
-                            </Button>
-
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_ENTERTAINMENT'})}}>
-                                Entertainment
-                            </Button>
-
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_HEALTH'})}}>
-                                Health
-                            </Button>
-
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_POLITICS'})}}>
-                                Politics
-                            </Button>
-
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_SCIENCEANDTECHNOLOGY'})}}>
-                                ScienceAndTechnology
-                            </Button>
-
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_SPORTS'})}}>
-                                Sports
-                            </Button>
-
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_WORLD'})}}>
-                                World
-                            </Button>
-
-                            <Button onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'SHOW_US'})}}>
-                                US
-                            </Button>
-                        </ButtonGroup>
+                        <Menu
+                              onClick = {this.handleChange}
+                              defaultActiveKey={'All'}
+                              inlineCollapsed={this.state.collapsed}
+                              mode = "horizontal"
+                        >
+                            <Menu.Item key = "All">
+                                <Icon type="google" />
+                                <span style={{left:"0"}}>All</span>
+                            </Menu.Item>
+                            <Menu.Item key = "Health">
+                                <Icon type="medicine-box"/>
+                                <span style={{left:"0"}}>Health</span>
+                            </Menu.Item>
+                            <Menu.Item key = "Business">
+                                <Icon type="money-collect"/>
+                                <span style={{left:"0"}}>Business</span>
+                            </Menu.Item>
+                            <Menu.Item key = "Entertainment">
+                                <Icon type="customer-service" />
+                                <span style={{left:"0"}}> Entertainment</span>
+                            </Menu.Item>
+                            <Menu.Item key = "Politics">
+                                <Icon type="team" />
+                                <span style={{left:"0"}}>Politics</span>
+                            </Menu.Item>
+                            <Menu.Item key = "Science and Technology">
+                                <Icon type="rocket" />
+                                <span style={{left:"0"}}>Science and Technology</span>
+                            </Menu.Item>
+                            <Menu.Item key = "Sports">
+                                <Icon type="smile" />
+                                <span style={{left:"0"}}>Sports</span>
+                            </Menu.Item>
+                            <Menu.Item key = "World">
+                                <Icon type="global" />
+                                <span style={{left:"0"}}>World</span>
+                            </Menu.Item>
+                            <Menu.Item key = "US">
+                                <Icon type="bank" />
+                                <span style={{left:"0"}}>US</span>
+                            </Menu.Item>
+                        </Menu>
+                        {this.displayNews()}
                     </div>
-                    {this.displayNews()}
+
                 </Container>
             </div>
         )
     }
 }
+
 // public enum NewsCategory {
 //     Business, Entertainment,Health,Politics,ScienceAndTechnology,Sports,World,US
 // }
 const getVisibleNews = (news, filter) => {
     switch (filter) {
-        case 'SHOW_ALL':
+        case 'All':
             return news.data
-        case 'SHOW_BUSINESS':
+        case 'Business':
             return news.data.filter(function(x){return x.category === "Business"});
-        case 'SHOW_ENTERTAINMENT':
+        case 'Entertainment':
             return news.data.filter(function(x){return x.category === "Entertainment"});
-        case 'SHOW_HEALTH':
+        case 'Health':
             return news.data.filter(function(x){return x.category === "Health"});
-        case 'SHOW_POLITICS':
+        case 'Politics':
             return news.data.filter(function(x){return x.category === "Politics"});
-        case 'SHOW_SCIENCEANDTECHNOLOGY':
+        case 'Science and Technology':
             return news.data.filter(function(x){return x.category === "ScienceAndTechnology"});
-        case 'SHOW_SPORTS':
+        case 'Sports':
             return news.data.filter(function(x){return x.category === "Sports"});
-        case 'SHOW_WORLD':
+        case 'World':
             return news.data.filter(function(x){return x.category === "World"});
-        case 'SHOW_US':
+        case 'US':
             return news.data.filter(function(x){return x.category === "US"});
     }
 };

@@ -81,7 +81,7 @@ public class UserPreferenceResource {
     }
 
     @RequestMapping(path = "/addonepreference", method = POST)
-    public void addOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
+    public List<Object[]> addOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
     	String authToken = authorizationHeader.substring(7);
     	String username = jwtTokenUtil.getUsernameFromToken(authToken);
     	User user = userService.findUserId(username);
@@ -100,11 +100,12 @@ public class UserPreferenceResource {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  		
+		}
+		return userPreferService.findUserPreference(user_id);
     }
     
     @RequestMapping(path = "/deleteonepreference", method = POST)
-    public void deleteOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
+    public List<Object[]> deleteOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
     	String authToken = authorizationHeader.substring(7);
     	String username = jwtTokenUtil.getUsernameFromToken(authToken);
     	User user = userService.findUserId(username);
@@ -117,6 +118,7 @@ public class UserPreferenceResource {
 		//logger.info("preferId = {}", id);
 		
 		userPreferService.deleteUserPrefer(id);
+		return userPreferService.findUserPreference(user_id);
     }
 
 }

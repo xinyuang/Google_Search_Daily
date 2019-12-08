@@ -17,8 +17,8 @@ import com.FLAG_camp.google_search_daily.model.News;
 
 @Service("newsApiService")
 public class NewsApiService {
-	
-	private final String SUBSCRIPTION_KEY = "08578fb106fd45299541397fd22e25aa";
+//	private final String SUBSCRIPTION_KEY = "08578fb106fd45299541397fd22e25aa";
+	private final String SUBSCRIPTION_KEY = "6108c845cd8d4ab68a1fb83bb3b8ef3c";
 	private final String HOST = "https://api.cognitive.microsoft.com";
 	private final String PATH = "/bing/v7.0/news";
 	private final String SUB_PATH = "";
@@ -64,6 +64,7 @@ public class NewsApiService {
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
+		System.out.println(responseCode);
 	    if (responseCode != 200) {
 	    	return null;
 	    }

@@ -9,7 +9,7 @@ import type { AuthState } from '../../data/modules/auth';
 
 import { Layout,Card, Col, Row, Icon, Switch  } from 'antd';
 import {refreshPreference} from "../../data/modules/preference";
-import {requestPreferAdd, requestPreferDel} from "../../data/modules/news";
+import {requestPreferAdd, requestPreferDel} from "../../data/modules/preference";
 
 const { Meta } = Card;
 
@@ -144,7 +144,6 @@ class RecomNews extends React.Component {
                             />
                             <Icon className="addTag" type="plus-square" />
                         </Row>
-
                 </Container>
             </div>
         )

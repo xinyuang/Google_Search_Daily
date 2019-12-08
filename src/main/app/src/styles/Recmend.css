@@ -1,0 +1,7 @@
+.meta {
+    flex-grow: 3;
+}
+
+.switch {
+    color: rgba(0,0,255,0.5);
+}

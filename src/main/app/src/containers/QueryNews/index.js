@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
 import type {News, BookMarkAddRequest} from "../../data/modules/news";
-import {refreshHotNews, requestBookMarkAdd, requestBookMarkDel} from "../../data/modules/news";
+import {refreshQueryNews, requestBookMarkAdd, requestBookMarkDel} from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon, Button, Checkbox } from 'antd';
@@ -35,7 +35,7 @@ type State = {
 };
 
 
-class HotNews extends React.Component<Props, State> {
+class QueryNews extends React.Component<Props, State> {
     props: Props;
     state: State;
 
@@ -52,7 +52,7 @@ class HotNews extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this.props.refreshHotNews();
+        this.props.refreshQueryNews();
     }
 
     displayNews(isLogin) {
@@ -61,7 +61,7 @@ class HotNews extends React.Component<Props, State> {
         if (news) {
             const loadedNews = news.map((item) => {
                 return (
-                    <div key={item.title} >
+                    <div key={item.title}>
                         <Card title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
                               extra={
                                 <Star key={item.newsUrl}
@@ -77,7 +77,7 @@ class HotNews extends React.Component<Props, State> {
                             <div className="newsBox">
 
                             <img
-                                alt="example"
+                                alt=""
                                 src={item.imgUrl}
                                 style={{ marginRight: 10}}
                             />
@@ -94,27 +94,6 @@ class HotNews extends React.Component<Props, State> {
                         <div className="grow-1">
                             {loadedNews}
                         </div>
-                        <div className="grow-3">
-                            <Card title="Hot Topics"
-                                  style={{ width: "100%", borderRadius: "8px", margin: "8px"}}
-                            >
-                                <div className="newsBox">
-                                    <div>
-                                        <Tag className="tag" color="magenta">magenta</Tag>
-                                        <Tag className="tag" color="red">red</Tag>
-                                        <Tag className="tag" color="volcano">volcano</Tag>
-                                        <Tag className="tag" color="orange">orange</Tag>
-                                        <Tag className="tag" color="gold">gold</Tag>
-                                        <Tag className="tag" color="lime">lime</Tag>
-                                        <Tag className="tag" color="green">green</Tag>
-                                        <Tag className="tag" color="cyan">cyan</Tag>
-                                        <Tag className="tag" color="blue">blue</Tag>
-                                        <Tag className="tag" color="geekblue">geekblue</Tag>
-                                        <Tag className="tag" color="purple">purple</Tag>
-                                    </div>
-                                </div>
-                            </Card>
-                        </div>
                     </div>
                 </Container>
             )
@@ -128,10 +107,11 @@ class HotNews extends React.Component<Props, State> {
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
         const isLogin = authState.signedIn;
+        console.log("query props",this.props)
         return (
             <div>
                 <Container>
-                    <h1 style={{marginTop : 30, marginLeft: 20}}>Headlines</h1>
+                    <h1 style={{marginTop : 30, marginLeft: 20}}>Search Results</h1>
                     {this.displayNews({isLogin})}
                 </Container>
             </div>
@@ -146,4 +126,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { refreshHotNews, requestBookMarkAdd,requestBookMarkDel })(HotNews);
+export default connect(mapStateToProps, { refreshQueryNews, requestBookMarkAdd,requestBookMarkDel })(QueryNews);

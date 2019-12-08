@@ -20,9 +20,10 @@ public class SearchHistory {
 	@Column(name = "user_id")
     private Long userId;
     
-	@ManyToOne
-    @JoinColumn(name = "user_id",insertable = false, updatable = false)
-    private User user;
+	////don't use foreign key because we can save search without login.
+	//@ManyToOne
+    //@JoinColumn(name = "user_id",insertable = false, updatable = false)
+    //private User user;
     
 	@Column(name = "search_term")
 	private String searchTerm;

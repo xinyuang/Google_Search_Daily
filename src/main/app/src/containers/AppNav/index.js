@@ -18,14 +18,18 @@ import * as Names from '../../constants/names';
 import ReactDOM from 'react-dom';
 import '../../styles/AppNav.css';
 import '../../styles/News.css';
+import '../../styles/Recmend.css';
 
 import {connect} from "react-redux";
 import SignIn from "../signin";
-import signupForm from "../SignUp";
+import SignUp from "../SignUp";
+import Preference from "../preference";
 import About from "../about";
 import SerachBar from "../Shared/SearchBar";
 import HotNews from "../HotNews";
+import QueryNews from "../QueryNews";
 import RecomNews from "../RecomNews";
+import CategoryNews from "../CategoryNews";
 import FavNews from "../FavNews";
 import test from "../test";
 import store from "../../store";
@@ -63,6 +67,46 @@ class AppNav extends React.Component<Props, State> {
         });
     };
 
+    forLoginUser(signedIn) {
+        if (signedIn) {
+            return (
+                <div>
+                    <Menu mode="inline" defaultSelectedKeys={['1']}>
+                        {/*theme="dark"*/}
+                        <Menu.Item key="1">
+                            <Icon type="chrome" />
+                            <span>Top stories</span>
+                            <Link to="/"></Link>
+                        </Menu.Item>
+                        <Menu.Item key="2">
+                            <Icon type="user" />
+                            <span>Selected for you</span>
+                            <Link to="/recnews"></Link>
+                        </Menu.Item>
+                        <Menu.Item key="3">
+                            <Icon type="star" />
+                            <span>Saved News</span>
+                            <Link to="/favnews"></Link>
+                        </Menu.Item>
+                    </Menu>
+                </div>
+            )
+        }
+
+        return (
+            <div>
+                <Menu mode="inline" defaultSelectedKeys={['1']}>
+                    <Menu.Item key="1">
+                        <Icon type="chrome" />
+                        <span>Top stories</span>
+                        <Link to="/"></Link>
+                    </Menu.Item>
+                </Menu>
+            </div>
+        );
+    }
+
+
     authLink(signedIn) {
         if (!signedIn) {
             return (
@@ -89,6 +133,7 @@ class AppNav extends React.Component<Props, State> {
 
         return null;
     }
+
 
     roleLink(signedIn, roles) {
         if (signedIn && roles.some(item => Names.ROLE_ADMIN === item)) {
@@ -127,7 +172,6 @@ class AppNav extends React.Component<Props, State> {
         console.log("state" ,this.state);
         console.log("props", this.props);
         const { roles, signedIn, username } = this.props.auth;
-
         return (
 
             <Layout>
@@ -160,8 +204,9 @@ class AppNav extends React.Component<Props, State> {
                             <span>testExample</span>
                             <Link to="/test"></Link>
                         </Menu.Item>
+                    {this.forLoginUser(signedIn)}
 
-                    </Menu>
+
                 </Sider>
                 <Layout>
                     <Header className="topNavBar">
@@ -171,16 +216,20 @@ class AppNav extends React.Component<Props, State> {
                         <Link to="/about-us"><Avatar className="avatar" icon="user"/></Link>
                         <div className="signIn">{this.authLink(signedIn)}</div>
 
+
                     </Header>
                     <div className="fullscreen">
                         <Content >
                             <Switch>
                                 <Route exact path="/" component={HotNews} />
                                 <Route exact path="/signin" component={SignIn} />
-                                <Route exact path="/signup" component={signupForm} />
-                                <Redirect from='/signup/' to="/signin/" />
-                                <Route exact path="/favnews" component={FavNews} />
+                                <Route exact path="/signup" component={SignUp} />
+                                {/*<Redirect from='/signup/' to="/signin/" />*/}
+                                <Route exact path="/preference" component={Preference} />
+                                <Route exact path="/querynews" component={QueryNews} />
+                                <Route exact path="/categorynews" component={CategoryNews} />
                                 <Route exact path="/recnews" component={RecomNews} />
+                                <Route exact path="/favnews" component={FavNews} />
                                 <Route exact path="/about-us" component={About} />
                                 <Route exact path="/test" component={test} />
                             </Switch>

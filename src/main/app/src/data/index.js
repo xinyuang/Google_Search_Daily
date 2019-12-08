@@ -9,6 +9,7 @@ import news from './modules/news';
 import preference from "./modules/preference";
 import websockets from './modules/websockets';
 import visibilityFilter from "./modules/visibilityFIlter";
+import register from './modules/register';
 
 const rootReducer = combineReducers({
     router: routerReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     preference,
     websockets,
     visibilityFilter
+    register,
 });
 
 export default rootReducer;

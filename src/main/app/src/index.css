@@ -49,3 +49,6 @@ button:disabled {
 #news{
   vertical-align:middle;
 }
+.ant-form-item {
+  margin-bottom: 0;
+}

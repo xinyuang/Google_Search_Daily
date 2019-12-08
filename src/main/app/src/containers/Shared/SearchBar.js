@@ -1,9 +1,20 @@
 import React, {Component} from 'react';
-import { Icon, Button, Input, AutoComplete } from 'antd';
+import {Icon, Button, Input, AutoComplete, Avatar} from 'antd';
+import {Link} from "react-router-dom";
+import QueryNews from "../QueryNews";
+import { Redirect } from 'react-router-dom'
+import Router from "react-router/Router";
+import { connect } from 'react-redux';
+import {refreshCategoryNews, refreshQueryNews} from "../../data/modules/news";
 const Option = AutoComplete.Option;
 
 class SerachBar extends Component {
+    constructor(props) {
+        super(props);
+        this.renderSearchResults = this.renderSearchResults.bind(this);
+    }
     state = {
+        search_term:'',
         dataSource: [
             {
                 title: "Business",
@@ -49,22 +60,23 @@ class SerachBar extends Component {
     };
 
     handleSearch = (value) => {
-        console.log("key -word", value);
-        // this.setState({
-        //     dataSource: !value ?
-        //         [] : nba.searchPlayers(value).map(player => ({
-        //             fullName: player.fullName,
-        //             playerId: player.playerId,
-        //         }))
-        // });
-
+        this.setState({
+            search_term : value
+        })
     }
     onSelect = (NewsCategory) => {
-        // this.props.handleSelectPlayer(NewsCategory);
+        console.log(NewsCategory);
+        this.props.refreshCategoryNews(NewsCategory);
+    }
+
+    renderSearchResults() {
+        this.props.refreshQueryNews(this.state.search_term);
     }
 
     render() {
+        const searchTerm = this.state.search_term;
         const { dataSource } = this.state;
+
         const options = dataSource
             .map((NewsCategory) => (
             <Option key={NewsCategory.title} value={NewsCategory.title}          className="player-option">
@@ -83,16 +95,29 @@ class SerachBar extends Component {
                 placeholder="Search News"
                 optionLabelProp="text"
             >
-            <Input  onKeyDown={ e => {
+            <Input  ref="search_term"
+                    onKeyDown={ e => {
                     if(e.key === 'Enter') {
-                        console.log(e.target.value)
+                        this.props.refreshQueryNews(e.target.value);
                     }
 
-                }} suffix={<Icon type="search" className="certain-category-icon" />} />
+                }} suffix={
+                    <Link to="/querynews">
+                         <Icon type="search" className="link"
+                         onClick={this.renderSearchResults} />
+                    </Link>
+                } />
 
             </AutoComplete>
         );
     }
 }
 
-export default SerachBar;
+function mapStateToProps(state) {
+    return {
+        authState: state.auth,
+        news: state.news.data
+    };
+}
+
+export default connect(mapStateToProps,{refreshQueryNews,refreshCategoryNews})(SerachBar);

@@ -2,6 +2,7 @@
 import axios from 'axios';
 import type { Thunk } from '../';
 import * as Names from "../../constants/names";
+import {registerFailure} from "./register";
 
 
 type State = {
@@ -55,5 +56,29 @@ export function refreshPreference() : Thunk<PreferenceRefreshedAction> {
                 success => dispatch(PreferenceRefreshed(success.data)),
                 failure => console.log(failure)
             );
+    };
+}
+
+export function requestPreferAdd(categoryId: string) : Thunk<PreferenceRefreshedAction> {
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    return dispatch => {
+        const reg_data = {category: categoryId};
+        // const reg_data = {setDate: '', preference: checkList};
+        console.log("CHECK prefe", reg_data,headerToken);
+        // axios.post(`/api/addpreference`, reg_data,{headers: {authorization: headerToken}})
+        axios.post(`/api/addonepreference`, reg_data,{headers: {authorization: headerToken}});
+    };
+}
+
+export function requestPreferDel(categoryId: string) : Thunk<PreferenceRefreshedAction> {
+
+    // $FlowFixMe Flow complaining about the localstorage being null
+    let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
+    console.log(headerToken);
+    return dispatch => {
+        const reg_data = {category: categoryId};
+        axios.post('/api/deleteonepreference', reg_data,{
+            headers: {authorization: headerToken}
+        });
     };
 }

@@ -55,6 +55,10 @@ class SerachBar extends Component {
                 title: "US",
                 icon: "shopping",
                 src: "https://www.cmsschicago.org/wp-content/uploads/2018/11/US-News-and-World-Report.png"
+            },
+            {   title : "Local",
+                icon: "home",
+                src: "https://whitespark.ca/wp-content/uploads/2016/03/LocalInsider-hero.png"
             }
         ],
     };

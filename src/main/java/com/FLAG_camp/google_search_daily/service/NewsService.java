@@ -34,7 +34,7 @@ public class NewsService {
 	@VisibleForTesting
 	public List<News> getQueryNewsFromApi(String queryKeyword, Long offset) throws Exception {
 		List<News> newsFromApi = newsApiService.getQueryNews(queryKeyword, offset);
-		System.out.println("in NewsService - newsFromApi: " + newsFromApi);
+//		System.out.println("in NewsService - newsFromApi: " + newsFromApi);
 		return newsFromApi;
 	}
 	

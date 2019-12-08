@@ -10,6 +10,7 @@ import type { AuthState } from '../../data/modules/auth';
 import { Layout,Card, Col, Row, Icon, Switch  } from 'antd';
 import {refreshPreference} from "../../data/modules/preference";
 import {requestPreferAdd, requestPreferDel} from "../../data/modules/preference";
+import {refreshCategoryNews} from "../../data/modules/news";
 
 const { Meta } = Card;
 
@@ -38,29 +39,42 @@ class PreferCard extends React.Component {
         }
     }
 
+
     render() {
         console.log(this.props);
         return (
-            <Card
-                style={{ width: 300, marginBottom: "auto" }}
-                cover={
-                    <img className="newsImg"
-                         alt="example"
-                         src={this.props.card.newsCategory[this.props.idx[0]].src}
-                    />
-                }
-            >
-                <div className="newsBox">
-                    <Meta className="meta"
-                          avatar={<Icon type={this.props.card.newsCategory[this.props.idx[0]].icon} />}
-                          title={this.props.card.newsCategory[this.props.idx[0]].title}
-                    />
-                    <Switch style=
-                                {this.state.Prefer ?  {"backgroundColor": "rgba(0,0,255,0.5)"} : {"backgroundColor":""}}
-                            defaultChecked onChange={this.onChange} />
-                </div>
 
-            </Card>
+                <Card
+                    style={{ width: 300, marginBottom: "auto" }}
+                    cover={
+                        <Link to="/categorynews"
+                              onClick={
+                                    () => { this.props.categoryNews(this.props.card.newsCategory[this.props.idx[0]].title)}}
+                        >
+                            <img className="newsImg"
+                                 alt="example"
+                                 src={this.props.card.newsCategory[this.props.idx[0]].src}
+                            />
+                        </Link>
+
+                    }
+                >
+                    <div className="newsBox">
+
+
+                            <Meta className="meta"
+                                  avatar={<Icon type={this.props.card.newsCategory[this.props.idx[0]].icon} />}
+                                  title={this.props.card.newsCategory[this.props.idx[0]].title}
+                            />
+
+
+                        <Switch style=
+                                    {this.state.Prefer ?  {"backgroundColor": "rgba(0,0,255,0.5)"} : {"backgroundColor":""}}
+                                defaultChecked onChange={this.onChange} />
+                    </div>
+
+                </Card>
+
         )
     }
 
@@ -99,6 +113,7 @@ class PreferenceCard extends React.Component {
                                     idx={item}
                                     addPrefer={this.props.addPrefer}
                                     delPrefer={this.props.delPrefer}
+                                    categoryNews={this.props.categoryNews}
                                 />
                             </Col>
                         )
@@ -125,7 +140,7 @@ class RecomNews extends React.Component {
             return (
                 <div>
                     <Container>
-                        <h1 style={{marginTop : 30}}>News you may be interested in ...</h1>
+                        <h1 id="textH3">News you may be interested in ...</h1>
                         <Link to="/signin">Please sign in</Link>
                     </Container>
                 </div>
@@ -135,12 +150,13 @@ class RecomNews extends React.Component {
         return (
             <div>
                 <Container>
-                    <h1 style={{marginTop : 30}}>You may be interested in ...</h1>
+                    <h1 id="textH3">You may be interested in ...</h1>
                         <Row  gutter={16}>
                             <PreferenceCard
                                 preference={this.props.preference}
                                 addPrefer={this.props.requestPreferAdd}
                                 delPrefer={this.props.requestPreferDel}
+                                categoryNews={this.props.refreshCategoryNews}
                             />
                             <Icon className="addTag" type="plus-square" />
                         </Row>
@@ -157,4 +173,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { refreshPreference,requestPreferAdd,requestPreferDel })(RecomNews);
+export default connect(mapStateToProps, { refreshPreference,requestPreferAdd,requestPreferDel,refreshCategoryNews })(RecomNews);

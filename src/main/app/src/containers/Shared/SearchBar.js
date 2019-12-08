@@ -5,7 +5,7 @@ import QueryNews from "../QueryNews";
 import { Redirect } from 'react-router-dom'
 import Router from "react-router/Router";
 import { connect } from 'react-redux';
-import {refreshCategoryNews, refreshQueryNews} from "../../data/modules/news";
+import {refreshCategoryNews, refreshLocalNews, refreshQueryNews} from "../../data/modules/news";
 const Option = AutoComplete.Option;
 
 class SerachBar extends Component {
@@ -70,7 +70,15 @@ class SerachBar extends Component {
     }
     onSelect = (NewsCategory) => {
         console.log(NewsCategory);
-        this.props.refreshCategoryNews(NewsCategory);
+        console.log("search!!!!",this.props);
+        if (NewsCategory === "Local")
+        {
+            this.props.refreshLocalNews();
+        }
+        else
+        {
+            this.props.refreshCategoryNews(NewsCategory);
+        }
     }
 
     renderSearchResults() {
@@ -124,4 +132,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps,{refreshQueryNews,refreshCategoryNews})(SerachBar);
+export default connect(mapStateToProps,{refreshQueryNews,refreshCategoryNews, refreshLocalNews})(SerachBar);

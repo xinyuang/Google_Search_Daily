@@ -1,4 +1,3 @@
-/* @flow */
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -64,24 +63,24 @@ class HotNews extends React.Component<Props, State> {
                     <div key={item.title} >
                         <Card title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
                               extra={
-                                <Star key={item.newsUrl}
-                                      data={item}
-                                      marked={false}
-                                      visible={isLogin}
-                                      requestBookMarkAdd={this.props.requestBookMarkAdd}
-                                      requestBookMarkDel={this.props.requestBookMarkDel}
-                                />
+                                  <Star key={item.newsUrl}
+                                        data={item}
+                                        marked={false}
+                                        visible={isLogin}
+                                        requestBookMarkAdd={this.props.requestBookMarkAdd}
+                                        requestBookMarkDel={this.props.requestBookMarkDel}
+                                  />
                               }
-                            style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
+                              style={{ width: "700px", borderRadius: "8px", margin: "8px" }}
                         >
                             <div className="newsBox">
 
-                            <img
-                                alt="example"
-                                src={item.imgUrl}
-                                style={{ marginRight: 10}}
-                            />
-                            <p>{item.content}</p>
+                                <img
+                                    alt="example"
+                                    src={item.imgUrl}
+                                    style={{ marginRight: 10}}
+                                />
+                                <p>{item.content}</p>
                             </div>
                         </Card>
                     </div>

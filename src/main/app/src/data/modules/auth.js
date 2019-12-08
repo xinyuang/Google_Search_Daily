@@ -11,6 +11,7 @@ import React from "react";
 
 import {Redirect, Route} from 'react-router-dom';
 import signupForm from "../../containers/SignUp";
+import {setDefault} from "./register";
 
 // export type UserRegisterRequest = {email: string,
 //     enabled: string,
@@ -140,6 +141,7 @@ export function logout(): Thunk<LogoutAction> {
                 () => {
                     localStorage.removeItem(Names.JWT_TOKEN);
                     dispatch(loggedOut());
+                    dispatch(setDefault());
                     dispatch(socketsDisconnect());
                 },
                 failure => console.error(`Failed to log out successfully: ${failure}`)

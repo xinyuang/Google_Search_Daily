@@ -4,7 +4,7 @@ import type { Thunk } from '../';
 import * as Names from "../../constants/names";
 
 
-type State = {
+type PrefState = {
     status: 'stale' | 'loaded',
     data: number[]
 }
@@ -16,12 +16,12 @@ type PreferenceRefreshedAction = {
 
 type Action = PreferenceRefreshedAction;
 
-const defaultPreferState: State = {
+const defaultPreferState: PrefState = {
     status: 'stale',
     data: []
 };
 
-export default function reducer(state : State = defaultPreferState, action : Action) : State {
+export default function reducer(state : PrefState = defaultPreferState, action : Action) : PrefState {
     switch (action.type) {
 
         case 'PREFERENCE_REFRESHED':

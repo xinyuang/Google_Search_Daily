@@ -112,6 +112,7 @@ class PreferenceCard extends React.Component {
 class RecomNews extends React.Component {
     constructor(props) {
         super(props);
+
     }
 
     componentDidMount() {
@@ -142,7 +143,7 @@ class RecomNews extends React.Component {
                                 addPrefer={this.props.requestPreferAdd}
                                 delPrefer={this.props.requestPreferDel}
                             />
-                            <Icon className="addTag" type="plus-square" />
+                            <Icon className="addTag" type="plus-square" onClick={e => this.props.history.push("/preference")}/>
                         </Row>
 
                 </Container>

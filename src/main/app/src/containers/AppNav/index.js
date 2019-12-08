@@ -39,7 +39,10 @@ type Props = {
     auth: AuthState,
     socketState: SocketState,
     socketsSubscribe: (topic: string) => void,
-    logout: () => void
+    logout: () => void,
+    history: {
+        push: (path: string) => void
+    },
 };
 
 type State = {

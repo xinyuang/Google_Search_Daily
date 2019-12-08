@@ -34,7 +34,7 @@ public class SearchHistoryService {
 		Map<String, Integer> queryTermToCountMap = new HashMap<>();
 		for (SearchHistory queryHistory : allQueryHistories) {
 			String key = queryHistory.getSearchTerm();
-			if (key == null) {
+			if (key == null || key == "" || key == "undefined") {
 				continue;
 			}
 			if (queryTermToCountMap.containsKey(key)) {

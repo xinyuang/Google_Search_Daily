@@ -3,32 +3,70 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Link} from "react-router-dom";
 import { Container } from 'reactstrap';
-
 import type { News, NewsAddRequest, DelNewsRequest } from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
 
-import { Layout,Card, Col, Row, Icon, Avatar  } from 'antd';
+import { Layout,Card, Col, Row, Icon, Switch  } from 'antd';
 import {refreshPreference} from "../../data/modules/preference";
+import {requestPreferAdd, requestPreferDel} from "../../data/modules/news";
 
 const { Meta } = Card;
 
 const { Header, Sider, Content } = Layout;
-type Props = {
-    authState: AuthState,
-    refreshPreference: () => void,
-    news: Array<News>,
-    preference: number
-};
 
-type State = {
-    News_Category: string,
-    Img_url: string,
-    News_url: string,
-    Title: string,
-    Content: string
-};
+class PreferCard extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            Prefer: true
+        }
+        this.onChange = this.onChange.bind(this);
+    }
 
+    onChange(checked) {
+        this.setState({
+            Prefer: checked,
+        });
+        if(checked) {
+            console.log(this.props.idx[0],"add");
+            this.props.addPrefer(this.props.idx[0]);
+        }
+        else {
+            console.log(this.props.idx[0],"del");
+            this.props.delPrefer(this.props.idx[0]);
+        }
+    }
+
+    render() {
+        console.log(this.props);
+        return (
+            <Card
+                style={{ width: 300, marginBottom: "auto" }}
+                cover={
+                    <img className="newsImg"
+                         alt="example"
+                         src={this.props.card.newsCategory[this.props.idx[0]].src}
+                    />
+                }
+            >
+                <div className="newsBox">
+                    <Meta className="meta"
+                          avatar={<Icon type={this.props.card.newsCategory[this.props.idx[0]].icon} />}
+                          title={this.props.card.newsCategory[this.props.idx[0]].title}
+                    />
+                    <Switch style=
+                                {this.state.Prefer ?  {"backgroundColor": "rgba(0,0,255,0.5)"} : {"backgroundColor":""}}
+                            defaultChecked onChange={this.onChange} />
+                </div>
+
+            </Card>
+        )
+    }
+
+
+
+}
 
 class PreferenceCard extends React.Component {
     constructor() {
@@ -42,32 +80,26 @@ class PreferenceCard extends React.Component {
                 5: { title : "ScienceAndTechnology", icon: "appstore", src : "https://i.cbc.ca/1.4833630.1537555507!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/global-internet-abstract.jpg"},
                 6: { title : "Sports", icon: "dingding", src : "https://blog.studocu.com/wp-content/uploads/2016/10/slide1-image-tablet.png"},
                 7: { title : "World", icon: "interaction", src : "https://www.clayton.edu/international-student-services/Forms/images/intern636634593552534916.jpeg"},
-                8: { title : "US", icon: "shopping", src : "https://www.cmsschicago.org/wp-content/uploads/2018/11/US-News-and-World-Report.png"}
+                8: { title : "US", icon: "shopping", src : "https://www.cmsschicago.org/wp-content/uploads/2018/11/US-News-and-World-Report.png"},
+                9: { title : "Local", icon: "home", src: "https://whitespark.ca/wp-content/uploads/2016/03/LocalInsider-hero.png"}
             },
         }
     }
 
     render() {
+        console.log('parent ',this.props);
         return(
             <div>
                 {
                     this.props.preference.map(item => {
                         return(
                             <Col key={item} className="Row" span={8}>
-                                <Card
-                                    style={{ width: 300, marginBottom: "auto" }}
-                                    cover={
-                                        <img className="newsImg"
-                                             alt="example"
-                                             src={this.state.newsCategory[item[0]].src}
-                                        />
-                                    }
-                                >
-                                    <Meta
-                                        avatar={<Icon type={this.state.newsCategory[item[0]].icon} />}
-                                        title={this.state.newsCategory[item[0]].title}
-                                    />
-                                </Card>
+                                <PreferCard
+                                    card={this.state}
+                                    idx={item}
+                                    addPrefer={this.props.addPrefer}
+                                    delPrefer={this.props.delPrefer}
+                                />
                             </Col>
                         )
                     })
@@ -77,69 +109,18 @@ class PreferenceCard extends React.Component {
     }
 }
 
-class RecomNews extends React.Component<Props, State> {
-    props: Props;
-    state: State;
-
+class RecomNews extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            category: '',
-            img_url: '',
-            news_url: '',
-            title: '',
-            content: '',
-            newsId: -1
-        };
     }
 
     componentDidMount() {
         this.props.refreshPreference();
     }
 
-    displayNews() {
-
-        const { news } = this.props;
-
-
-        if (news) {
-
-            const loadedNews = news.map((item) => {
-                return (
-                    <Col span={8}>
-                            <Card title={<a href={item.news_url} target="_blank">{item.title} </a>} extra={<Icon type="star" />}
-                                  style={{ width: "70%" }}
-                            >
-                                <div className="newsBox">
-                                    <img
-                                        alt="example"
-                                        src={item.img_url}
-                                        style={{ marginRight: 10}}
-                                    />
-                                    <p>{item.content}</p>
-                                </div>
-                            </Card>
-                    </Col>
-                )
-            });
-
-            return (
-                <Container className="mt-2 col-md-12">
-
-                    {loadedNews}
-
-                </Container>
-            )
-        }
-
-        return null;
-    }
-
     render() {
 
-        const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
-        console.log(this.props)
         if (!authState.signedIn) {
             return (
                 <div>
@@ -156,7 +137,11 @@ class RecomNews extends React.Component<Props, State> {
                 <Container>
                     <h1 style={{marginTop : 30}}>You may be interested in ...</h1>
                         <Row  gutter={16}>
-                            <PreferenceCard preference={this.props.preference}/>
+                            <PreferenceCard
+                                preference={this.props.preference}
+                                addPrefer={this.props.requestPreferAdd}
+                                delPrefer={this.props.requestPreferDel}
+                            />
                             <Icon className="addTag" type="plus-square" />
                         </Row>
 
@@ -169,9 +154,8 @@ class RecomNews extends React.Component<Props, State> {
 function mapStateToProps(state) {
     return {
         authState: state.auth,
-        news: state.news.data,
         preference: state.preference.data
     };
 }
 
-export default connect(mapStateToProps, { refreshPreference })(RecomNews);
+export default connect(mapStateToProps, { refreshPreference,requestPreferAdd,requestPreferDel })(RecomNews);

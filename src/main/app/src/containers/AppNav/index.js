@@ -18,6 +18,7 @@ import * as Names from '../../constants/names';
 import ReactDOM from 'react-dom';
 import '../../styles/AppNav.css';
 import '../../styles/News.css';
+import '../../styles/Recmend.css';
 
 import {connect} from "react-redux";
 import SignIn from "../signin";
@@ -25,7 +26,9 @@ import signupForm from "../SignUp";
 import About from "../about";
 import SerachBar from "../Shared/SearchBar";
 import HotNews from "../HotNews";
+import QueryNews from "../QueryNews";
 import RecomNews from "../RecomNews";
+import CategoryNews from "../CategoryNews";
 import FavNews from "../FavNews";
 import test from "../test";
 
@@ -198,8 +201,10 @@ class AppNav extends React.Component<Props, State> {
                                 <Route exact path="/signin" component={SignIn} />
                                 <Route exact path="/signup" component={signupForm} />
                                 <Redirect from='/signup/' to="/signin/" />
-                                <Route exact path="/favnews" component={FavNews} />
+                                <Route exact path="/querynews" component={QueryNews} />
+                                <Route exact path="/categorynews" component={CategoryNews} />
                                 <Route exact path="/recnews" component={RecomNews} />
+                                <Route exact path="/favnews" component={FavNews} />
                                 <Route exact path="/about-us" component={About} />
                                 <Route exact path="/test" component={test} />
                             </Switch>

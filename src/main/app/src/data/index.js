@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
     news,
     preference,
     websockets,
-    visibilityFilter
+    visibilityFilter,
     register,
 });
 

@@ -1,3 +1,4 @@
+import store from "../../store";
 import React from 'react';
 import {Link, Route, withRouter,Switch, Redirect} from 'react-router-dom';
 import {Navbar, NavbarBrand, Nav, NavItem, NavLink, Container} from 'reactstrap';
@@ -32,7 +33,6 @@ import RecomNews from "../RecomNews";
 import CategoryNews from "../CategoryNews";
 import FavNews from "../FavNews";
 import test from "../test";
-import store from "../../store";
 
 const { Header, Sider, Content } = Layout;
 
@@ -83,7 +83,7 @@ class AppNav extends React.Component<Props, State> {
                             <span>Selected for you</span>
                             <Link to="/recnews"></Link>
                         </Menu.Item>
-                        <Menu.Item key="3">
+                        <Menu.Item key="3" onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'All'})}}>
                             <Icon type="star" />
                             <span>Saved News</span>
                             <Link to="/favnews"></Link>
@@ -111,8 +111,8 @@ class AppNav extends React.Component<Props, State> {
         if (!signedIn) {
             return (
                 <div>
-                <span><Link className="signIn" to="/signin">Log In</Link></span>
-                <span><Link className="signIn" to="/signup">Sign Up</Link></span>
+                    <span><Link className="signIn" to="/signin">Log In</Link></span>
+                    <span><Link className="signIn" to="/signup">Sign Up</Link></span>
                 </div>
             )
         }
@@ -182,28 +182,6 @@ class AppNav extends React.Component<Props, State> {
                         type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                         onClick={this.toggle}
                     />
-                    <Menu mode="inline" defaultSelectedKeys={['1']}>
-                        {/*theme="dark"*/}
-                        <Menu.Item key="1">
-                            <Icon type="chrome" />
-                            <span>Top stories</span>
-                            <Link to="/"></Link>
-                        </Menu.Item>
-                        <Menu.Item key="2">
-                            <Icon type="user" />
-                            <span>Selected for you</span>
-                            <Link to="/recnews"></Link>
-                        </Menu.Item>
-                        <Menu.Item key="3" onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'All'})}}>
-                            <Icon type="star" />
-                            <span>Saved News</span>
-                            <Link to="/favnews"></Link>
-                        </Menu.Item>
-                        <Menu.Item key="4">
-                            <Icon type="upload" />
-                            <span>testExample</span>
-                            <Link to="/test"></Link>
-                        </Menu.Item>
                     {this.forLoginUser(signedIn)}
 
 

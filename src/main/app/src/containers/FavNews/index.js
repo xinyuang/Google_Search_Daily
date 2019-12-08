@@ -193,24 +193,8 @@ class FavNews extends React.Component<Props, State> {
                                 <span style={{left:"0"}}>US</span>
                             </Menu.Item>
                         </Menu>
-                        {this.displayNews()}
+                        {this.displayNews({isLogin})}
                     </div>
-
-{/*=======*/}
-{/*                    <h1 style={{marginTop : 30}}>Your Saved News</h1>*/}
-{/*                    <Tabs onChange={this.tab_callback} type="card">*/}
-{/*                        <TabPane tab="International" key="1">*/}
-{/*                            Content of Tab Pane 1*/}
-{/*                        </TabPane>*/}
-{/*                        <TabPane tab="Business" key="2">*/}
-{/*                            Content of Tab Pane 2*/}
-{/*                        </TabPane>*/}
-{/*                        <TabPane tab="Technology" key="3">*/}
-{/*                            Content of Tab Pane 3*/}
-{/*                        </TabPane>*/}
-{/*                    </Tabs>*/}
-{/*                    {this.displayNews({isLogin})}*/}
-{/*>>>>>>> c07432135a60139ebcde3bbc5b8ee98405308970*/}
                 </Container>
             </div>
         )

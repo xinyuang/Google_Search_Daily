@@ -34,6 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+
 @RestController
 @RequestMapping(value = "/api", produces = APPLICATION_JSON_VALUE)
 @Slf4j
@@ -55,14 +57,16 @@ public class NewsResource {
     private RawDBDemoGeoIPLocationService locationService;
 
     @RequestMapping(path = "/topnews", method = GET)
-    public List<News> getTopNews() throws Exception {
-        return newsService.getTopNewsFromApi();
+    public List<News> getTopNews(@RequestParam(value="offset") Long offset) throws Exception {
+        logger.info("Offset in news resource is {}", offset);
+    	return newsService.getTopNewsFromApi(offset);
     }
 
     @RequestMapping(path = "/querynews", method = GET)
     public List<News> getQueryNews(
     		@RequestHeader(value="authorization", required = false) String authorizationHeader,
-    		@RequestParam(value="q") String queryKeyword) throws Exception {
+    		@RequestParam(value="q") String queryKeyword,
+    		@RequestParam(value="offset") Long offset) throws Exception {
     	// save query terms to searchHistory table after logging in
     	if (authorizationHeader != null) {
         	String authToken = authorizationHeader.substring(7);
@@ -72,13 +76,14 @@ public class NewsResource {
     	}
     	// fetch news from api by query terms
     	System.out.println("queryKeyword:" + queryKeyword);
-    	System.out.println("queryNewsFromApi: " + newsService.getQueryNewsFromApi(queryKeyword));
-    	return newsService.getQueryNewsFromApi(queryKeyword);
+    	System.out.println("queryNewsFromApi: " + newsService.getQueryNewsFromApi(queryKeyword, offset));
+    	return newsService.getQueryNewsFromApi(queryKeyword, offset);
     }
 
     @RequestMapping(path = "/querynewsbygeo", method = GET)
     public List<News> getQueryNewsByGeo(@RequestParam(value="q") String queryKeyword, HttpServletRequest request,
-                                        @RequestParam(value="radius") String rad
+                                        @RequestParam(value="radius") String rad,
+                                        @RequestParam(value="offset") Long offset
     ) throws Exception {
         String ip = request.getRemoteAddr();
         if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
@@ -94,12 +99,14 @@ public class NewsResource {
         double lat = Double.parseDouble(ipInfo.get("latitude:"));
         double lon = Double.parseDouble(ipInfo.get("longitude:"));
         int radius = Integer.parseInt(rad);
-        return newsService.getQueryNewsByGeoFromApi(queryKeyword, lat, lon, radius);
+        return newsService.getQueryNewsByGeoFromApi(queryKeyword, offset, lat, lon, radius);
     }
 
     @RequestMapping(path = "/categorynews", method = GET)
-    public List<News> getCategoryNews(@RequestParam(value="category") String category) throws Exception {
-        return newsService.getCategoryNewsFromApi(category);
+    public List<News> getCategoryNews(@RequestParam(value="category") String category,
+    								  @RequestParam(value="offset") Long offset
+    								) throws Exception {
+        return newsService.getCategoryNewsFromApi(category, offset);
     }
 
 }

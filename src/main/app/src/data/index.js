@@ -6,6 +6,7 @@ import { routerReducer } from "react-router-redux";
 import auth from './modules/auth';
 import books from './modules/books';
 import news from './modules/news';
+import topK from "./modules/topK";
 import preference from "./modules/preference";
 import websockets from './modules/websockets';
 import visibilityFilter from "./modules/visibilityFIlter";
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     auth,
     books,
     news,
+    topK,
     preference,
     websockets,
     visibilityFilter,

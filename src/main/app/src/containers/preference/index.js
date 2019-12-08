@@ -38,7 +38,7 @@ const CheckboxGroup = Checkbox.Group;
 //     'ScienceAndTechnology', 'Sports',
 //     'World',
 //     'US'];
-const optionNumber = [1,2,3,4,5,6,7,8]
+const optionNumber = [1,2,3,4,5,6,7,8,9]
 const options = [
     { title : "Business", icon: 1, src : "https://content.thriveglobal.com/wp-content/uploads/2019/07/Dream-Side-Business-Desk.jpg?w=1550"},
     { title : "Entertainment", icon: 2, src : "https://www.eventmanagerblog.com/wp-content/uploads/2018/10/350x215-FEAT-in-post-Entertainment.jpg"},
@@ -47,7 +47,8 @@ const options = [
     { title : "ScienceAndTechnology", icon: 5, src : "https://i.cbc.ca/1.4833630.1537555507!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/global-internet-abstract.jpg"},
     { title : "Sports", icon: 6, src : "https://blog.studocu.com/wp-content/uploads/2016/10/slide1-image-tablet.png"},
     { title : "World", icon: 7, src : "https://www.clayton.edu/international-student-services/Forms/images/intern636634593552534916.jpeg"},
-    { title : "US", icon: 8, src : "https://www.cmsschicago.org/wp-content/uploads/2018/11/US-News-and-World-Report.png"}
+    { title : "US", icon: 8, src : "https://www.cmsschicago.org/wp-content/uploads/2018/11/US-News-and-World-Report.png"},
+    { title : "Local", icon: 9, src : "https://whitespark.ca/wp-content/uploads/2016/03/LocalInsider-hero.png"}
 ]
 
 class Perference extends React.Component<Props, State> {

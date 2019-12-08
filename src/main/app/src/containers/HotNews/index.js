@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
 import type {News, BookMarkAddRequest} from "../../data/modules/news";
-import {refreshHotNews, requestBookMarkAdd, requestBookMarkDel} from "../../data/modules/news";
+import {refreshHotNews, refreshQueryNews, requestBookMarkAdd, requestBookMarkDel} from "../../data/modules/news";
 
 import type { AuthState } from '../../data/modules/auth';
 import { Layout, Menu, Icon, Button, Checkbox } from 'antd';
@@ -14,15 +14,18 @@ import Tag from "antd/es/tag";
 import {getCurrentDate} from "../Shared/date";
 import Star from "../Shared/star";
 import auth from "../../data/modules/auth";
+import {refreshHotTopic} from "../../data/modules/topK";
 
 const { Header, Sider, Content } = Layout;
 
 type Props = {
     authState: AuthState,
     refreshHotNews: () => void,
+    refreshHotTopic: () => void,
     requestBookMarkAdd:(bookMarkAddRequest: BookMarkAddRequest) => void,
     requestBookMarkDel:(news: News) => void,
-    news: Array<News>
+    news: Array<News>,
+    topics: string[]
 };
 
 type State = {
@@ -46,18 +49,35 @@ class HotNews extends React.Component<Props, State> {
             newsUrl: '',
             title: '',
             datePublished:'',
-            content: ''
+            content: '',
+            colors: ["magenta","red","volcano","orange","gold","lime","green","cyan","blue","purple"]
         };
     }
 
     componentDidMount() {
         this.props.refreshHotNews();
+        this.props.refreshHotTopic();
     }
 
     displayNews(isLogin) {
 
         const { news } = this.props;
+        const { topics } = this.props;
+        console.log(this.props);
         if (news) {
+            const loadedTopics = topics.map((item,index) => {
+                console.log(item, this.state.colors[index]);
+                return (
+                    <Tag className="tag" color={this.state.colors[index]}
+                         onClick={()=>{this.props.refreshQueryNews(item)}}
+                         // onClick={console.log("tag ???" ,item)}
+                    >
+                            {item}
+                    </Tag>
+
+                )
+            });
+
             const loadedNews = news.map((item) => {
                 return (
                     <div key={item.title} >
@@ -99,17 +119,7 @@ class HotNews extends React.Component<Props, State> {
                             >
                                 <div className="newsBox">
                                     <div>
-                                        <Tag className="tag" color="magenta">magenta</Tag>
-                                        <Tag className="tag" color="red">red</Tag>
-                                        <Tag className="tag" color="volcano">volcano</Tag>
-                                        <Tag className="tag" color="orange">orange</Tag>
-                                        <Tag className="tag" color="gold">gold</Tag>
-                                        <Tag className="tag" color="lime">lime</Tag>
-                                        <Tag className="tag" color="green">green</Tag>
-                                        <Tag className="tag" color="cyan">cyan</Tag>
-                                        <Tag className="tag" color="blue">blue</Tag>
-                                        <Tag className="tag" color="geekblue">geekblue</Tag>
-                                        <Tag className="tag" color="purple">purple</Tag>
+                                        {loadedTopics}
                                     </div>
                                 </div>
                             </Card>
@@ -123,14 +133,14 @@ class HotNews extends React.Component<Props, State> {
     }
 
     render() {
-
         const { Img_url, News_url,News_Category, Title, Content } = this.state;
         const { authState } = this.props;
         const isLogin = authState.signedIn;
         return (
             <div>
                 <Container>
-                    <h1 style={{marginTop : 30, marginLeft: 20}}>Headlines</h1>
+                    {/*<h1 style={{marginTop : 30, marginLeft: 20}}>Headlines</h1>*/}
+                    <h1 id="textH3">Headlines</h1>
                     {this.displayNews({isLogin})}
                 </Container>
             </div>
@@ -141,8 +151,9 @@ class HotNews extends React.Component<Props, State> {
 function mapStateToProps(state) {
     return {
         authState: state.auth,
-        news: state.news.data
+        news: state.news.data,
+        topics: state.topK.data
     };
 }
 
-export default connect(mapStateToProps, { refreshHotNews, requestBookMarkAdd,requestBookMarkDel })(HotNews);
+export default connect(mapStateToProps, { refreshHotNews, refreshHotTopic, requestBookMarkAdd,requestBookMarkDel,refreshQueryNews })(HotNews);

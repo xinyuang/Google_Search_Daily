@@ -46,6 +46,17 @@ button:disabled {
   margin-bottom: 0px;
 }
 
+#textH3{
+  font-family: Prociono, serif;
+  font-size: 25px;
+  letter-spacing: 5px;
+  color: rgb(204, 204, 204);
+  padding: 10px 0px;
+  margin-bottom: 0px;
+  margin-top : 30px;
+  margin-left: 20px;
+}
+
 #news{
   vertical-align:middle;
 }

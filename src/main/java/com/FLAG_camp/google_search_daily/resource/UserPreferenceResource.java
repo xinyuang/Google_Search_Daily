@@ -81,14 +81,19 @@ public class UserPreferenceResource {
     }
 
     @RequestMapping(path = "/addonepreference", method = POST)
-    public List<Object[]> addOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
+    public List<Object[]> addOnePreference(
+    							@RequestBody String newsCategory, 
+    							@RequestHeader(value="authorization") String authorizationHeader) {
+    	// , @RequestParam(value="category") String newsCategory
     	String authToken = authorizationHeader.substring(7);
     	String username = jwtTokenUtil.getUsernameFromToken(authToken);
     	User user = userService.findUserId(username);
     	Long user_id = user.getId();
     	
     	//logger.info("userId = {}", user_id);
-    	Long newscategory_id = Long.parseLong(newsCategory);
+    	JSONObject obj = new JSONObject(newsCategory);
+    	Long newscategory_id = obj.getLong("category");
+//    	Long newscategory_id = Long.parseLong(newsCategory);
     	//logger.info("category id = {}", newscategory_id);
 		PreferId id = new PreferId(user_id, newscategory_id);
 		//logger.info("preferId = {}", id);
@@ -105,14 +110,19 @@ public class UserPreferenceResource {
     }
     
     @RequestMapping(path = "/deleteonepreference", method = POST)
-    public List<Object[]> deleteOnePreference(@RequestHeader(value="authorization") String authorizationHeader, @RequestParam(value="category") String newsCategory) {
+    public List<Object[]> deleteOnePreference(
+    							@RequestBody String newsCategory, 
+    							@RequestHeader(value="authorization") String authorizationHeader) {
+    	//, @RequestParam(value="category") String newsCategory
     	String authToken = authorizationHeader.substring(7);
     	String username = jwtTokenUtil.getUsernameFromToken(authToken);
     	User user = userService.findUserId(username);
     	Long user_id = user.getId();
     	
     	//logger.info("userId = {}", user_id);
-    	Long newscategory_id = Long.parseLong(newsCategory);
+    	JSONObject obj = new JSONObject(newsCategory);
+    	Long newscategory_id = obj.getLong("category");
+//    	Long newscategory_id = Long.parseLong(newsCategory);
     	//logger.info("category id = {}", newscategory_id);
 		PreferId id = new PreferId(user_id, newscategory_id);
 		//logger.info("preferId = {}", id);

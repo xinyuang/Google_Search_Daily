@@ -56,3 +56,35 @@
 .grow {
     flex-grow: 1;
 }
+.login-form {
+    max-width: 300px;
+}
+
+.register-form {
+    max-width: 300px;
+}
+
+.preference {
+
+    font-size: 1.8em;
+
+}
+.checkbox-img {
+    background:
+        /*url("https://upload.wikimedia.org/wikipedia/en/c/cd/March_for_Science.png")*/
+            no-repeat 50% 50%;
+    background-size: 120%;
+    height: 200px;
+    width:200px;
+
+}
+.allcheckbox{
+    /*display: inline-block;*/
+    width: 100%;
+    vertical-align: middle;
+    overflow: hidden;
+    margin-right: -20px;
+
+    margin-bottom: -20px;
+    margin-top: 0;
+}

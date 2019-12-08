@@ -8,16 +8,17 @@ import * as Names from '../../constants/names';
 
 import {socketsConnect, socketsDisconnect} from '../../middleware/socketActions';
 import React from "react";
-import {Redirect, Route} from 'react-router-dom'
+
+import {Redirect, Route} from 'react-router-dom';
 import signupForm from "../../containers/SignUp";
 
-export type UserRegisterRequest = {email: string,
-    enabled: string,
-    firstname: string,
-    lastPasswordResetDate: string,
-    lastname: string,
-    password: string,
-    username: string};
+// export type UserRegisterRequest = {email: string,
+//     enabled: string,
+//     firstname: string,
+//     lastPasswordResetDate: string,
+//     lastname: string,
+//     password: string,
+//     username: string};
 
 export type Role =
     'ROLE_ADMIN'
@@ -143,17 +144,18 @@ export function logout(): Thunk<LogoutAction> {
                 },
                 failure => console.error(`Failed to log out successfully: ${failure}`)
             )
-    };
+
+    }
 }
 
-export function signup(userRegisterRequest: UserRegisterRequest): Thunk<LogoutAction> {
-    return dispatch => {
-        axios.post('/api/register',userRegisterRequest)
-            .then(
-                () => {
-                    console.log("succeed");
-                },
-                failure => console.error(`Failed to register: ${failure}`)
-            )
-    };
-}
+// export function signup(userRegisterRequest: UserRegisterRequest): Thunk<LogoutAction> {
+//     return dispatch => {
+//         axios.post('/api/register',userRegisterRequest)
+//             .then(
+//                 () => {
+//                     console.log("succeed");
+//                 },
+//                 failure => console.error(`Failed to register: ${failure}`)
+//             )
+//     };
+// }

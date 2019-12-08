@@ -8,6 +8,7 @@ import books from './modules/books';
 import news from './modules/news';
 import preference from "./modules/preference";
 import websockets from './modules/websockets';
+import register from './modules/register';
 
 const rootReducer = combineReducers({
     router: routerReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     books,
     news,
     preference,
-    websockets
+    websockets,
+    register,
 });
 
 export default rootReducer;

@@ -126,20 +126,7 @@ export function refreshQueryNews(search_term: string) : Thunk<NewsRefreshedActio
 }
 
 export function refreshCategoryNews(newsCategory:string) : Thunk<NewsRefreshedAction> {
-    if (newsCategory === 'Local')
-    {
-        // refreshLocalNews();
-        console.log('???',newsCategory);
-        return dispatch => {
-            axios.get(`/api/categorynews?offset=0&category=US`)
-                .then(
-                    success => dispatch(newsRefreshed(success.data)),
-                    failure => console.log(failure)
-                );
-        };
-    }
-    else
-    {
+
         if (localStorage.getItem(Names.JWT_TOKEN))
         {
             // $FlowFixMe Flow complaining about the localstorage being null
@@ -166,9 +153,6 @@ export function refreshCategoryNews(newsCategory:string) : Thunk<NewsRefreshedAc
                     );
             };
         }
-    }
-
-
 }
 
 export function refreshHotNews() : Thunk<NewsRefreshedAction> {
@@ -203,14 +187,14 @@ export function refreshHotNews() : Thunk<NewsRefreshedAction> {
 }
 
 export function refreshLocalNews() : Thunk<NewsRefreshedAction> {
-
+    console.log("local news api");
     if (localStorage.getItem(Names.JWT_TOKEN))
     {
         // $FlowFixMe Flow complaining about the localstorage being null
         let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
         console.log(headerToken);
         return dispatch => {
-            axios.get(`/api/querynewsbygeo?q=&radius=100`,{
+            axios.get(`/api/querynewsbygeo?offset=0&q=&radius=100`,{
                 headers: {authorization: headerToken}
             })
                 .then(

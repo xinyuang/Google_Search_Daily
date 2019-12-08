@@ -16,6 +16,7 @@ import Star from "../Shared/star";
 import { Button} from 'antd';
 import store from '../../store'
 import '../../index.css';
+import dateFormat from "dateformat";
 
 const ButtonGroup = Button.Group;
 const { Option } = Select;
@@ -81,9 +82,10 @@ class FavNews extends React.Component<Props, State> {
         if (news) {
 
             const loadedNews = news.map((item) => {
+                let newsDate = dateFormat(item.datePublished, "dddd, mmmm dS, yyyy, h:MM:ss TT");
                 return (
-                    <div >
-                        <Card key={item.newsUrl} title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
+
+                        <Card key={item.newsUrl} title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{newsDate}</p></div> }
                               extra={
                                   <Star key={item.newsUrl}
                                         data={item}
@@ -105,7 +107,7 @@ class FavNews extends React.Component<Props, State> {
                                 <p>{item.content}</p>
                             </div>
                         </Card>
-                    </div>
+
                 )
             });
 

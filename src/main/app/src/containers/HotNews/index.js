@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import dateFormat from 'dateformat';
 import { Col, Container, Form, FormGroup, Label, Input, Table } from 'reactstrap';
 
 import type {News, BookMarkAddRequest} from "../../data/modules/news";
@@ -79,9 +79,10 @@ class HotNews extends React.Component<Props, State> {
             });
 
             const loadedNews = news.map((item) => {
+                let newsDate = dateFormat(item.datePublished, "dddd, mmmm dS, yyyy, h:MM:ss TT");
                 return (
                     <div key={item.title} >
-                        <Card title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
+                        <Card title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{newsDate}</p></div> }
                               extra={
                                   <Star key={item.newsUrl}
                                         data={item}
@@ -96,7 +97,7 @@ class HotNews extends React.Component<Props, State> {
                             <div className="newsBox">
 
                                 <img
-                                    alt="example"
+                                    alt=""
                                     src={item.imgUrl}
                                     style={{ marginRight: 10}}
                                 />

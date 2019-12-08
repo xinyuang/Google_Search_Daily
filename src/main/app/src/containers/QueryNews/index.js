@@ -15,6 +15,7 @@ import Tag from "antd/es/tag";
 import {getCurrentDate} from "../Shared/date";
 import Star from "../Shared/star";
 import auth from "../../data/modules/auth";
+import dateFormat from "dateformat";
 
 const { Header, Sider, Content } = Layout;
 
@@ -60,9 +61,10 @@ class QueryNews extends React.Component<Props, State> {
         const { news } = this.props;
         if (news) {
             const loadedNews = news.map((item) => {
+                let newsDate = dateFormat(item.datePublished, "dddd, mmmm dS, yyyy, h:MM:ss TT");
                 return (
                     <div key={item.title}>
-                        <Card title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{item.datePublished}</p></div> }
+                        <Card title={<div><a href={item.newsUrl} target="_blank">{item.title} </a>  <p>{newsDate}</p></div> }
                               extra={
                                 <Star key={item.newsUrl}
                                       data={item}

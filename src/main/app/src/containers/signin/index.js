@@ -3,7 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { Button, Container, Form, FormGroup, Label, ListGroup, ListGroupItem, Input, Alert } from 'reactstrap';
+import {  Container, FormGroup, Label, ListGroup, ListGroupItem } from 'reactstrap';
+// import { Button, Form, Input } from 'reactstrap';
+import { Form, Icon, Input, Button, Alert } from 'antd';
 
 import { authenticated, login, logout } from '../../data/modules/auth';
 import type { AuthState, Role } from '../../data/modules/auth';
@@ -71,10 +73,16 @@ class SignIn extends React.Component<Props, State> {
 
         return (
             <div>
-                <Alert color="warning">
-                    <h1>Authentication failed!</h1>
-                    <div>Please Enter a valid username and password</div>
-                </Alert>
+                <Alert
+                    message="Authentication failed!"
+                    description="Please Enter a valid username and password."
+                    type="error"
+                    showIcon
+                />
+                {/*<Alert color="warning">*/}
+                {/*    <h1>Authentication failed!</h1>*/}
+                {/*    <div>Please Enter a valid username and password</div>*/}
+                {/*</Alert>*/}
             </div>
         );
     }
@@ -88,14 +96,14 @@ class SignIn extends React.Component<Props, State> {
 
             return (
                 <div>
-                    <Alert color="success">
-                        <h1>Authentication Succeeded!</h1>
-                        <div>Signed in as: {this.props.authState.username}</div>
-                    </Alert>
-                    <ListGroup>
-                        <ListGroupItem disabled>Assigned Roles</ListGroupItem>
-                        {assignedRoles}
-                    </ListGroup>
+                    <Alert message="Authentication Succeeded!" type="success" showIcon />
+                    {/*<h1>Authentication Succeeded!</h1>*/}
+                    <div>Signed in as: {this.props.authState.username}</div>
+                    {/*</Alert>*/}
+                    {/*<ListGroup>*/}
+                    {/*    <ListGroupItem disabled>Assigned Roles</ListGroupItem>*/}
+                    {/*    {assignedRoles}*/}
+                    {/*</ListGroup>*/}
                 </div>
             )
         }
@@ -122,7 +130,10 @@ class SignIn extends React.Component<Props, State> {
                     <br/>
                     <FormGroup>
                         <Label for="username">Username</Label>
-                        <Input type="username"
+                        <br />
+                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                               className="login-form"
+                               type="username"
                                name="username"
                                id="username"
                                placeholder="Username"
@@ -132,7 +143,10 @@ class SignIn extends React.Component<Props, State> {
                     </FormGroup>
                     <FormGroup>
                         <Label for="username">Password</Label>
-                        <Input type="password"
+                        <br />
+                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                               className="login-form"
+                               type="password"
                                name="password"
                                id="password"
                                placeholder="Password"

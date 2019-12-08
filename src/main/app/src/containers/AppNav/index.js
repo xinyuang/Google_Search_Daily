@@ -22,7 +22,8 @@ import '../../styles/Recmend.css';
 
 import {connect} from "react-redux";
 import SignIn from "../signin";
-import signupForm from "../SignUp";
+import SignUp from "../SignUp";
+import Preference from "../preference";
 import About from "../about";
 import SerachBar from "../Shared/SearchBar";
 import HotNews from "../HotNews";
@@ -199,8 +200,9 @@ class AppNav extends React.Component<Props, State> {
                             <Switch>
                                 <Route exact path="/" component={HotNews} />
                                 <Route exact path="/signin" component={SignIn} />
-                                <Route exact path="/signup" component={signupForm} />
-                                <Redirect from='/signup/' to="/signin/" />
+                                <Route exact path="/signup" component={SignUp} />
+                                {/*<Redirect from='/signup/' to="/signin/" />*/}
+                                <Route exact path="/preference" component={Preference} />
                                 <Route exact path="/querynews" component={QueryNews} />
                                 <Route exact path="/categorynews" component={CategoryNews} />
                                 <Route exact path="/recnews" component={RecomNews} />

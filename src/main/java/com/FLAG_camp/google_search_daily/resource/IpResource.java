@@ -36,9 +36,11 @@ public class IpResource {
             NetworkInterface ni=(NetworkInterface) en.nextElement();
             Enumeration ee = ni.getInetAddresses();
             InetAddress ia = (InetAddress) ee.nextElement();
-            ip = ia.getHostAddress() ;
-            int idx = ip.indexOf('%');
-            ip = ip.substring(0,idx);
+            do {
+                ip = ia.getHostAddress();
+                int idx = ip.indexOf('%');
+                ip = ip.substring(0,idx);
+            }while(ip != "127.0.0.1");
         }
         return locationService.getLocation(ip);
     }

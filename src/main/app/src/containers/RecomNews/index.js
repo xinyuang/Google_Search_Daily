@@ -7,7 +7,7 @@ import type { News, NewsAddRequest, DelNewsRequest } from "../../data/modules/ne
 
 import type { AuthState } from '../../data/modules/auth';
 
-import { Layout,Card, Col, Row, Icon, Switch  } from 'antd';
+import { Layout,Card, Col, Row, Icon, Switch, Button } from 'antd';
 import {refreshPreference} from "../../data/modules/preference";
 import {requestPreferAdd, requestPreferDel} from "../../data/modules/preference";
 import {refreshCategoryNews, refreshLocalNews} from "../../data/modules/news";
@@ -137,6 +137,7 @@ class PreferenceCard extends React.Component {
 class RecomNews extends React.Component {
     constructor(props) {
         super(props);
+
     }
 
     componentDidMount() {
@@ -161,7 +162,7 @@ class RecomNews extends React.Component {
             <div>
                 <Container>
                     <h1 id="textH3">You may be interested in ...</h1>
-                        <Row  gutter={16}>
+                        <Row  gutter={16} align="top">
                             <PreferenceCard
                                 preference={this.props.preference}
                                 addPrefer={this.props.requestPreferAdd}
@@ -169,7 +170,11 @@ class RecomNews extends React.Component {
                                 categoryNews={this.props.refreshCategoryNews}
                                 localNews={this.props.refreshLocalNews}
                             />
-                            <Icon className="addTag" type="plus-square" />
+                            <Button type="dashed" size='large'
+                                    style={{marginBottom:"8px", marginTop:"8px" ,marginLeft:"8px", marginRight:"8px"}}
+                                    onClick={e => this.props.history.push("/preference")}>
+                                <Icon type="plus" />
+                            </Button>
                         </Row>
                 </Container>
             </div>

@@ -21,7 +21,7 @@ export type RegState = {
 };
 
 type RegisterAction = {
-    type: 'REGISTERED' | 'REGISTER_FAILURE',
+    type: 'REGISTERED' | 'REGISTER_FAILURE' | 'SET_DEFAULT',
     data: {
         registered: boolean,
         regFailure: boolean,
@@ -56,6 +56,8 @@ export default function reducer(state: RegState = defaultState, action: Action):
                 regFailure: true,
                 regErrType: 'User Exist'
             };
+        case 'SET_DEFAULT':
+            return defaultState;
 
         default:
             return state;
@@ -77,14 +79,12 @@ export function registerFailure(): RegisterAction {
     }
 
 }
-// export function setDefault() {
-//     dispatch(authenticated({
-//         signedIn: true,
-//         username: token.username,
-//         roles: token.roles,
-//         authFailure: false
-//     }));
-// }
+export function setDefault(): RegisterAction{
+    return {
+        type: 'SET_DEFAULT'
+    }
+
+}
 
 export function register(username: string, password: string, email: string, date: string): Thunk<RegisterAction> {
     // let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;

@@ -6,13 +6,12 @@ import { Container } from 'reactstrap';
 import { socketsConnect } from '../../middleware/socketActions';
 import {Checkbox, Button, Alert, Col} from "antd";
 import { RegState, setRegisterData} from "../../data/modules/register";
-// import { PrefState } from "../../data/modules/preference";
 import { getCurrentDate } from "../Shared/date";
 
 
 type Props = {
     regState: RegState,
-    // prefState: PrefState,
+    preference: number[],
     socketsConnect:  () => void,
     setRegisterData: (date: string, checkedList: string[]) => void,
     history: {
@@ -30,14 +29,7 @@ type State = {
 };
 
 const CheckboxGroup = Checkbox.Group;
-// const plainOptions = [
-//     'Business',
-//     'Entertainment',
-//     'Health',
-//     'Politics',
-//     'ScienceAndTechnology', 'Sports',
-//     'World',
-//     'US'];
+
 const optionNumber = [1,2,3,4,5,6,7,8,9]
 const options = [
     { title : "Business", icon: 1, src : "https://content.thriveglobal.com/wp-content/uploads/2019/07/Dream-Side-Business-Desk.jpg?w=1550"},
@@ -59,7 +51,25 @@ class Perference extends React.Component<Props, State> {
         indeterminate: true,
         checkAll: false,
         checkedList: [],
+        opt: this.checkStatus(),
+
     };
+    checkStatus() {
+        let opt = options;
+        console.log("CHECK OPT1", opt);
+        const {preference} = this.props;
+        console.log("CHECK preference", preference);
+        for(var x in preference) {
+
+            opt = opt.filter(function(y){
+                return y.icon !== preference[x][0]
+            });
+
+        }
+        console.log("CHECK OPT2", opt);
+
+        return opt;
+    }
     handleRegister(event) {
         event.preventDefault();
         let cur_date = getCurrentDate();
@@ -86,26 +96,25 @@ class Perference extends React.Component<Props, State> {
             indeterminate: !!checkedList.length && checkedList.length < optionNumber.length,
             checkAll: checkedList.length === optionNumber.length,
         });
-        console.log(checkedList);
+        console.log("checked List",checkedList);
     };
 
 
-    // prefSucceededMessage() {
-    //     if (this.props.prefState.status === 'loaded') {
-    //         return (
-    //             <div>
-    //                 <Alert message="Successfully load preference" type="success" showIcon />
-    //             </div>
-    //         )
-    //     }
-    //     return null;
-    //
-    //
-    //
-    // }
+    prefSucceededMessage() {
+        //     if (this.props.prefState.status === 'loaded') {
+        //         return (
+        //             <div>
+        //                 <Alert message="Successfully load preference" type="success" showIcon />
+        //             </div>
+        //         )
+        //     }
+        //     return null;
+
+
+
+    }
 
     render() {
-
 
         return (
             <Container>
@@ -130,9 +139,10 @@ class Perference extends React.Component<Props, State> {
                         {/*    onChange={this.onChange}*/}
                         {/*/>*/}
                         <CheckboxGroup className='allcheckbox' value={this.state.checkedList} onChange={this.onChange}>
-                            {options.map(option =>
+                            {this.state.opt.map(option =>
                                 <Col className="checkBox-grid" span={8}>
                                     <Checkbox className='checkbox-img'
+
                                               style={{backgroundImage: `url(${ option.src })`}}
                                               value={option.icon}>{option.title}</Checkbox>
                                 </Col>
@@ -160,7 +170,7 @@ class Perference extends React.Component<Props, State> {
 function mapStateToProps(state) {
     return {
         regState: state.register,
-        // prefState: state.preference
+        preference: state.preference.data
     };
 }
 

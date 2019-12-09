@@ -153,6 +153,7 @@ type State = {
     password: string,
     email: string,
 
+
 };
 
 class RegistrationForm extends React.Component<Props, State> {
@@ -206,7 +207,6 @@ class RegistrationForm extends React.Component<Props, State> {
 
     regFailedMessage() {
         if (this.props.regState.regFailure) {
-
             return (
                 <div>
                     <Alert
@@ -218,34 +218,22 @@ class RegistrationForm extends React.Component<Props, State> {
                 </div>
             );
         }
-        if (this.props.authState.authFailure) {
-
-            return (
-                <div>
-                    <Alert
-                        message="Login failed!!"
-                        type="error"
-                        showIcon
-                    />
-                </div>
-            );
-        }
 
         return null;
     }
 
     regSucceededMessage() {
-        if (this.props.regState.registered && !this.props.authState.authFailure) {
+        if (this.props.regState.registered) {
             return (
                 <div>
                     <Alert message="Register and Login Succeeded!" type="success" showIcon />
                 </div>
+
             )
         }
         return null;
 
     }
-
 
     render() {
 

@@ -10,7 +10,7 @@ import type { AuthState } from '../../data/modules/auth';
 import { Layout,Card, Col, Row, Icon, Switch, Button } from 'antd';
 import {refreshPreference} from "../../data/modules/preference";
 import {requestPreferAdd, requestPreferDel} from "../../data/modules/preference";
-import {refreshCategoryNews} from "../../data/modules/news";
+import {refreshCategoryNews, refreshLocalNews} from "../../data/modules/news";
 
 const { Meta } = Card;
 
@@ -49,7 +49,16 @@ class PreferCard extends React.Component {
                     cover={
                         <Link to="/categorynews"
                               onClick={
-                                    () => { this.props.categoryNews(this.props.card.newsCategory[this.props.idx[0]].title)}}
+                                    () => {
+                                        console.log("local? ", this.props.card.newsCategory[this.props.idx[0]].title)
+                                        if (this.props.card.newsCategory[this.props.idx[0]].title === "Local") {
+                                            this.props.localNews()
+                                        }
+                                        else {
+                                            this.props.categoryNews(this.props.card.newsCategory[this.props.idx[0]].title)
+                                        }
+                                    }
+                              }
                         >
                             <img className="newsImg"
                                  alt="example"
@@ -114,6 +123,7 @@ class PreferenceCard extends React.Component {
                                     addPrefer={this.props.addPrefer}
                                     delPrefer={this.props.delPrefer}
                                     categoryNews={this.props.categoryNews}
+                                    localNews={this.props.categoryNews}
                                 />
                             </Col>
                         )
@@ -158,6 +168,7 @@ class RecomNews extends React.Component {
                                 addPrefer={this.props.requestPreferAdd}
                                 delPrefer={this.props.requestPreferDel}
                                 categoryNews={this.props.refreshCategoryNews}
+                                localNews={this.props.refreshLocalNews}
                             />
                             <Button type="dashed" size='large'
                                     style={{marginBottom:"8px", marginTop:"8px" ,marginLeft:"8px", marginRight:"8px"}}
@@ -178,4 +189,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { refreshPreference,requestPreferAdd,requestPreferDel,refreshCategoryNews })(RecomNews);
+export default connect(mapStateToProps, { refreshPreference,requestPreferAdd,requestPreferDel,refreshCategoryNews, refreshLocalNews })(RecomNews);

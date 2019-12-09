@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import {  Container, FormGroup, Label, ListGroup, ListGroupItem } from 'reactstrap';
 // import { Button, Form, Input } from 'reactstrap';
 import { Form, Icon, Input, Button, Alert } from 'antd';
-
+import { Card } from 'antd';
 import { authenticated, login, logout } from '../../data/modules/auth';
 import type { AuthState, Role } from '../../data/modules/auth';
 import { socketsConnect } from '../../middleware/socketActions';
@@ -121,45 +121,48 @@ class SignIn extends React.Component<Props, State> {
         return (
             <div>
                 <Container>
-                <Form>
-                    <h1>Sign In</h1>
-                    <Container>
-                        {this.authSucceededMessage()}
-                        {this.authFailedMessage()}
-                    </Container>
-                    <br/>
-                    <FormGroup>
-                        <Label for="username">Username</Label>
-                        <br />
-                        <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                               className="login-form"
-                               type="username"
-                               name="username"
-                               id="username"
-                               placeholder="Username"
-                               value={username}
-                               onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="username">Password</Label>
-                        <br />
-                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                               className="login-form"
-                               type="password"
-                               name="password"
-                               id="password"
-                               placeholder="Password"
-                               value={password}
-                               onChange={this.handleChange}
-                        />
-                    </FormGroup>
+                    <h1  id="textH3">Sign In</h1>
+                    <Card style={{width:500, alignItems:"center", marginTop:20}}>
+                        <Form>
 
-                    <Button disabled={authState.signedIn} onClick={e => this.handleOnSignIn(e)}>Login</Button>{' '}
-                    <Button disabled={!authState.signedIn} onClick={e => this.handleSignOut(e)}>Logout</Button>
-                </Form>
+                            <Container>
+                                {this.authSucceededMessage()}
+                                {this.authFailedMessage()}
+                            </Container>
+                            <br/>
+                            <FormGroup>
+                                <Label for="username">Username</Label>
+                                <br />
+                                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                       className="login-form"
+                                       type="username"
+                                       name="username"
+                                       id="username"
+                                       placeholder="Username"
+                                       value={username}
+                                       onChange={this.handleChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="username">Password</Label>
+                                <br />
+                                <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                       className="login-form"
+                                       type="password"
+                                       name="password"
+                                       id="password"
+                                       placeholder="Password"
+                                       value={password}
+                                       onChange={this.handleChange}
+                                />
+                            </FormGroup>
+
+                            <Button disabled={authState.signedIn} onClick={e => this.handleOnSignIn(e)}>Login</Button>{' '}
+                            <Button disabled={!authState.signedIn} onClick={e => this.handleSignOut(e)}>Logout</Button>
+                        </Form>
+                    </Card>
                 <br/>
-                <div>Roles: {roleList}</div>
+                {/*<div>Roles: {roleList}</div>*/}
                 </Container>
             </div>
         );

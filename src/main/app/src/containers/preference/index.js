@@ -6,13 +6,12 @@ import { Container } from 'reactstrap';
 import { socketsConnect } from '../../middleware/socketActions';
 import {Checkbox, Button, Alert, Col} from "antd";
 import { RegState, setRegisterData} from "../../data/modules/register";
-import { PrefState } from "../../data/modules/preference";
 import { getCurrentDate } from "../Shared/date";
 
 
 type Props = {
     regState: RegState,
-    prefState: PrefState,
+    preference: number[],
     socketsConnect:  () => void,
     setRegisterData: (date: string, checkedList: string[]) => void,
     history: {
@@ -30,25 +29,19 @@ type State = {
 };
 
 const CheckboxGroup = Checkbox.Group;
-// const plainOptions = [
-//     'Business',
-//     'Entertainment',
-//     'Health',
-//     'Politics',
-//     'ScienceAndTechnology', 'Sports',
-//     'World',
-//     'US'];
-const optionNumber = [1,2,3,4,5,6,7,8];
+
+const optionNumber = [1,2,3,4,5,6,7,8,9]
 const options = [
-    { title : "Business", icon: 1, status: false, src : "https://content.thriveglobal.com/wp-content/uploads/2019/07/Dream-Side-Business-Desk.jpg?w=1550"},
-    { title : "Entertainment", icon: 2, status: false, src : "https://www.eventmanagerblog.com/wp-content/uploads/2018/10/350x215-FEAT-in-post-Entertainment.jpg"},
-    { title : "Health", icon: 3, status: false, src : "https://d362armbx6l2g0.cloudfront.net/d362armbx6l2g0_cloudfront_net/Video-Poster/promo_newslettersignup_2x_f2756ffb5c172d269067ce311945acea.png"},
-    { title : "Politics", icon: 4, status: false, src : "https://www.voicesofyouth.org/sites/default/files/images/2019-01/politics3.jpg"},
-    { title : "ScienceAndTechnology", icon: 5, status: false, src : "https://i.cbc.ca/1.4833630.1537555507!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/global-internet-abstract.jpg"},
-    { title : "Sports", icon: 6, status: false, src : "https://blog.studocu.com/wp-content/uploads/2016/10/slide1-image-tablet.png"},
-    { title : "World", icon: 7, status: false, src : "https://www.clayton.edu/international-student-services/Forms/images/intern636634593552534916.jpeg"},
-    { title : "US", icon: 8, status: false, src : "https://www.cmsschicago.org/wp-content/uploads/2018/11/US-News-and-World-Report.png"}
-];
+    { title : "Business", icon: 1, src : "https://content.thriveglobal.com/wp-content/uploads/2019/07/Dream-Side-Business-Desk.jpg?w=1550"},
+    { title : "Entertainment", icon: 2, src : "https://www.eventmanagerblog.com/wp-content/uploads/2018/10/350x215-FEAT-in-post-Entertainment.jpg"},
+    { title : "Health", icon: 3, src : "https://d362armbx6l2g0.cloudfront.net/d362armbx6l2g0_cloudfront_net/Video-Poster/promo_newslettersignup_2x_f2756ffb5c172d269067ce311945acea.png"},
+    { title : "Politics", icon: 4, src : "https://www.voicesofyouth.org/sites/default/files/images/2019-01/politics3.jpg"},
+    { title : "ScienceAndTechnology", icon: 5, src : "https://i.cbc.ca/1.4833630.1537555507!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/global-internet-abstract.jpg"},
+    { title : "Sports", icon: 6, src : "https://blog.studocu.com/wp-content/uploads/2016/10/slide1-image-tablet.png"},
+    { title : "World", icon: 7, src : "https://www.clayton.edu/international-student-services/Forms/images/intern636634593552534916.jpeg"},
+    { title : "US", icon: 8, src : "https://www.cmsschicago.org/wp-content/uploads/2018/11/US-News-and-World-Report.png"},
+    { title : "Local", icon: 9, src : "https://whitespark.ca/wp-content/uploads/2016/03/LocalInsider-hero.png"}
+]
 
 class Perference extends React.Component<Props, State> {
     state = {
@@ -58,24 +51,25 @@ class Perference extends React.Component<Props, State> {
         indeterminate: true,
         checkAll: false,
         checkedList: [],
-        // opt: this.checkStatus(),
+        opt: this.checkStatus(),
 
     };
-    // checkStatus() {
-    //     let opt = [];
-    //     const {preference} = this.props.prefState;
-    //     for(var x in preference) {
-    //         for(var y in options) {
-    //             if(preference[x] == options[y].icon) {
-    //                 opt.push(options[y]);
-    //             }
-    //         }
-    //
-    //     }
-    //     console.log("CHECK OPT", opt);
-    //     console.log("CHECK preference", preference);
-    //     return opt;
-    // }
+    checkStatus() {
+        let opt = options;
+        console.log("CHECK OPT1", opt);
+        const {preference} = this.props;
+        console.log("CHECK preference", preference);
+        for(var x in preference) {
+
+            opt = opt.filter(function(y){
+                return y.icon !== preference[x][0]
+            });
+
+        }
+        console.log("CHECK OPT2", opt);
+
+        return opt;
+    }
     handleRegister(event) {
         event.preventDefault();
         let cur_date = getCurrentDate();
@@ -122,7 +116,6 @@ class Perference extends React.Component<Props, State> {
 
     render() {
 
-
         return (
             <Container>
                 <form>
@@ -146,7 +139,7 @@ class Perference extends React.Component<Props, State> {
                         {/*    onChange={this.onChange}*/}
                         {/*/>*/}
                         <CheckboxGroup className='allcheckbox' value={this.state.checkedList} onChange={this.onChange}>
-                            {options.map(option =>
+                            {this.state.opt.map(option =>
                                 <Col className="checkBox-grid" span={8}>
                                     <Checkbox className='checkbox-img'
 
@@ -177,7 +170,7 @@ class Perference extends React.Component<Props, State> {
 function mapStateToProps(state) {
     return {
         regState: state.register,
-        prefState: state.preference
+        preference: state.preference.data
     };
 }
 
@@ -185,39 +178,3 @@ function mapStateToProps(state) {
 export default withRouter(
     connect(mapStateToProps, { setRegisterData, socketsConnect })(Perference)
 );
-
-// const CheckboxField = ({checked, onChange}) => { return ( <input type="checkbox" checked={checked} onChange={ev => onChange(ev.target.checked)} /> ); };
-// class App extends React.Component {
-//     constructor() {
-//         super();
-//         this.state = {
-//             options: [{id: "1", checked: true}, {id: "2", checked: false}]
-//         };
-//     }
-//     handleCheckboxChange(checked, option) {
-//         const {options} = this.state;
-//         var cOptions = [...options];
-//         for(var i in cOptions) {
-//             if(cOptions[i].id == option.id) {
-//                 cOptions[i].checked = checked;
-//             }
-//         }
-//         this.setState({ options: cOptions }, () => console.log(options));
-//     }
-//     render() {
-//         const {options} = this.state;
-//         return (
-//             <div>
-//                 { options.map(option => {
-//                     return (
-//                         <CheckboxField
-//                             key={option.id}
-//                             checked={option.checked}
-//                             onChange={value => this.handleCheckboxChange(value, option)}
-//                         />
-//                         )
-//                 })}
-//             </div>
-//         );
-//     }
-// } ReactDOM.render(<App />, document.getElementById("root"));

@@ -1,4 +1,6 @@
 @import '~antd/dist/antd.css';
+@import url('https://fonts.googleapis.com/css?family=Prociono');
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface');
 
 html, body {
   height: 100%;
@@ -21,6 +23,42 @@ html {
 
 button:disabled {
   opacity: 0.5;
+}
+
+#textH2{
+  font-family: Prociono, serif;
+  text-align: center;
+  font-size: 65px;
+  letter-spacing: 5px;
+  color: rgba(0, 0, 0, 0.18);
+  margin-top :0px;
+  border-top :0px;
+  padding-up :0px;
+}
+
+#textH1{
+  font-family: Prociono, serif;
+  text-align: center;
+  font-size: 25px;
+  letter-spacing: 5px;
+  color: rgb(204, 204, 204);
+  padding: 10px 0px;
+  margin-bottom: 0px;
+}
+
+#textH3{
+  font-family: Prociono, serif;
+  font-size: 25px;
+  letter-spacing: 5px;
+  color: rgb(204, 204, 204);
+  padding: 10px 0px;
+  margin-bottom: 0px;
+  margin-top : 30px;
+  margin-left: 20px;
+}
+
+#news{
+  vertical-align:middle;
 }
 .ant-form-item {
   margin-bottom: 0;

@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import com.FLAG_camp.google_search_daily.model.News;
 
+import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+
+
 @Service("newsApiService")
 public class NewsApiService {
 
@@ -25,12 +28,13 @@ public class NewsApiService {
 	private final String SUB_PATH = "";
 	private final String DEFAULT_KEYWORD = "";
 	
+	/*
 	@VisibleForTesting
 	public List<News> getGeneralNews() throws Exception {
 		// create connection
 		String subPath = SUB_PATH;
 		String queryKeyword = "sailing+dinghies";
-		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
+		HttpsURLConnection connection = createConnection(subPath, 0L, queryKeyword);
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
@@ -41,12 +45,13 @@ public class NewsApiService {
 	    JSONArray news = parseResponseToJsonArray(connection);
 	    return convertJsonArrayToNewsList(news);
 	}
+	*/
 	
 	@VisibleForTesting
-	public List<News> getTodayTopNews() throws Exception {
+	public List<News> getTodayTopNews(Long offset) throws Exception {
 		String subPath = "/search";
 		String queryKeyword = "";
-		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
+		HttpsURLConnection connection = createConnection(subPath, offset, queryKeyword);
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
@@ -59,9 +64,20 @@ public class NewsApiService {
 	}
 	
 	@VisibleForTesting
-	public List<News> getQueryNews(String queryKeyword) throws Exception {
+	public List<News> getQueryNews(String queryKeyword, Long offset) throws Exception {
 		String subPath = "/search";
-		HttpsURLConnection connection = createConnection(subPath, queryKeyword);
+		
+		// add "+" when seeing spaces - pengzhao
+		String[] parts = queryKeyword.split("\\s+");
+		queryKeyword = "";
+		for (int i = 0; i < parts.length - 1; i++) {
+			queryKeyword += parts[i];
+			queryKeyword += "+";
+		}
+		queryKeyword += parts[parts.length - 1];
+		logger.info("queryKeyword becomes {}", queryKeyword);
+		
+		HttpsURLConnection connection = createConnection(subPath, offset, queryKeyword);
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
@@ -74,9 +90,20 @@ public class NewsApiService {
 	}
 	
 	@VisibleForTesting
-	public List<News> getQueryNewsByGeoLocation(String queryKeyword, double lat, double lon, int radius) throws Exception {
+	public List<News> getQueryNewsByGeoLocation(String queryKeyword, Long offset, double lat, double lon, int radius) throws Exception {
 		String subPath = "/search";
-		HttpsURLConnection connection = createGeoBasedConnection(subPath, queryKeyword, lat, lon, radius);
+		
+		// add "+" when seeing spaces - pengzhao
+		String[] parts = queryKeyword.split("\\s+");
+		queryKeyword = "";
+		for (int i = 0; i < parts.length - 1; i++) {
+			queryKeyword += parts[i];
+			queryKeyword += "+";
+		}
+		queryKeyword += parts[parts.length - 1];
+		logger.info("queryKeyword becomes {}", queryKeyword);
+		
+		HttpsURLConnection connection = createGeoBasedConnection(subPath, offset, queryKeyword, lat, lon, radius);
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
@@ -88,9 +115,9 @@ public class NewsApiService {
 	}
 	
 	@VisibleForTesting
-	public List<News> getCategoryNews(String category) throws Exception {
+	public List<News> getCategoryNews(String category, Long offset) throws Exception {
 		String subPath = SUB_PATH;
-		HttpsURLConnection connection = createCategoryQueryConnection(subPath, category);
+		HttpsURLConnection connection = createCategoryQueryConnection(subPath, offset, category);
 		connection.connect();
 		
 		int responseCode = connection.getResponseCode();
@@ -101,17 +128,30 @@ public class NewsApiService {
 		return convertJsonArrayToNewsList(news);
 	}
 	
-	private HttpsURLConnection createConnection(String subPath, String queryKeyword) throws Exception {
-		URL url = new URL(HOST + PATH + subPath + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+	private HttpsURLConnection createConnection(String subPath, Long offset, String queryKeyword) throws Exception {
+		if (offset == null) {
+			offset = 0L;
+		}
+		URL url = new URL(HOST + PATH + subPath + "?" + "offset=" + offset + "&count=12&" + "q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		logger.info("pengzha1 url = {}", url);
+		//url = new URL(HOST + PATH + subPath + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");
 	    connection.setRequestMethod("GET");
+	    logger.info("connection url = {}", connection);
 	    return connection;
 	}
 	
-	private HttpsURLConnection createGeoBasedConnection(String subPath, String queryKeyword, double lat, double lon, int radius) throws Exception {
-		URL url = new URL(HOST + PATH + subPath + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+	private HttpsURLConnection createGeoBasedConnection(String subPath, Long offset, String queryKeyword, double lat, double lon, int radius) throws Exception {
+		if (offset == null) {
+			offset = 0L;
+		}
+		URL url = new URL(HOST + PATH + subPath + "?" + "offset=" + offset + "&count=12&" + "q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		logger.info("pengzhao url = {}", url);
+		//URL url = new URL(HOST + PATH + subPath + "?q=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		
 		String LAT = "lat:" + lat + ";";
 		String LONG = "long:" + lon + ";";
 		String RAD = "re:" + radius;
@@ -125,8 +165,10 @@ public class NewsApiService {
 	    return connection;
 	}
 	
-	private HttpsURLConnection createCategoryQueryConnection(String subPath, String queryKeyword) throws Exception {
-		URL url = new URL(HOST + PATH + SUB_PATH + "?category=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+	private HttpsURLConnection createCategoryQueryConnection(String subPath, Long offset, String queryKeyword) throws Exception {
+		//URL url = new URL(HOST + PATH + SUB_PATH + "?category=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		URL url = new URL(HOST + PATH + SUB_PATH + "?" + "offset=" + offset + "&count=12&" + "category=" +  URLEncoder.encode(queryKeyword, "UTF-8"));
+		logger.info("pengzhao category news url is {}", url);
 		HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 	    connection.setRequestProperty("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
 	    connection.setRequestProperty("X-Search-ClientIP", "999.999.999.999");

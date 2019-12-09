@@ -1,3 +1,4 @@
+import store from "../../store";
 import React from 'react';
 import {Link, Route, withRouter,Switch, Redirect} from 'react-router-dom';
 import {Navbar, NavbarBrand, Nav, NavItem, NavLink, Container} from 'reactstrap';
@@ -85,7 +86,7 @@ class AppNav extends React.Component<Props, State> {
                             <span>Selected for you</span>
                             <Link to="/recnews"></Link>
                         </Menu.Item>
-                        <Menu.Item key="3">
+                        <Menu.Item key="3" onClick={()=>{store.dispatch({type:'SET_VISIBILITY_FILTER',filter:'All'})}}>
                             <Icon type="star" />
                             <span>Saved News</span>
                             <Link to="/favnews"></Link>
@@ -113,8 +114,8 @@ class AppNav extends React.Component<Props, State> {
         if (!signedIn) {
             return (
                 <div>
-                <span><Link className="signIn" to="/signin">Log In</Link></span>
-                <span><Link className="signIn" to="/signup">Sign Up</Link></span>
+                    <span><Link className="signIn" to="/signin">Log In</Link></span>
+                    <span><Link className="signIn" to="/signup">Sign Up</Link></span>
                 </div>
             )
         }

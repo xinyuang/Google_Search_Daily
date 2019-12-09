@@ -18,36 +18,38 @@ public class NewsService {
 	@Autowired
 	private NewsApiService newsApiService;
 	
+	/*
 	@VisibleForTesting
 	public void saveNewsFetchedFromApi() throws Exception {
 		List<News> allFetchedNews = newsApiService.getGeneralNews();
 		newsRepository.saveAll(allFetchedNews);
 	}
+	*/
 	
 	@VisibleForTesting
-	public List<News> getTopNewsFromApi() throws Exception {
-		return newsApiService.getTodayTopNews();
+	public List<News> getTopNewsFromApi(Long offset) throws Exception {
+		return newsApiService.getTodayTopNews(offset);
 	}
 	
 	@VisibleForTesting
-	public List<News> getQueryNewsFromApi(String queryKeyword) throws Exception {
-		List<News> newsFromApi = newsApiService.getQueryNews(queryKeyword);
-		System.out.println("in NewsService - newsFromApi: " + newsFromApi);
+	public List<News> getQueryNewsFromApi(String queryKeyword, Long offset) throws Exception {
+		List<News> newsFromApi = newsApiService.getQueryNews(queryKeyword, offset);
+//		System.out.println("in NewsService - newsFromApi: " + newsFromApi);
 		return newsFromApi;
 	}
 	
 	@VisibleForTesting
-	public List<News> getQueryNewsByGeoFromApi(String queryKeyword, double lat, double lon, int radius) throws Exception {
+	public List<News> getQueryNewsByGeoFromApi(String queryKeyword, Long offset, double lat, double lon, int radius) throws Exception {
 		System.out.println(queryKeyword);
 		System.out.println("lat: " + lat);
 		System.out.println("lon: " + lon);
 		System.out.println("radius: " + radius);
-		return newsApiService.getQueryNewsByGeoLocation(queryKeyword, lat, lon, radius);
+		return newsApiService.getQueryNewsByGeoLocation(queryKeyword, offset, lat, lon, radius);
 	}
 	
 	@VisibleForTesting
-	public List<News> getCategoryNewsFromApi(String category) throws Exception {
-		return newsApiService.getCategoryNews(category);
+	public List<News> getCategoryNewsFromApi(String category, Long offset) throws Exception {
+		return newsApiService.getCategoryNews(category, offset);
 	}
 	
     public List<News> getAllNews() {

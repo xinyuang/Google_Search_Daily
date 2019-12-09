@@ -51,7 +51,7 @@ class HotNews extends React.Component<Props, State> {
             datePublished:'',
             content: '',
             colors: ["magenta","red","volcano","orange","gold","lime","green","cyan","blue","purple"],
-            cur_idx: 0,
+            cur_idx: 24,
             newsList: []
         };
         this.addNews = this.addNews.bind(this);
@@ -60,7 +60,6 @@ class HotNews extends React.Component<Props, State> {
     componentDidMount() {
         this.props.refreshHotNews();
         this.props.refreshHotTopic();
-        this.addNews();
     }
 
     addNews() {
@@ -71,13 +70,12 @@ class HotNews extends React.Component<Props, State> {
 
     displayNews(isLogin) {
 
-        // const { news } = this.props;
+        const { news } = this.props;
         const { topics } = this.props;
-        const news = this.state.newsList;
-        console.log(this.props);
+        // const news = this.state.newsList;
+        console.log("hot props", this.props);
         if (news) {
             const loadedTopics = topics.map((item,index) => {
-                console.log(item, this.state.colors[index]);
                 return (
                     <Tag key={item} className="tag" color={this.state.colors[index]}
                          onClick={()=>{this.props.refreshQueryNews(item)}}
@@ -137,7 +135,7 @@ class HotNews extends React.Component<Props, State> {
                             </Card>
                         </div>
                     </div>
-                    <button onClick={
+                    <Button style={{color:"blue"}} type="link" ghost onClick={
                         ()=>{
                             this.setState({cur_idx:this.state.cur_idx + 12});
                             this.props.refreshHotNews(this.state.cur_idx);
@@ -145,7 +143,7 @@ class HotNews extends React.Component<Props, State> {
                             console.log(this.state.cur_idx, " click " , this.state);
 
                         }
-                    }>More...</button>
+                    }>More...</Button>
                 </Container>
             )
         }

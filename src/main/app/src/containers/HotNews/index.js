@@ -20,7 +20,7 @@ const { Header, Sider, Content } = Layout;
 
 type Props = {
     authState: AuthState,
-    refreshHotNews: () => void,
+    refreshHotNews: (cur_idx:string) => void,
     refreshHotTopic: () => void,
     requestBookMarkAdd:(bookMarkAddRequest: BookMarkAddRequest) => void,
     requestBookMarkDel:(news: News) => void,
@@ -50,25 +50,36 @@ class HotNews extends React.Component<Props, State> {
             title: '',
             datePublished:'',
             content: '',
-            colors: ["magenta","red","volcano","orange","gold","lime","green","cyan","blue","purple"]
+            colors: ["magenta","red","volcano","orange","gold","lime","green","cyan","blue","purple"],
+            cur_idx: 0,
+            newsList: []
         };
+        this.addNews = this.addNews.bind(this);
     }
 
     componentDidMount() {
         this.props.refreshHotNews();
         this.props.refreshHotTopic();
+        this.addNews();
+    }
+
+    addNews() {
+        this.setState({
+            newsList: [...this.state.newsList,...this.props.news]
+        })
     }
 
     displayNews(isLogin) {
 
-        const { news } = this.props;
+        // const { news } = this.props;
         const { topics } = this.props;
+        const news = this.state.newsList;
         console.log(this.props);
         if (news) {
             const loadedTopics = topics.map((item,index) => {
                 console.log(item, this.state.colors[index]);
                 return (
-                    <Tag className="tag" color={this.state.colors[index]}
+                    <Tag key={item} className="tag" color={this.state.colors[index]}
                          onClick={()=>{this.props.refreshQueryNews(item)}}
                          // onClick={console.log("tag ???" ,item)}
                     >
@@ -126,6 +137,15 @@ class HotNews extends React.Component<Props, State> {
                             </Card>
                         </div>
                     </div>
+                    <button onClick={
+                        ()=>{
+                            this.setState({cur_idx:this.state.cur_idx + 12});
+                            this.props.refreshHotNews(this.state.cur_idx);
+                            this.addNews()
+                            console.log(this.state.cur_idx, " click " , this.state);
+
+                        }
+                    }>More...</button>
                 </Container>
             )
         }

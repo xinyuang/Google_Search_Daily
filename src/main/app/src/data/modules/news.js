@@ -155,7 +155,7 @@ export function refreshCategoryNews(newsCategory:string) : Thunk<NewsRefreshedAc
         }
 }
 
-export function refreshHotNews() : Thunk<NewsRefreshedAction> {
+export function refreshHotNews(cur_idx = '0') : Thunk<NewsRefreshedAction> {
 
     // $FlowFixMe Flow complaining about the localstorage being null
     if (localStorage.getItem(Names.JWT_TOKEN))
@@ -163,7 +163,7 @@ export function refreshHotNews() : Thunk<NewsRefreshedAction> {
         let headerToken = `Bearer ${localStorage.getItem(Names.JWT_TOKEN)}`;
         console.log(headerToken);
         return dispatch => {
-            axios.get(`/api/topnews?offset=0`,{
+            axios.get(`/api/topnews?offset=` + cur_idx,{
                 headers: {authorization: headerToken}
             })
                 .then(
@@ -175,7 +175,7 @@ export function refreshHotNews() : Thunk<NewsRefreshedAction> {
     else
     {
         return dispatch => {
-            axios.get(`/api/topnews?offset=0`)
+            axios.get(`/api/topnews?offset=` + cur_idx)
                 .then(
                     success => dispatch(newsRefreshed(success.data)),
                     failure => console.log(failure)

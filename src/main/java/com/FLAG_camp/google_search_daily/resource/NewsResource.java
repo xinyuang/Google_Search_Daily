@@ -86,16 +86,19 @@ public class NewsResource {
                                         @RequestParam(value="offset") Long offset
     ) throws Exception {
         String ip = request.getRemoteAddr();
-        if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+        if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1") || ip.equalsIgnoreCase("127.0.0.1")) {
             Enumeration en = NetworkInterface.getNetworkInterfaces();
             NetworkInterface ni=(NetworkInterface) en.nextElement();
             Enumeration ee = ni.getInetAddresses();
-            InetAddress ia = (InetAddress) ee.nextElement();
-            do {
+            while(ee.hasMoreElements()) {
+                InetAddress ia = (InetAddress) ee.nextElement();
                 ip = ia.getHostAddress();
-                int idx = ip.indexOf('%');
-                ip = ip.substring(0,idx);
-            }while(ip != "127.0.0.1");
+                if(!ip.equals("127.0.0.1")) {
+                    int idx = ip.indexOf('%');
+                    ip = ip.substring(0, idx);
+                    break;
+                }
+            }
         }
         Map<String,String> ipInfo = locationService.getLocation(ip);
         double lat = Double.parseDouble(ipInfo.get("latitude:"));

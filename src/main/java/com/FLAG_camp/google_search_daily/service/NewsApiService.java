@@ -22,7 +22,7 @@ import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplicatio
 public class NewsApiService {
 
 //	private final String SUBSCRIPTION_KEY = "08578fb106fd45299541397fd22e25aa";
-	private final String SUBSCRIPTION_KEY = "6108c845cd8d4ab68a1fb83bb3b8ef3c";
+	private final String SUBSCRIPTION_KEY = "2ff3c655aeb4416fb0785c02b8427304";
 	private final String HOST = "https://api.cognitive.microsoft.com";
 	private final String PATH = "/bing/v7.0/news";
 	private final String SUB_PATH = "";

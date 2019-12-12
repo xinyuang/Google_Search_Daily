@@ -6,7 +6,7 @@ import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Map;
-import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+import static com.FLAG_camp.google_search_daily.GoogleSearchDailyApplication.logger;
 import com.FLAG_camp.google_search_daily.service.RawDBDemoGeoIPLocationService;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import lombok.extern.slf4j.Slf4j;

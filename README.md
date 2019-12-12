@@ -15,7 +15,7 @@ Boilerplate application to demonstrate how to wire up Spring, JWT Authentication
 
 Install [Maven](https://maven.apache.org/) and [Yarn](https://yarnpkg.com)
 
-Start `com.naughtyzombie.boilerplate.springreactboilerplate.SpringReactBoilerplateApplication` in your IDE
+Start `com.FLAG_camp.google_search_daily.GoogleSearchDailyApplication` in your IDE
 
 Then start the front end
 

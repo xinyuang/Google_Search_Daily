@@ -1,3 +1,6 @@
+# Live Demo
+https://youtu.be/SgM3EABeuL8
+
 # Google_Search_Daily
 To align with Google’s mission to organize the world's information and make it universally accessible and useful, we believe there should be a product to provide live news and daily feeds. Currently Google does not have a product to provide live news. The purpose of Google Search Daily aims to fit in this gap and provide a more fluent user experience of accessing information and a next generation news system.
 

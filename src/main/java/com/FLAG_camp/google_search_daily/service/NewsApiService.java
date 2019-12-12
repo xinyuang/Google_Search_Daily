@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.FLAG_camp.google_search_daily.model.News;
 
-import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+import static com.FLAG_camp.google_search_daily.GoogleSearchDailyApplication.logger;
 
 
 @Service("newsApiService")

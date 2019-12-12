@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+import static com.FLAG_camp.google_search_daily.GoogleSearchDailyApplication.logger;
 
 import java.io.IOException;
 

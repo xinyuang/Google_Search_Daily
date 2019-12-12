@@ -1,6 +1,6 @@
 package com.FLAG_camp.google_search_daily.resource;
 
-import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+import static com.FLAG_camp.google_search_daily.GoogleSearchDailyApplication.logger;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;

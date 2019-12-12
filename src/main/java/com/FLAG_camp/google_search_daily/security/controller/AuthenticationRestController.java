@@ -28,7 +28,7 @@ import com.FLAG_camp.google_search_daily.security.JwtUser;
 import com.FLAG_camp.google_search_daily.security.service.JwtAuthenticationResponse;
 import com.FLAG_camp.google_search_daily.security.service.JwtUserDetailsService;
 
-import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+import static com.FLAG_camp.google_search_daily.GoogleSearchDailyApplication.logger;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 

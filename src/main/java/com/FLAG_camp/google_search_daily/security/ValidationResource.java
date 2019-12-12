@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.FLAG_camp.google_search_daily.SpringReactBoilerplateApplication.logger;
+import static com.FLAG_camp.google_search_daily.GoogleSearchDailyApplication.logger;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 

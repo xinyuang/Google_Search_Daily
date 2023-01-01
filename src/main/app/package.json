@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "flow-bin": "^0.80.0",
-    "react-scripts": "^1.0.17"
+    "react-scripts": "^5.0.1"
   },
   "dependencies": {
     "@stomp/stompjs": "^4.0.2",
